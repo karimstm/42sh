@@ -1,0 +1,5 @@
+ls -la 2>&"1"
+cat -e <<eof
+>karim
+>$HOME // Needs to be handled
+>eof

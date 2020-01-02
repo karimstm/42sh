@@ -1,0 +1,11 @@
+cat << EOF -e ; echo "
+hello" ; cat -e << ok
+ls
+this
+is
+a
+test
+EOF
+salam
+labas
+ok

@@ -1,0 +1,28 @@
+tr a-z A-Z < file
+ls > file
+ls [n]>file
+ls /not_a_file 2> file
+ls > file 2>&1
+ls &>> file
+cat -e 2< file
+ls 2>> file : need to be addressed
+ls >> /tmp/bash.out 2>&1
+ls | wc
+ls 2>&1 | wc
+cat -e <> file
+cat -e [n]<>file // look for 0 case
+wc << EOF
+do
+re
+mi
+EOF
+
+wc <<< "do re mi" Issue here
+foo 3> /tmp/bar.txt
+echo "$HOME"
+echo $HOME
+
+ls -la | cat -e | ls | echo "karim"
+
+cat -e << eol | cat -e
+

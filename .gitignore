@@ -1,0 +1,9 @@
+main.cc
+.DS_Store
+tags
+*.swp
+*.dSYM
+.*.dSYM
+*.o
+*~
+.*.swp

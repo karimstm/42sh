@@ -1,0 +1,55 @@
+srcs/*.c
+*/../*.c
+../*/*.c
+s?cs/*.c
+s??s/*.c
+s[r-s]cs/*.c
+
+
+
+/* ========================================== */
+../src*s/cur*.c
+/* consider we have to folder here that match the pattern */
+srcs/
+srcis/
+
+/* ====================================== */
+
+suppose whe get the list of two folders;
+then whe loop through each one of them.
+
+
+srcs
+  check if it is a folder;
+  get anything starts with "cur"
+  get anything ends with ".c"
+
+
+srcis
+  check if it a folder;
+  get anything starts with "cur"
+  get anything ends with ".c"
+
+phpfolderp
+../ph*older*p/*
+
+lib/li?ft
+
+match (string == lib/li) && match (string_end == ft); and len
+
+
+/User/amoutik/Desktop/file
+/ * Get the basename of the path */ :file
+/ * Get the dirname of the path */  : /Users/amoutik/Desktop
+
+docs/src/mar*/*.md
+[
+'docs/src/markdown/changelog.md',
+'docs/src/markdown/fnmatch.md',
+'docs/src/markdown/glob.md',
+'docs/src/markdown/index.md',
+'docs/src/markdown/installation.md',
+'docs/src/markdown/license.md'
+]
+
+
