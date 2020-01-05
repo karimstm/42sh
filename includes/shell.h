@@ -220,4 +220,10 @@ struct termios			*get_termios(void);
 int						init_termios(struct termios term);
 int						init_terms(void);
 
+/*
+**	exec.c
+*/
+
+int						execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2]);
+
 #endif

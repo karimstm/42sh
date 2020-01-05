@@ -39,7 +39,7 @@ void		test_alias()
 	printf("=================\n");
 	ft_unalias(unalias2, list);
 	ft_unalias(unalias3, list);
-	printf("=================\n");
+	printf("=========^^ ========\n");
 	ft_alias(NULL, list);
 }
 

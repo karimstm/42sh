@@ -53,7 +53,7 @@ static int		search_semi(t_list *blt, t_list **env, t_token_list *tokens)
 **  free_strtab    : frees all strings (char**) returned by ft_strsplit_ws.
 */
 
-static void		run_shell(t_list *blt, t_line *line)
+void		run_shell(t_list *blt, t_line *line)
 {
 	t_token_list	*tokens;
 	t_token			*head;
@@ -67,7 +67,7 @@ static void		run_shell(t_list *blt, t_line *line)
 				break;
 			m_add_history(line);
 			if (parse_heredoc(tokens) != 0 && free_token_list(tokens))
-				continue;	
+				continue;
 			head = tokens->head;
 			shell(blt, &(line->env), tokens);
 			search_semi(blt, &(line->env), tokens);
@@ -82,6 +82,9 @@ static void		run_shell(t_list *blt, t_line *line)
 	free_line();
 }
 
+/*
+** tmporary fix, it should be removed later on if it's not working ==========
+*/
 static t_node	*start_parsing_command(const char *line)
 {
 	t_node *node;
@@ -92,25 +95,20 @@ static t_node	*start_parsing_command(const char *line)
 	return (node);
 }
 
+
 void		run_shell2(t_list *blt, t_line *line)
 {
-	t_token_list	*tokens = NULL;
-	t_token			*head = NULL;
 	t_node			*node = NULL;
+	int				std[2];
 
+	std[0] = 0;
+	std[1] = 1;
 	while (read_line(line) == 0)
 	{
-		while (1)
-		{
-			if (ft_str_isnull(line->command) ||
-				(node = start_parsing_command(line->command)) == NULL)
-				break;
-			m_add_history(line);
-			shell(blt, &(line->env), tokens);
-			search_semi(blt, &(line->env), tokens);
-			tokens->head = head;
+		if (ft_str_isnull(line->command) ||
+			(node = start_parsing_command(line->command)) == NULL)
 			break;
-		}
+		execute_cmd(node, blt, line, std);
 		free_line();
 		line = init_line();
 	}
@@ -145,7 +143,7 @@ int				main(int ac, char **av, char **ev)
 	new_line->tail_history = &history;
 	new_line->env = env;
 	new_line->copy = NULL;
-	run_shell(blt, new_line);
+	run_shell2(blt, new_line);
 	free(new_line->copy);
 	free_gnl(0);
 	free_env(env);

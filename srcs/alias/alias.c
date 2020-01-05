@@ -86,6 +86,8 @@ void			alias_insert(t_alias_list *list, char *args)
 			current->value = alias[1];
 			free(tmp);
 			tmp = NULL;
+			free(alias[0]);
+			free(alias);
 			return ;
 		}
 		current = current->next;
@@ -283,7 +285,7 @@ void			ft_unalias(char **args, t_alias_list *list)
 	i = 0;
 	if (args == NULL)
 		print_usage();
-	else
+	else if (list)
 	{
 		if (!check_option(args))
 			aliase_prune(list);

@@ -72,7 +72,7 @@ void    escape_space()
 
 /*
 ** This function will make sure let you know if you've some uncomplete command
-*/ 
+*/
 int     get_new_line()
 {
     char *tmp;
@@ -347,7 +347,7 @@ void         next_token()
     } else
     {
         g_token.kind = TOKEN_EOF;
-    }  
+    }
     g_token.end = g_line;
 }
 
@@ -392,7 +392,7 @@ int match_token_test(t_token_kind kind)
         next_token();
     if (is_token(kind))
     {
-        next_token();        
+        next_token();
         return (1);
     } else {
         return (0);
@@ -461,7 +461,6 @@ void    test_lex()
     assert_token_word("\"()\"");
     assert_token_eof();
 }
-
 
 
 /*
