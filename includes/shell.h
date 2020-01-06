@@ -17,6 +17,7 @@
 # include "quote.h"
 # include "redirection.h"
 # include "ast.h"
+# include "stack.h"
 # include "parse.h"
 # include "lex.h"
 # include <dirent.h>
@@ -225,5 +226,5 @@ int						init_terms(void);
 */
 
 int						execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2]);
-
+char					**node_to_char(t_list_simple_command *command);
 #endif

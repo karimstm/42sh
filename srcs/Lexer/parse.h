@@ -3,6 +3,8 @@
 
 void            test_parse();
 t_node          *parse_commands();
+t_node			*parse_and_or();
+t_node			*parse_pipe_and();
 t_redirection   *here_doc(t_token_kind kind);
 t_redirection   *input_redirection(t_token_kind kind);
 t_redirection   *output_aggregate();

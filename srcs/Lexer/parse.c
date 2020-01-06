@@ -145,23 +145,6 @@ t_node *init_parse_initial()
 
 
 
-t_node *parse_and_or()
-{
-    t_node *node = init_parse_initial();
-    t_node *second_node = node;
-    t_and_or *and_or_cmd;
-    t_token_kind kind;
-    while (g_token.kind == TOKEN_AND_IF || g_token.kind == TOKEN_OR_IF)
-    {
-        kind = g_token.kind;
-        escape_space();
-        and_or_cmd = and_or_commands(kind, second_node, init_parse_initial());
-        second_node = command_node(NODE_AND_OR);
-        second_node->and_or_command = and_or_cmd;
-    }
-    return (second_node);
-}
-
 t_node          *parse_sep_cmd(t_token_kind kind, t_node *left)
 {
     t_sep_op *sep_cmd = NULL;
@@ -191,9 +174,26 @@ t_node *parse_pipe(t_token_kind kind, t_node *left)
     return (second_node);
 }
 
+t_node *parse_and_or()
+{
+    t_node *node = parse_pipe_and();
+    t_node *second_node = node;
+    t_and_or *and_or_cmd;
+    t_token_kind kind;
+    while (g_token.kind == TOKEN_AND_IF || g_token.kind == TOKEN_OR_IF)
+    {
+        kind = g_token.kind;
+        escape_space();
+        and_or_cmd = and_or_commands(kind, second_node, parse_pipe_and());
+        second_node = command_node(NODE_AND_OR);
+        second_node->and_or_command = and_or_cmd;
+    }
+    return (second_node);
+}
+
 t_node *parse_pipe_and()
 {
-    t_node *node = parse_and_or();
+    t_node *node = init_parse_initial();
     if (g_token.kind == '|')
         return parse_pipe(g_token.kind, node);
     return (node);
@@ -201,7 +201,7 @@ t_node *parse_pipe_and()
 
 t_node *parse_commands()
 {
-    t_node *node = parse_pipe_and();
+    t_node *node = parse_and_or();
     if (g_token.kind == ';' || g_token.kind == '&')
         return parse_sep_cmd(g_token.kind, node);
     return (node);
@@ -250,14 +250,17 @@ void    test_parse()
 
     const char *tests[] = {
         "1 >file something 2>&1",
+		"ls -la | cat -e | grep sh",
         "echo 1 ; (2 && (ls -la; echo amine)) || (3 && (ls && (echo karim || echo ahmed)))",
         "(ls -la; echo karim) > file ",
         "ls -la | {cat -e; ls -la} >file",
         "(ls -la; echo karim) | cat -e",
         "{ls -la | ls -la } > file",
         "echo $name",
-        "echo $(ls -la && echo $(ls -la))karim ls -la",
-        "echo ${name}"
+        "echo $(ls -la && echo $(ls -la ')' \")\"))karim ls -la",
+        "echo ${name}",
+        "echo $(ls -la)",
+		"ls -la && echo karim | cat -e",
     };
     for (const char **it = tests; it != tests + sizeof(tests)/sizeof(*tests); it++) {
         init_stream(*it);
