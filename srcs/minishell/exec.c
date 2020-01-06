@@ -80,8 +80,6 @@ int        execute_shell(t_list *blt, t_list *env, t_node *node, int std[2])
 		return(0) ;
 	if (ft_strcmp(current->name, "exit") == 0)
 		exit(0);
-	else if (ft_strchr(current->name, '/') != NULL)
-		exec_local(node, env, std);
 	if ((path = working_path(env, current->name)) == NULL)
 		return(127);
 	cmds = node_to_char(node->simple_command);
