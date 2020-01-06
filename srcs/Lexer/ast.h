@@ -33,7 +33,7 @@ typedef enum e_token_kind {
     TOKEN_WORD_SQOUTED,
     TOKEN_ASSIGNMENT_WORD,
     TOKEN_NAME,
-    TOKEN_NEWLINE,    
+    TOKEN_NEWLINE,
     TOKEN_AND_IF,
     TOKEN_OR_IF,
     TOKEN_DSEMI,
@@ -76,7 +76,7 @@ typedef struct       s_compound_cmd {
         t_command               *cmd;
         t_node                  *node;
     };
-    
+
 }                   t_compound_cmd;
 
 
@@ -122,7 +122,7 @@ struct s_command
         // | Looping Constructs
         // | Conditional Constructs
     };
-    
+
 };
 
 /*
@@ -137,6 +137,8 @@ typedef struct s_redirection
     char                    *word;
     char                    *herdoc;
     struct s_redirection    *next;
+    struct s_redirection    *prev;
+
 }               t_redirection;
 
 

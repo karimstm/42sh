@@ -93,10 +93,87 @@ int 		check_next_pipe(t_node *node)
 	return (0);
 }
 
+t_node		*pipe_execution(t_node *node, t_list *blt, t_line *line, int std[2])
+{
+	int pp[2];
+
+	if (node)
+	{
+		if (node->kind == NODE_PIPE)
+		{
+			if (node->and_or_command->left)
+			{
+				pipe_execution(node->and_or_command->left, blt, line, std);
+			}
+			if (node->and_or_command->right)
+			{
+				pipe_execution(node->and_or_command->right, blt, line, std);
+			}
+		} else if (node->kind == NODE_SIMPLE_COMMAND)
+		{
+			dprintf(2, "====%s=== and stdin %d stdout %d\n", node->simple_command->head->name, std[0], std[1]);
+			execute_shell(blt, line->env, node, std);
+		}
+	}
+	return (node);
+}
+
+int		pipe_count(t_node *node, int *count)
+{
+	if (node)
+	{
+		if (node->kind == NODE_PIPE)
+		{
+			(*count)++;
+			if (node->and_or_command->left)
+			{
+				pipe_count(node->and_or_command->left, count);
+			}
+			if (node->and_or_command->right)
+			{
+				pipe_count(node->and_or_command->right, count);
+			}
+		}
+	}
+	return (*count);
+}
+
+t_redirection		*pipe_creation(int count)
+{
+	int i;
+	t_redirection *pipe_head;
+	t_redirection *tmp;
+
+	i = 0;
+	pipe_head = NULL;
+	tmp = new_redir(0, 1, 'P');
+	tmp->next = pipe_head;
+	pipe_head = tmp;
+	while (i < count)
+	{
+		int pp[2];
+		pipe(pp);
+		tmp = new_redir(pp[0], pp[1], 'P');
+		tmp->next = pipe_head;
+		pipe_head = tmp;
+		i++;
+	}
+	return (pipe_head);
+}
+
+void		print_pipes(t_redirection *head)
+{
+	t_redirection *current = head;
+	while (current)
+	{
+		dprintf(2, "pipe %d %d\n", current->fd1, current->fd2);
+		current = current->next;
+	}
+}
+
 int			execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2])
 {
 	int status;
-	int pp[2];
 	int flag;
 
 	status = 0;
@@ -121,27 +198,19 @@ int			execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2])
 		}
 		else if (node->kind == NODE_PIPE)
 		{
-			printf("==== %d %d\n", std[0], std[1]);
-			if (node->and_or_command->left)
-			{
-				pipe(pp);
-				std[1] = pp[1];
-				status = execute_cmd(node->and_or_command->left, blt, line, std);
-				close(std[1]);
-			}
-			if (node->and_or_command->right)
-			{
-				std[0] = pp[0];
-				std[1] = 1;
-				if (check_next_pipe(node->and_or_command->left) && pipe(pp) != -1)
-					std[1] = pp[1];
-				status = execute_cmd(node->and_or_command->right, blt, line, std);
-				close(std[0]);
-			}
+			int count = 0;
+			pipe_count(node, &count);
+			t_redirection *pipes = pipe_creation(count);
+			print_pipes(pipes);
+			//print_pipes(reverse_redirection(pipes));
+			dprintf(2, "pipe count is %d\n", count);
+			dprintf(2, "==== %d %d\n", std[0], std[1]);
+			node = pipe_execution(node, blt, line, std);
+
 		}
 		else if (node->kind == NODE_SIMPLE_COMMAND)
 		{
-			dprintf(2, "====%s=== and stdin %d stdout %d\n", node->simple_command->head->name, std[0], std[1]);
+			// dprintf(2, "====%s=== and stdin %d stdout %d\n", node->simple_command->head->name, std[0], std[1]);
 			status = execute_shell(blt, line->env, node, std);
 		}
 	}
