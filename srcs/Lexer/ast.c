@@ -14,6 +14,7 @@ t_node *command_node(t_token_node kind)
 {
     t_node *node = (t_node *)xmalloc(sizeof(t_node));
     node->kind = kind;
+    node->redir = NULL;
     return (node);
 }
 
@@ -54,7 +55,7 @@ void    token_push(t_list_simple_command *list, char *token_str, t_token_kind ki
     token->next = NULL;
     if (list->node_count == 0 || list->head == NULL)
         list->head = token;
-    else 
+    else
         list->tail->next = token;
     list->tail = token;
     list->node_count++;
@@ -167,7 +168,7 @@ t_redirection *reverse_redirection(t_redirection *list)
     {
         next = current->next;
         current->next = prev;
-        prev = current; 
+        prev = current;
         current = next;
     }
     return (prev);

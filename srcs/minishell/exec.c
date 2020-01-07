@@ -59,11 +59,7 @@ int			my_fork(char *path, t_list *env, char **cmds, int std[2])
 	if (child > 0)
 		waitpid(child, &status, 0);
 	else if (child == 0)
-	{
-		dup2(std[0], 0);
-		dup2(std[1], 1);
 		execve(path, cmds, env_tab);
-	}
 	return (status);
 }
 
@@ -79,7 +75,10 @@ int        execute_shell(t_list *blt, t_list *env, t_node *node, int std[2])
 	if (current == NULL)
 		return(0) ;
 	if (ft_strcmp(current->name, "exit") == 0)
+	{
+		ft_printf_fd(2, "exiting...\n");
 		exit(0);
+	}
 	if ((path = working_path(env, current->name)) == NULL)
 		return(127);
 	cmds = node_to_char(node->simple_command);
@@ -103,58 +102,109 @@ t_node		*pipe_to_stack(t_node *node, t_stack *stack)
 	return (node);
 }
 
+void		set_fds(int tmp_stds[3])
+{
+	tmp_stds[0] = dup(0);
+	tmp_stds[1] = dup(1);
+	tmp_stds[2] = dup(2);
+}
+
 int			pipe_stack_execute(t_stack *stack, t_list *blt, t_line *line, int std[2])
 {
 	int		status;
 	int		pp[2];
 	t_node 	*poped;
+	int		tmp[3];
 
 	std[0] = 0;
 	std[1] = 1;
 	status = 0;
 	reverse_stack(stack);
+	set_fds(tmp);
 	poped = pop_stack(stack);
 	while (!is_underflow(stack))
 	{
 		pipe(pp);
-		std[1] = pp[1];
+		dup2(pp[1], 1);
 		status = execute_cmd(poped, blt, line, std);
 		close(pp[1]);
-		std[0] = pp[0];
+		dup2(pp[0], 0);
 		poped = pop_stack(stack);
 	}
-	std[1] = 1;
+	dup2(tmp[1], 1);
 	if (poped)
 		status = execute_cmd(poped, blt, line, std);
-	std[0] = 0;
+	restore_std(tmp);
 	return (status);
+}
+
+int			handle_sep(t_node *node, t_list *blt, t_line *line, int std[2])
+{
+	int status;
+
+	status = 0;
+	if (node->sep_op_command->left)
+		status = execute_cmd(node->sep_op_command->left, blt, line, std);
+	if (node->sep_op_command->right)
+        status = execute_cmd(node->sep_op_command->right, blt, line, std);
+	return (status);
+}
+
+int			handle_condition(t_node *node, t_list *blt, t_line *line, int std[2])
+{
+	int status;
+
+	status = 0;
+	if (node->and_or_command->left)
+		status = execute_cmd(node->and_or_command->left, blt, line, std);
+	if (node->and_or_command->right
+		&& ((status == 0 && node->and_or_command->kind == TOKEN_AND_IF)
+		|| (status && node->and_or_command->kind == TOKEN_OR_IF)))
+		status = execute_cmd(node->and_or_command->right, blt, line, std);
+	return (status);
+}
+
+void	execute_redirection(t_redirection *list)
+{
+	t_redirection	*current;
+
+	current = list;
+	while (current)
+	{
+		if (current->kind == '>')
+			output(current);
+		else if (current->kind == TOKEN_DGREAT)
+			output_append(current);
+		else if (current->kind == TOKEN_GREATAND)
+			output_with_aggregate(current);
+		else if (current->kind == TOKEN_DGREATAND)
+			output_with_aggregate_append(current);
+		else if (current->kind == '<')
+			input(current);
+		else if (current->kind == TOKEN_DLESS)
+			input_here_doc(current);
+		current = current->next;
+	}
 }
 
 int			execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2])
 {
 	int status;
-	int flag;
+	int	tmp_stds[3];
 
 	status = 0;
-	flag = 0;
 	if (node)
 	{
+		if (node->redir)
+		{
+			set_fds(tmp_stds);
+			execute_redirection(reverse_redirection(node->redir));
+
+		}
 		if (node->kind == NODE_SEMI_AND)
-		{
-			if (node->sep_op_command->left)
-				status = execute_cmd(node->sep_op_command->left, blt, line, std);
-			if (node->sep_op_command->right)
-                status = execute_cmd(node->sep_op_command->right, blt, line, std);
-		}
+			status = handle_condition(node, blt, line, std);
 		else if (node->kind == NODE_AND_OR)
-		{
-			if (node->and_or_command->left)
-                status = execute_cmd(node->and_or_command->left, blt, line, std);
-            if (node->and_or_command->right
-				&& ((status == 0 && node->and_or_command->kind == TOKEN_AND_IF)
-				|| (status && node->and_or_command->kind == TOKEN_OR_IF)))
-                status = execute_cmd(node->and_or_command->right, blt, line, std);
-		}
+			status = handle_condition(node, blt, line, std);
 		else if (node->kind == NODE_PIPE)
 		{
 			t_stack stack;
@@ -166,6 +216,8 @@ int			execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2])
 		}
 		else if (node->kind == NODE_SIMPLE_COMMAND)
 			status = execute_shell(blt, line->env, node, std);
+		if (node->redir)
+			restore_std(tmp_stds);
 	}
 	return (status);
 }

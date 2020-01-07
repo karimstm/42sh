@@ -107,7 +107,11 @@ void		run_shell2(t_list *blt, t_line *line)
 	{
 		if (ft_str_isnull(line->command) ||
 			(node = start_parsing_command(line->command)) == NULL)
-			break;
+		{
+			free_line();
+			line = init_line();
+			continue;
+		}
 		execute_cmd(node, blt, line, std);
 		free_line();
 		line = init_line();

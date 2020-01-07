@@ -1,5 +1,16 @@
 #include "ast.h"
 #include "libft.h"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+
+static int  my_random()
+{
+    static int l = 12;
+    return (++l);
+}
 
 int     open_tmp(char *pathname)
 {
@@ -7,33 +18,27 @@ int     open_tmp(char *pathname)
     char *path;
 
     path = ft_strjoin("/tmp/", pathname);
-    printf("%s\n", path);
-    fd = open(path, O_RDWR, 0644);
+    fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
     ft_strdel(&path);
     return (fd);
 }
 
-int    ft_tmpfile()
+char    *ft_tmpfile()
 {
     int fd;
-    int rd;
-    char buf[50];
+    int buf;
     char *pathname;
-    char *tmp;
-    
-    fd = open("/usr/bin/uuidgen", O_RDWR);
+
+    fd = open("/dev/random", O_RDONLY);
+    buf = my_random();
     pathname = NULL;
     if (fd >= 0)
     {
-        while ((rd = read(fd, &buf, 20)))
-        {
-            buf[rd] = 0;
-            tmp = pathname;
-            pathname = ft_strjoin(pathname, buf);
-            ft_strdel(&tmp);
-        }
+        read(fd, &buf, sizeof(int));
+        close(fd);
     }
-    fd = open_tmp(pathname);
-    ft_strdel(&pathname);
-    return (fd);
+    if (buf < 0)
+        buf *= -1;
+    pathname = ft_itoa(buf);
+    return (pathname);
 }

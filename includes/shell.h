@@ -31,6 +31,7 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
+#include <sys/random.h>
 
 # define BUF_S 1000
 
@@ -227,4 +228,16 @@ int						init_terms(void);
 
 int						execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2]);
 char					**node_to_char(t_list_simple_command *command);
+
+/*
+**	redir.c
+*/
+
+void					output(t_redirection *redir);
+void					output_append(t_redirection *redir);
+void					output_with_aggregate(t_redirection *redir);
+void					output_with_aggregate_append(t_redirection *redir);
+void					input(t_redirection *redir);
+void					input_here_doc(t_redirection *redir);
+
 #endif
