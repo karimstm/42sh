@@ -6,11 +6,11 @@ void			restore_fds(int std[2])
 	dup2(std[1], 1);
 }
 
-char        **node_to_char(t_list_simple_command *command)
+char			**node_to_char(t_list_simple_command *command)
 {
 	char				**cmds;
-    int					i;
-    t_simple_command	*current;
+	int					i;
+	t_simple_command	*current;
 
 	current = (command && command->head) ? command->head : NULL;
 	if (current == NULL)
@@ -19,15 +19,14 @@ char        **node_to_char(t_list_simple_command *command)
 	i = 0;
 	while (current)
 	{
-		cmds[i++] = current->name;
+		cmds[i++] = ft_strdup(current->name);
 		current = current->next;
 	}
 	cmds[i] = NULL;
 	return (cmds);
 }
 
-
-char		*working_path(t_list *env, char *cmd)
+char			*working_path(t_list *env, char *cmd)
 {
 	char	**all_paths;
 	char	**tmp;
@@ -35,19 +34,24 @@ char		*working_path(t_list *env, char *cmd)
 
 	all_paths = get_path(env);
 	tmp = all_paths;
+	full_path = NULL;
 	while (*tmp)
 	{
 		full_path = ft_strjoin_pre(*tmp, "/", cmd);
 		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
-			return (full_path);
-		else if (access(full_path, F_OK) == 0)
-			ft_printf_fd(1, "%s: Permission denied.\n"); // needs more check later on
+			break ;
+		else if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == -1)
+			syntax_error("%s: Permission denied.", cmd); // needs more check later on
+		ft_strdel(&full_path);
 		tmp++;
 	}
-	return (NULL);
+	if (full_path == NULL)
+		syntax_error("%s: Command not found", cmd);
+	ft_free_strtab(all_paths);
+	return (full_path);
 }
 
-int			my_fork(char *path, t_list *env, char **cmds, int std[2])
+int				my_fork(char *path, t_list *env, char **cmds)
 {
 	pid_t		child;
 	char		**env_tab;
@@ -57,20 +61,52 @@ int			my_fork(char *path, t_list *env, char **cmds, int std[2])
 	env_tab = env_to_tab(env);
 	child = fork();
 	if (child > 0)
+	{
 		waitpid(child, &status, 0);
+		ft_free_strtab(env_tab);
+	}
 	else if (child == 0)
 		execve(path, cmds, env_tab);
 	return (status);
 }
 
-
-int        execute_shell(t_list *blt, t_list *env, t_node *node, int std[2])
+int				exec_builin(t_list *env, t_list *blt, t_node *node)
 {
-	t_simple_command *current;
-	char			*path;
-	char			**cmds;
+	char		**cmds;
 
-	(void)blt;
+	cmds = NULL;
+	if(blt && (*(cmds = node_to_char(node->simple_command)) != NULL))
+	{
+		((t_builtin*)blt->content)->f(cmds + 1, &env);
+		ft_free_strtab(cmds);
+	}
+	return (0);
+}
+
+int				exec_localy(t_list *env, t_list_simple_command *node)
+{
+	char	**cmds;
+	int		status;
+
+	status = 0;
+	cmds = NULL;
+	if (check_file_status(node->head->name) == 0)
+	{
+		cmds = node_to_char(node);
+		status = my_fork(cmds[0], env, cmds);
+		ft_free_strtab(cmds);
+	}
+	return (status);
+}
+
+int				execute_shell(t_list *blt, t_list *env, t_node *node)
+{
+	t_simple_command	*current;
+	char				*path;
+	char				**cmds;
+	t_list				*bltin;
+	int					status;
+
 	current = (node && node->simple_command) ? node->simple_command->head : NULL;
 	if (current == NULL)
 		return(0) ;
@@ -79,14 +115,24 @@ int        execute_shell(t_list *blt, t_list *env, t_node *node, int std[2])
 		ft_printf_fd(2, "exiting...\n");
 		exit(0);
 	}
-	if ((path = working_path(env, current->name)) == NULL)
+	if (ft_strchr(current->name, '/'))
+		return exec_localy(env, node->simple_command);
+	if ((bltin = ft_lstsearch(blt, current->name, &check_builtin)) != NULL)
+		return exec_builin(env, bltin, node);
+	else if ((path = working_path(env, current->name)) == NULL)
 		return(127);
-	cmds = node_to_char(node->simple_command);
-	return (my_fork(path, env, cmds, std));
+	else
+	{
+		cmds = node_to_char(node->simple_command);
+		status = my_fork(path, env, cmds);
+		ft_strdel(&path);
+		ft_free_strtab(cmds);
+		return (status);
+	}
 }
 
 
-t_node		*pipe_to_stack(t_node *node, t_stack *stack)
+t_node			*pipe_to_stack(t_node *node, t_stack *stack)
 {
 	if (node)
 	{
@@ -102,22 +148,20 @@ t_node		*pipe_to_stack(t_node *node, t_stack *stack)
 	return (node);
 }
 
-void		set_fds(int tmp_stds[3])
+void			set_fds(int tmp_stds[3])
 {
 	tmp_stds[0] = dup(0);
 	tmp_stds[1] = dup(1);
 	tmp_stds[2] = dup(2);
 }
 
-int			pipe_stack_execute(t_stack *stack, t_list *blt, t_line *line, int std[2])
+int				pipe_stack_execute(t_stack *stack, t_list *blt, t_line *line)
 {
 	int		status;
 	int		pp[2];
 	t_node 	*poped;
 	int		tmp[3];
 
-	std[0] = 0;
-	std[1] = 1;
 	status = 0;
 	reverse_stack(stack);
 	set_fds(tmp);
@@ -126,52 +170,52 @@ int			pipe_stack_execute(t_stack *stack, t_list *blt, t_line *line, int std[2])
 	{
 		pipe(pp);
 		dup2(pp[1], 1);
-		status = execute_cmd(poped, blt, line, std);
+		status = execute_cmd(poped, blt, line);
 		close(pp[1]);
 		dup2(pp[0], 0);
 		poped = pop_stack(stack);
 	}
 	dup2(tmp[1], 1);
 	if (poped)
-		status = execute_cmd(poped, blt, line, std);
+		status = execute_cmd(poped, blt, line);
 	restore_std(tmp);
 	return (status);
 }
 
-int			handle_sep(t_node *node, t_list *blt, t_line *line, int std[2])
+int				handle_sep(t_node *node, t_list *blt, t_line *line)
 {
 	int status;
 
 	status = 0;
 	if (node->sep_op_command->left)
-		status = execute_cmd(node->sep_op_command->left, blt, line, std);
+		status = execute_cmd(node->sep_op_command->left, blt, line);
 	if (node->sep_op_command->right)
-        status = execute_cmd(node->sep_op_command->right, blt, line, std);
+        status = execute_cmd(node->sep_op_command->right, blt, line);
 	return (status);
 }
 
-int			handle_condition(t_node *node, t_list *blt, t_line *line, int std[2])
+int				handle_condition(t_node *node, t_list *blt, t_line *line)
 {
 	int status;
 
 	status = 0;
 	if (node->and_or_command->left)
-		status = execute_cmd(node->and_or_command->left, blt, line, std);
+		status = execute_cmd(node->and_or_command->left, blt, line);
 	if (node->and_or_command->right
 		&& ((status == 0 && node->and_or_command->kind == TOKEN_AND_IF)
 		|| (status && node->and_or_command->kind == TOKEN_OR_IF)))
-		status = execute_cmd(node->and_or_command->right, blt, line, std);
+		status = execute_cmd(node->and_or_command->right, blt, line);
 	return (status);
 }
 
-void	execute_redirection(t_redirection *list)
+void			execute_redirection(t_redirection *list)
 {
 	t_redirection	*current;
 
 	current = list;
 	while (current)
 	{
-		if (current->kind == '>')
+		if (current->kind == '>' || current->kind == TOKEN_CLOBBER)
 			output(current);
 		else if (current->kind == TOKEN_DGREAT)
 			output_append(current);
@@ -183,14 +227,30 @@ void	execute_redirection(t_redirection *list)
 			input(current);
 		else if (current->kind == TOKEN_DLESS)
 			input_here_doc(current);
+		else if (current->kind == TOKEN_LESSAND)
+			input_with_aggregate(current);
+		else if (current->kind == TOKEN_LESSGREAT)
+			input_output(current);
 		current = current->next;
 	}
 }
 
-int			execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2])
+int				initial_pipe(t_node *node, t_list *blt, t_line *line)
 {
-	int status;
-	int	tmp_stds[3];
+	t_stack stack;
+	int		status;
+
+	status = 0;
+	init_stack(&stack, 100);
+	node = pipe_to_stack(node, &stack);
+	status = pipe_stack_execute(&stack, blt, line);
+	free(stack.lists);
+	return (status);
+}
+int				execute_cmd(t_node *node, t_list *blt, t_line *line)
+{
+	int				status;
+	int				tmp_stds[3];
 
 	status = 0;
 	if (node)
@@ -198,26 +258,27 @@ int			execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2])
 		if (node->redir)
 		{
 			set_fds(tmp_stds);
-			execute_redirection(reverse_redirection(node->redir));
-
+			execute_redirection((node->redir = reverse_redirection(node->redir)));
+			if ((status = *error_num()))
+			{
+				restore_std(tmp_stds);
+				reset_error_num();
+				return (status);
+			}
 		}
 		if (node->kind == NODE_SEMI_AND)
-			status = handle_condition(node, blt, line, std);
+			status = handle_sep(node, blt, line);
 		else if (node->kind == NODE_AND_OR)
-			status = handle_condition(node, blt, line, std);
+			status = handle_condition(node, blt, line);
 		else if (node->kind == NODE_PIPE)
-		{
-			t_stack stack;
-
-			init_stack(&stack, 100);
-			node = pipe_to_stack(node, &stack);
-			status = pipe_stack_execute(&stack, blt, line, std);
-			free(stack.lists);
-		}
+			initial_pipe(node, blt, line);
 		else if (node->kind == NODE_SIMPLE_COMMAND)
-			status = execute_shell(blt, line->env, node, std);
+			status = execute_shell(blt, line->env, node);
 		if (node->redir)
+		{
+			free_redir(&node->redir);
 			restore_std(tmp_stds);
+		}
 	}
 	return (status);
 }

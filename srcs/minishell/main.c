@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/02 10:11:58 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/10 16:48:31 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,10 @@ static t_node	*start_parsing_command(const char *line)
 	node = NULL;
 	init_stream(line);
 	node = parse_commands();
+	if (g_token.kind != TOKEN_EOF)
+		syntax_error("42sh: parse error near `%s'", token_name(g_token.kind));
+	else if (*error_num())
+		free_tree(&node);
 	return (node);
 }
 
@@ -99,20 +103,23 @@ static t_node	*start_parsing_command(const char *line)
 void		run_shell2(t_list *blt, t_line *line)
 {
 	t_node			*node = NULL;
-	int				std[2];
+	char			*new_line;
 
-	std[0] = 0;
-	std[1] = 1;
 	while (read_line(line) == 0)
 	{
-		if (ft_str_isnull(line->command) ||
-			(node = start_parsing_command(line->command)) == NULL)
+		reset_error_num();
+		new_line = ft_strdup(line->command);
+		if (ft_str_isnull(new_line) ||
+			(node = start_parsing_command(new_line)) == NULL)
 		{
+			ft_strdel(&new_line);
 			free_line();
 			line = init_line();
 			continue;
 		}
-		execute_cmd(node, blt, line, std);
+		execute_cmd(node, blt, line);
+		ft_strdel(&new_line);
+		free_tree(&node);
 		free_line();
 		line = init_line();
 	}

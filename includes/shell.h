@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/02 10:15:33 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/10 17:48:30 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void					restore_std(int std[3]);
 **	shell.c
 */
 void					shell(t_list *blt, t_list **env, t_token_list *tokens);
+int						is_directory(const char *path);
 
 /*
 ** fork.c
@@ -226,7 +227,7 @@ int						init_terms(void);
 **	exec.c
 */
 
-int						execute_cmd(t_node *node, t_list *blt, t_line *line, int std[2]);
+int						execute_cmd(t_node *node, t_list *blt, t_line *line);
 char					**node_to_char(t_list_simple_command *command);
 
 /*
@@ -239,5 +240,8 @@ void					output_with_aggregate(t_redirection *redir);
 void					output_with_aggregate_append(t_redirection *redir);
 void					input(t_redirection *redir);
 void					input_here_doc(t_redirection *redir);
+void					input_with_aggregate(t_redirection *redir);
+void					input_output(t_redirection *redir);
+int						check_file_status(char *filename);
 
 #endif

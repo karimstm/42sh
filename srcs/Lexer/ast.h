@@ -193,6 +193,8 @@ void                    init_list_simple_command(t_list_simple_command *list);
 void                    token_push(t_list_simple_command *list, char *token_str, t_token_kind kind);
 t_list_simple_command   *merge_list(t_list_simple_command *left, t_list_simple_command *right);
 void                    free_list(t_list_simple_command *list);
+void					free_tree(t_node **node);
+void					free_redir(t_redirection **redir);
 t_node                  *command_node(t_token_node kind);
 t_compound_cmd          *compound_cmd(t_compound_kind kind);
 t_command               *command(t_cmd_kind kind);

@@ -6,7 +6,7 @@
 typedef struct s_tokens
 {
     t_token_kind kind;
-    char *line;
+    const char *line;
     const char *start;
     const char *end;
     union
@@ -31,5 +31,7 @@ void		next_token();
 int			is_token(t_token_kind kind);
 void		escape_space();
 void		syntax_error(const char *fmt, ...);
+int			*error_num(void);
+void		reset_error_num(void);
 
 #endif

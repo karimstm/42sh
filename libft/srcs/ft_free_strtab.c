@@ -21,7 +21,7 @@ void	ft_free_strtab(char **tab)
 	head = tab;
 	while (*tab)
 	{
-		free(*tab);
+		ft_strdel(&(*tab));
 		tab++;
 	}
 	free(head);

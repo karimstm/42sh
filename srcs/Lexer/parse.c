@@ -11,6 +11,7 @@ const char *token_name(t_token_kind kind)
         [TOKEN_OR_IF] = "||",
         [TOKEN_LBRACE] = "{",
         [TOKEN_RBRACE] = "}",
+        [TOKEN_DSEMI] = ";;",
         ['|'] = "|"
     };
     return token_kind_names[kind];
@@ -67,9 +68,10 @@ t_redirection       *parse_redirection()
     t_redirection *tmp;
 
     head = NULL;
+    tmp = NULL;
     while (redirect_name(g_token.kind))
     {
-        if (g_token.kind == '>')
+        if (g_token.kind == '>' || g_token.kind == TOKEN_CLOBBER)
             tmp = output_redirection(g_token.kind);
         else if (g_token.kind == TOKEN_DGREAT)
             tmp = output_redirection(TOKEN_DGREAT);
@@ -77,12 +79,19 @@ t_redirection       *parse_redirection()
             tmp = output_aggregate();
         else if (g_token.kind == '<')
             tmp = input_redirection(g_token.kind);
+        else if (g_token.kind == TOKEN_LESSAND)
+            tmp = input_aggregate(g_token.kind);
+        else if (g_token.kind == TOKEN_LESSGREAT)
+            tmp = lenss_great(g_token.kind);
         else if (g_token.kind == TOKEN_DLESS || g_token.kind == TOKEN_DLESSDASH)
             tmp = here_doc(TOKEN_DLESS);
         else if (g_token.kind == TOKEN_HERESTRING)
             tmp = here_string();
+        if (tmp == NULL)
+            return (head);
         tmp->next = head;
         head = tmp;
+        tmp = NULL;
         escape_space();
     }
     return (head);
@@ -111,12 +120,13 @@ t_node *init_parse_initial()
             list = merge_list(list, parse_word_cmd());
         else
         {
-            tmp = parse_redirection();
+            if((tmp = parse_redirection()) == NULL)
+                syntax_error("42sh: parse error near %s", g_line);
             tmp->next = redir;
             redir = tmp;
         }
     }
-    if (list && list->head)
+    if (redir != NULL || (list && list->head))
     {
         node = command_node(NODE_SIMPLE_COMMAND);
         node->simple_command = list;
@@ -164,9 +174,12 @@ t_node *parse_pipe(t_token_kind kind, t_node *left)
     while (g_token.kind == '|')
     {
         escape_space();
-        right = init_parse_initial();
-        if (!right)
+        if (g_token.kind == TOKEN_EOF)
+        {
             syntax_error("should fire up line continuation");
+            break ;
+        }
+        right = init_parse_initial();
         pipe = and_or_commands(kind, second_node, right);
         second_node = command_node(NODE_PIPE);
         second_node->and_or_command = pipe;
