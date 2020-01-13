@@ -51,22 +51,32 @@ char			*working_path(t_list *env, char *cmd)
 	return (full_path);
 }
 
-int				my_fork(char *path, t_list *env, char **cmds)
+int				my_fork(char *path, t_list *env, char **cmds, int background)
 {
 	pid_t		child;
 	char		**env_tab;
 	int			status;
 
 	status = 0;
+	ft_strdel(&cmds[0]);
+	cmds[0] = ft_strdup(path);
 	env_tab = env_to_tab(env);
 	child = fork();
 	if (child > 0)
 	{
-		waitpid(child, &status, 0);
+		if (isatty(STDOUT_FILENO))
+		{
+			waitpid(child, &status, 0);
+			tcsetpgrp(STDOUT_FILENO, getpid());
+		}else
+			waitpid(child, &status, WUNTRACED|WNOHANG);
 		ft_free_strtab(env_tab);
 	}
 	else if (child == 0)
-		execve(path, cmds, env_tab);
+	{
+		launch_process(cmds, getpgrp(), 0, 1, 2, 1, env_tab);
+	}
+	//execve(path, cmds, env_tab);
 	return (status);
 }
 
@@ -93,20 +103,19 @@ int				exec_localy(t_list *env, t_list_simple_command *node)
 	if (check_file_status(node->head->name) == 0)
 	{
 		cmds = node_to_char(node);
-		status = my_fork(cmds[0], env, cmds);
+		status = my_fork(cmds[0], env, cmds, 0);
 		ft_free_strtab(cmds);
 	}
 	return (status);
 }
 
-int				execute_shell(t_list *blt, t_list *env, t_node *node)
+int				execute_shell(t_list *blt, t_list *env, t_node *node, int background)
 {
 	t_simple_command	*current;
 	char				*path;
 	char				**cmds;
 	t_list				*bltin;
 	int					status;
-
 	current = (node && node->simple_command) ? node->simple_command->head : NULL;
 	if (current == NULL)
 		return(0) ;
@@ -124,7 +133,7 @@ int				execute_shell(t_list *blt, t_list *env, t_node *node)
 	else
 	{
 		cmds = node_to_char(node->simple_command);
-		status = my_fork(path, env, cmds);
+		status = my_fork(path, env, cmds, background);
 		ft_strdel(&path);
 		ft_free_strtab(cmds);
 		return (status);
@@ -155,30 +164,31 @@ void			set_fds(int tmp_stds[3])
 	tmp_stds[2] = dup(2);
 }
 
-int				pipe_stack_execute(t_stack *stack, t_list *blt, t_line *line)
+int				pipe_stack_execute(t_stack *stack, t_list *blt, t_line *line, int fd_out)
 {
 	int		status;
 	int		pp[2];
 	t_node 	*poped;
-	int		tmp[3];
 
+	ft_printf_fd(2, "Parent Group %lld\n", getpgrp());
 	status = 0;
 	reverse_stack(stack);
-	set_fds(tmp);
 	poped = pop_stack(stack);
 	while (!is_underflow(stack))
 	{
 		pipe(pp);
 		dup2(pp[1], 1);
-		status = execute_cmd(poped, blt, line);
 		close(pp[1]);
+		status = execute_cmd(poped, blt, line);
 		dup2(pp[0], 0);
 		poped = pop_stack(stack);
+		close(pp[0]);
 	}
-	dup2(tmp[1], 1);
+	dup2(fd_out, 1);
 	if (poped)
 		status = execute_cmd(poped, blt, line);
-	restore_std(tmp);
+	close(pp[0]);
+	close(pp[1]);
 	return (status);
 }
 
@@ -239,14 +249,18 @@ int				initial_pipe(t_node *node, t_list *blt, t_line *line)
 {
 	t_stack stack;
 	int		status;
+	int		tmp[3];
 
+	set_fds(tmp);
 	status = 0;
 	init_stack(&stack, 100);
 	node = pipe_to_stack(node, &stack);
-	status = pipe_stack_execute(&stack, blt, line);
+	status = pipe_stack_execute(&stack, blt, line, tmp[1]);
+	restore_std(tmp);
 	free(stack.lists);
 	return (status);
 }
+
 int				execute_cmd(t_node *node, t_list *blt, t_line *line)
 {
 	int				status;
@@ -273,7 +287,9 @@ int				execute_cmd(t_node *node, t_list *blt, t_line *line)
 		else if (node->kind == NODE_PIPE)
 			initial_pipe(node, blt, line);
 		else if (node->kind == NODE_SIMPLE_COMMAND)
-			status = execute_shell(blt, line->env, node);
+		{
+			status = execute_shell(blt, line->env, node, 1);
+		}
 		if (node->redir)
 		{
 			free_redir(&node->redir);

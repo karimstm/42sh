@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/10 17:48:30 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/11 15:21:17 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
 # include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
-#include <sys/random.h>
+# include <sys/random.h>
+# include "jobs.h"
 
 # define BUF_S 1000
 
@@ -186,6 +187,7 @@ void					go_down_left(void);
 /*
 **	handlers.c
 */
+void					sig_handler(int sig);
 void					child_handler(int sig);
 void					signals(void);
 void					exit_shell(char *format, ...);

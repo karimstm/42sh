@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/10 16:48:31 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/13 14:44:33 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ int				main(int ac, char **av, char **ev)
 	history = NULL;
 	init_env(&env, ev);
 	init_builtin(&blt);
-	signals();
+	init_shell();
 	new_line = init_line();
 	new_line->tail_history = &history;
 	new_line->env = env;

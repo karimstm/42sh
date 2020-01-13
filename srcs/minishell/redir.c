@@ -1,5 +1,15 @@
 #include "shell.h"
 
+int		check_file_permission(char *filename, int perm)
+{
+	if (access(filename, F_OK) == 0 && access(filename, perm) == -1)
+	{
+		syntax_error("42sh: permission denied: %s", filename);
+		return (0);
+	}
+	return (1);
+}
+
 int		check_file_status(char *filename)
 {
 	int error;
@@ -19,7 +29,7 @@ int		check_file_status(char *filename)
 
 void	output(t_redirection *redir)
 {
-	if (!check_file_status(redir->word))
+	if (check_file_permission(redir->word, W_OK))
 	{
 		if ((redir->fd2 = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644)))
 			dup2(redir->fd2, redir->fd1);
@@ -30,7 +40,7 @@ void	output(t_redirection *redir)
 
 void	output_append(t_redirection *redir)
 {
-	if (!check_file_status(redir->word))
+	if (check_file_permission(redir->word, W_OK))
 	{
 		if ((redir->fd2 = open(redir->word, O_WRONLY | O_CREAT | O_APPEND, 0644)))
 			dup2(redir->fd2, redir->fd1);
@@ -49,7 +59,7 @@ void	output_with_aggregate(t_redirection *redir)
 				close(redir->fd1);
 			return ;
 		}
-		else if (!check_file_status(redir->word))
+		else if (check_file_permission(redir->word, W_OK))
 			redir->fd2 = open(redir->word, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	} else
 	{
