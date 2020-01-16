@@ -51,32 +51,58 @@ char			*working_path(t_list *env, char *cmd)
 	return (full_path);
 }
 
-int				my_fork(char *path, t_list *env, char **cmds, int background)
+int				my_fork(char *path, t_list *env, char **cmds, t_list_process *process, t_job_kind kind)
 {
 	pid_t		child;
 	char		**env_tab;
 	int			status;
+	t_process	*current;
 
 	status = 0;
-	ft_strdel(&cmds[0]);
-	cmds[0] = ft_strdup(path);
-	env_tab = env_to_tab(env);
-	child = fork();
-	if (child > 0)
+	current = (process && process->head) ? process->head : NULL;
+	while (current)
 	{
-		if (isatty(STDOUT_FILENO))
+		current->argv = node_to_char(current->node->simple_command);
+		ft_printf_fd(2, "%s\n", path);
+		if (path != NULL)
 		{
-			waitpid(child, &status, 0);
-			tcsetpgrp(STDOUT_FILENO, getpid());
-		}else
-			waitpid(child, &status, WUNTRACED|WNOHANG);
-		ft_free_strtab(env_tab);
+			ft_strdel(&current->argv[0]);
+			current->argv[0] = ft_strdup(path);
+		}
+		env_tab = env_to_tab(env);
+		child = fork();
+		if (child > 0)
+		{
+			current->pid = child;
+			if(shell_is_interactive)
+			{
+				if (!jobs.head->pgid)
+					jobs.head->pgid = child;
+				setpgid(child, jobs.tail->pgid);
+			}
+			tcsetpgrp(STDIN_FILENO, shell_pgid);
+		}
+		else if (child == 0)
+		{
+			if(shell_is_interactive)
+			{
+				if (!jobs.head->pgid)
+					jobs.head->pgid = child;
+				setpgid(getpid(), jobs.tail->pgid);
+			}
+			launch_process(current, getpgrp(), 0, 1, 2, kind == J_FOREGROUND ? 1 : 0, env_tab);
+		}
+		if (!shell_is_interactive)
+			wait_for_job(jobs.head);
+		else if (kind == J_FOREGROUND)
+		{
+			put_job_in_foreground(jobs.head, 0);
+		} else if (kind == J_BACKGROUND)
+		{
+			put_job_in_background(jobs.head, 0);
+		}
+		current = current->next;
 	}
-	else if (child == 0)
-	{
-		launch_process(cmds, getpgrp(), 0, 1, 2, 1, env_tab);
-	}
-	//execve(path, cmds, env_tab);
 	return (status);
 }
 
@@ -93,23 +119,24 @@ int				exec_builin(t_list *env, t_list *blt, t_node *node)
 	return (0);
 }
 
-int				exec_localy(t_list *env, t_list_simple_command *node)
+int				exec_localy(t_list *env, t_list_simple_command *node, t_list_process *process, t_job_kind kind)
 {
 	char	**cmds;
 	int		status;
 
 	status = 0;
 	cmds = NULL;
+	ft_printf_fd(2, "=== %s ===\n", node->head->name);
 	if (check_file_status(node->head->name) == 0)
 	{
 		cmds = node_to_char(node);
-		status = my_fork(cmds[0], env, cmds, 0);
+		status = my_fork(cmds[0], env, cmds, process, kind);
 		ft_free_strtab(cmds);
 	}
 	return (status);
 }
 
-int				execute_shell(t_list *blt, t_list *env, t_node *node, int background)
+int				execute_shell(t_list *blt, t_list *env, t_node *node, t_list_process *process, t_job_kind kind)
 {
 	t_simple_command	*current;
 	char				*path;
@@ -125,7 +152,7 @@ int				execute_shell(t_list *blt, t_list *env, t_node *node, int background)
 		exit(0);
 	}
 	if (ft_strchr(current->name, '/'))
-		return exec_localy(env, node->simple_command);
+		return exec_localy(env, node->simple_command, process, kind);
 	if ((bltin = ft_lstsearch(blt, current->name, &check_builtin)) != NULL)
 		return exec_builin(env, bltin, node);
 	else if ((path = working_path(env, current->name)) == NULL)
@@ -133,7 +160,7 @@ int				execute_shell(t_list *blt, t_list *env, t_node *node, int background)
 	else
 	{
 		cmds = node_to_char(node->simple_command);
-		status = my_fork(path, env, cmds, background);
+		status = my_fork(path, env, cmds, process, kind);
 		ft_strdel(&path);
 		ft_free_strtab(cmds);
 		return (status);
@@ -179,28 +206,42 @@ int				pipe_stack_execute(t_stack *stack, t_list *blt, t_line *line, int fd_out)
 		pipe(pp);
 		dup2(pp[1], 1);
 		close(pp[1]);
-		status = execute_cmd(poped, blt, line);
+		status = execute_cmd(poped, blt, line, J_FOREGROUND, NULL);
 		dup2(pp[0], 0);
 		poped = pop_stack(stack);
 		close(pp[0]);
 	}
 	dup2(fd_out, 1);
 	if (poped)
-		status = execute_cmd(poped, blt, line);
+		status = execute_cmd(poped, blt, line, J_FOREGROUND, NULL);
 	close(pp[0]);
 	close(pp[1]);
 	return (status);
 }
 
+
 int				handle_sep(t_node *node, t_list *blt, t_line *line)
 {
 	int status;
+	t_list_process *process;
 
 	status = 0;
+	process = NULL;
 	if (node->sep_op_command->left)
-		status = execute_cmd(node->sep_op_command->left, blt, line);
+	{
+		if (node->sep_op_command->kind == '&')
+		{
+			process = (t_list_process *)xmalloc(sizeof(t_list_process));
+			init_process_list(process);
+			process_push(process, 0, NULL, node->sep_op_command->left);
+			job_push(&jobs, process, 0);
+			status = execute_cmd(node->sep_op_command->left, blt, line, J_BACKGROUND, process);
+		}
+		else
+			status = execute_cmd(node->sep_op_command->left, blt, line, J_FOREGROUND, process);
+	}
 	if (node->sep_op_command->right)
-        status = execute_cmd(node->sep_op_command->right, blt, line);
+        status = execute_cmd(node->sep_op_command->right, blt, line, J_FOREGROUND, process);
 	return (status);
 }
 
@@ -210,11 +251,11 @@ int				handle_condition(t_node *node, t_list *blt, t_line *line)
 
 	status = 0;
 	if (node->and_or_command->left)
-		status = execute_cmd(node->and_or_command->left, blt, line);
+		status = execute_cmd(node->and_or_command->left, blt, line, J_FOREGROUND, NULL);
 	if (node->and_or_command->right
 		&& ((status == 0 && node->and_or_command->kind == TOKEN_AND_IF)
 		|| (status && node->and_or_command->kind == TOKEN_OR_IF)))
-		status = execute_cmd(node->and_or_command->right, blt, line);
+		status = execute_cmd(node->and_or_command->right, blt, line, J_FOREGROUND, NULL);
 	return (status);
 }
 
@@ -261,9 +302,10 @@ int				initial_pipe(t_node *node, t_list *blt, t_line *line)
 	return (status);
 }
 
-int				execute_cmd(t_node *node, t_list *blt, t_line *line)
+int				execute_cmd(t_node *node, t_list *blt, t_line *line, t_job_kind kind, t_list_process *process)
 {
 	int				status;
+	t_list_process	*tmp;
 	int				tmp_stds[3];
 
 	status = 0;
@@ -288,7 +330,15 @@ int				execute_cmd(t_node *node, t_list *blt, t_line *line)
 			initial_pipe(node, blt, line);
 		else if (node->kind == NODE_SIMPLE_COMMAND)
 		{
-			status = execute_shell(blt, line->env, node, 1);
+			if (process == NULL)
+			{
+				tmp = (t_list_process *)xmalloc(sizeof(t_list_process));
+				init_process_list(tmp);
+				process_push(tmp, 0, NULL, node);
+				job_push(&jobs, tmp, 0);
+				process = tmp;
+			}
+			status = execute_shell(blt, line->env, node, process, kind);
 		}
 		if (node->redir)
 		{

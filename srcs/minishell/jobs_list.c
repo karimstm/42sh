@@ -1,21 +1,28 @@
 # include "jobs.h"
 
-void		init_job_list(t_job_list *jobs)
+void	init_job_list(t_job_list *jobs)
 {
 	jobs->head = NULL;
 	jobs->tail = NULL;
 	jobs->node_count = 0;
+	jobs->status = 0;
 }
 
 
-void		job_push(t_job_list *jobs, pid_t pgid)
+void		job_push(t_job_list *jobs, t_list_process *p, pid_t pgid)
 {
 	t_job *job;
 
 	job = (t_job *)xmalloc(sizeof(t_job));
 	job->pgid = pgid;
+	job->proc_list = p;
+	job->kind = J_FOREGROUND;
+	job->command = NULL;
+	job->stdin = 0;
+	job->stdout = 1;
+	job->stderr = 2;
 	job->next = NULL;
-	if (jobs->node_count == 0 || jobs->head == NULL)
+	if (jobs->head == NULL)
 		jobs->head = job;
 	else
 		jobs->tail->next = job;

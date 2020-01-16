@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/11 15:21:17 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/14 14:36:14 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,8 +229,10 @@ int						init_terms(void);
 **	exec.c
 */
 
-int						execute_cmd(t_node *node, t_list *blt, t_line *line);
+int						execute_cmd(t_node *node, t_list *blt, t_line *line, t_job_kind kind, t_list_process *p);
 char					**node_to_char(t_list_simple_command *command);
+char					*working_path(t_list *env, char *cmd);
+t_job_list				*start_exec(t_node *node, t_list *env);
 
 /*
 **	redir.c

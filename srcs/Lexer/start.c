@@ -430,7 +430,7 @@ int match_token_test(t_token_kind kind)
 void init_stream(const char *str) {
 	g_line = str;
 	g_token.line = str;
-	next_token();
+	escape_space();
 }
 
 
