@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/14 14:36:14 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/19 14:57:44 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,12 @@ typedef struct			s_line
 	char				*tmp_history;
 	t_list				*env;
 }						t_line;
+
+typedef	struct			s_blt_line
+{
+	t_list				*blt;
+	t_line				*line;
+}						t_blt_line;
 
 /*
 **	=============================== MINISHELL ==================================
@@ -233,6 +239,7 @@ int						execute_cmd(t_node *node, t_list *blt, t_line *line, t_job_kind kind, t
 char					**node_to_char(t_list_simple_command *command);
 char					*working_path(t_list *env, char *cmd);
 t_job_list				*start_exec(t_node *node, t_list *env);
+void					execute_redirection(t_redirection *list);
 
 /*
 **	redir.c
@@ -248,4 +255,20 @@ void					input_with_aggregate(t_redirection *redir);
 void					input_output(t_redirection *redir);
 int						check_file_status(char *filename);
 
+/*
+**	JobTesting execute.c
+*/
+
+void					execute(t_job_list *job_list, t_node *node, t_line *line, t_list *blt);
+
+/*
+** ft_jobs.c
+*/
+void					ft_jobs(char **args, t_list **env, t_job_list *list);
+
+/*
+** ft_exit.c
+*/
+
+void					ft_exit(char **cmds, t_list **env);
 #endif

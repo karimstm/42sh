@@ -22,7 +22,7 @@ void		job_push(t_job_list *jobs, t_list_process *p, pid_t pgid)
 	job->stdout = 1;
 	job->stderr = 2;
 	job->next = NULL;
-	if (jobs->head == NULL)
+	if (jobs->node_count == 0)
 		jobs->head = job;
 	else
 		jobs->tail->next = job;

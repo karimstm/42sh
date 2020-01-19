@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/15 14:13:59 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/19 14:34:54 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,14 +102,16 @@ static t_node	*start_parsing_command(const char *line)
 
 void		run_shell2(t_list *blt, t_line *line)
 {
-	t_node			*node = NULL;
+	t_node			*node;
 	char			*new_line;
 	t_job_list		*jobs;
 
-	jobs = get_job_list(NULL);
-	jobs = NULL;
+	jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
+	init_job_list(jobs);
 	while (read_line(line) == 0)
 	{
+		node = NULL;
+		init_shell();
 		reset_error_num();
 		new_line = ft_strdup(line->command);
 		if (ft_str_isnull(new_line) ||
@@ -121,10 +123,9 @@ void		run_shell2(t_list *blt, t_line *line)
 			line = init_line();
 			continue;
 		}
-		jobs = start_exec(node, line->env);
-		get_job_list(jobs);
+		execute(jobs, node, line, blt);
 		//execute_cmd(node, blt, line, J_FOREGROUND, NULL);
-		job_notification (jobs);
+		job_notification(jobs);
 		ft_strdel(&new_line);
 		//free_tree(&node);
 		free_line();
@@ -156,8 +157,6 @@ int				main(int ac, char **av, char **ev)
 	history = NULL;
 	init_env(&env, ev);
 	init_builtin(&blt);
-	init_shell();
-	init_job_list(&jobs);
 	new_line = init_line();
 	new_line->tail_history = &history;
 	new_line->env = env;

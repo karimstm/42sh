@@ -66,6 +66,8 @@ handler(int sig)
     /* If we catch SIGTSTP, it won't actually stop us. Therefore we
        raise SIGSTOP so we actually get stopped. */
 
+    if (sig == SIGINT)
+        exit(0);
     if (sig == SIGTSTP)
         raise(SIGSTOP);
 }
@@ -97,11 +99,6 @@ main(int argc, char *argv[])
     } else {            /* Not first in pipeline, so read message from pipe */
         if (read(STDIN_FILENO, &cmdNum, sizeof(cmdNum)) <= 0)
             dprintf(2, "read got EOF or error");
-		else
-		{
-			printf("I'mhere\n");
-		}
-
     }
 
     cmdNum++;

@@ -7,23 +7,25 @@ LIB = libft
 BUILT = builtin
 LEXINC = srcs/Lexer/
 
-SRC_MIN = $(patsubst %.c, $(SRC)/minishell/%.c, builtin.c env.c errors.c fork.c free.c ft_cd.c ft_echo.c ft_env.c ft_pwd.c main.c shell.c exec.c redir.c job.c jobs_list.c exec2.c)
+SRC_MIN = $(patsubst %.c, $(SRC)/minishell/%.c, builtin.c env.c errors.c fork.c free.c ft_cd.c ft_echo.c ft_env.c ft_pwd.c main.c shell.c exec.c redir.c job.c jobs_list.c exec2.c JobTesting/execute.c JobTesting/job2.c JobTesting/ft_jobs.c)
 SRC_QUO = $(patsubst %.c, $(SRC)/quotes/%.c, error.c free_string.c is_number.c list.c quote.c quote2.c spliter.c string.c til_dol.c util.c)
 SRC_REA = $(patsubst %.c, $(SRC)/readline/%.c, copy.c cursor.c cursor2.c cursor3.c cursor4.c edit_line.c handlers.c history.c line.c paste.c read_line.c terms.c)
 SRC_RED = $(patsubst %.c, $(SRC)/redirection/%.c, left_redirect.c parsing.c right_redirect.c)
 SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c)
+SRC_BLT = $(patsubst %.c, $(SRC)/builtins/%.c, ft_exit.c)
 
 OBJ_MIN = $(patsubst %.c, %.o, $(SRC_MIN))
 OBJ_QUO = $(patsubst %.c, %.o, $(SRC_QUO))
 OBJ_REA = $(patsubst %.c, %.o, $(SRC_REA))
 OBJ_RED = $(patsubst %.c, %.o, $(SRC_RED))
 OBJ_LEXER = $(patsubst %.c, %.o, $(SRC_LEXER))
+OBJ_BLT = $(patsubst %.c, %.o, $(SRC_BLT))
 
-OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_REA) $(OBJ_RED) $(OBJ_LEXER)
+OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_REA) $(OBJ_RED) $(OBJ_LEXER) $(OBJ_BLT)
 REAL_OBJECT = $(patsubst %, $(BIN)/%, /$(notdir $(OBJECT)))
 
 CC = gcc
-FLAGS = -g -Wall
+FLAGS = -g -Wall -Wextra -Werror
 CPP_FLAGS = -I$(INC) -I$(LIB)/includes -I$(LEXINC)
 LIBFT = $(LIB)/libft.a
 

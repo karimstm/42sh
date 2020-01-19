@@ -83,6 +83,7 @@ void	output_with_aggregate(t_redirection *redir)
 
 void	output_with_aggregate_append(t_redirection *redir)
 {
+	(void)redir;
 	syntax_error("To be handled later on");
 }
 

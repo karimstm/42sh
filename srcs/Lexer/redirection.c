@@ -189,7 +189,7 @@ t_redirection   *input_aggregate(t_token_kind kind)
         if (ft_isnumber(g_token.word, len))
         {
             fd2 = ft_atoi(g_token.word);
-            list = new_redir(fd1, fd2, TOKEN_LESSAND);
+            list = new_redir(fd1, fd2, kind);
             if (ft_strchr(g_token.word, '-'))
             {
                 ft_strdel(&g_token.word);
@@ -201,7 +201,7 @@ t_redirection   *input_aggregate(t_token_kind kind)
         {
             if (g_token.word && ft_strcmp(g_token.word, "-") == 0)
             {
-                list = new_redir(fd1, -1, TOKEN_LESSAND);
+                list = new_redir(fd1, -1, kind);
                 list->word = g_token.word;
             }else
                 syntax_error("42sh: %s: file number expected", g_token.word);

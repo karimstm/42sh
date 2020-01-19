@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   const.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2019/05/08 17:52:06 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/01/19 15:16:58 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,6 @@
 # define PERM_DENIED 102
 # define PERM_DENIED2 103
 # define BAD_DESCRIPTOR 104
-
+# define BUILT_IN 105
+# define PATH_COMMAND 106
 #endif
