@@ -6,13 +6,11 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/19 17:16:23 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/20 16:06:03 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-void	ft_print_node(t_node *node);
 
 const char		*ft_strsignal(int sig)
 {
@@ -56,7 +54,7 @@ void	print_semi_and(t_node *node)
 {
 	if (node->sep_op_command->left)
 		ft_print_node(node->sep_op_command->left);
-	ft_printf(" %c ", node->sep_op_command->kind);
+	ft_printf("%c", node->sep_op_command->kind);
 	if (node->sep_op_command->right)
 		ft_print_node(node->sep_op_command->right);
 }
@@ -65,7 +63,7 @@ void	print_and_or_pipe(t_node *node)
 {
 	if (node->and_or_command->left)
 		ft_print_node(node->and_or_command->left);
-	ft_printf(" %c ", node->and_or_command->kind);
+	ft_printf("%s", token_name(node->and_or_command->kind));
 	if (node->and_or_command->right)
 		ft_print_node(node->and_or_command->right);
 }
@@ -86,33 +84,106 @@ void	ft_print_node(t_node *node)
 	}
 }
 
-void		ft_process(t_job *job)
+void		ft_process(t_job *job, char flag)
 {
-	t_process *process;
+	t_process	*process;
+	char		*sig;
 
+	sig = NULL;
 	process = (job->proc_list && job->proc_list->head)
 				? job->proc_list->head : NULL;
-	while (process)
+	if (job->pgid != 0)
+		ft_printf("[%d]+", job->pos);
+	if (process)
 	{
-		ft_printf("%s        ", ft_strsignal(WTERMSIG(process->status)));
-		ft_print_node(process->node);
-		process = process->next;
+		if (WIFSTOPPED(process->status))
+			sig = (char *)ft_strsignal(WSTOPSIG(process->status));
+		if (process->pid != 0)
+		{
+			ft_printf("%6d  %-22s", process->pid, sig ? sig : "Running");
+			ft_print_node(process->node);
+			while (process->next && flag == 0)
+			{
+				process = process->next;
+				ft_print_node(process->node);
+			}
+			ft_printf("\n");
+			while(process->next && flag == 'l')
+			{
+				process = process->next;
+				ft_printf("%10d %-22s | ", process->pid, " ");
+				ft_print_node(process->node);
+				ft_printf("\n");
+			}
+		}
 	}
 }
 
-void		ft_jobs(char **args, t_list **env, t_job_list *list)
+int			jobs_usage(void)
+{
+	ft_printf_fd(2, "jobs [-l|-p] [job_id...]\n");
+	return (1);
+}
+
+int			parse_args(char **args)
+{
+	int			i;
+	const char	*options = "lp";
+	char		*tmp;
+	int			flag;
+
+	i = 0;
+	flag = 0;
+	if (args != NULL)
+	{
+		while (args[i])
+		{
+			if (args[i][0] == '-')
+			{
+				tmp = args[i] + 1;
+				while (*tmp)
+				{
+					if (ft_strchr(options, *tmp) == NULL)
+					{
+						ft_printf_fd(2, "jobs: -%c: invalid option\n", *tmp);
+						return (jobs_usage());
+					}
+					else
+						flag = *tmp;
+					tmp++;
+				}
+			}
+			i++;
+		}
+	}
+	return (flag);
+}
+
+int			ft_job_pgid(t_job *job)
+{
+	if (job->pgid != 0)
+		ft_printf("%d", job->pgid);
+	return (0);
+}
+
+void		ft_jobs(char **args, t_list **env)
 {
 	t_job		*current;
-	int			i;
+	t_job_list	*list;
+	int			flag;
 
-	(void)args;
 	(void)env;
+	list = get_job_list(NULL);
+	flag = 0;
+	if ((flag = parse_args(args)) == 1)
+		return ;
 	current = (list && list->head) ? list->head : NULL;
-	i = list->node_count;
 	while (current)
 	{
-		ft_printf("[%d]+  ", i--);
-		ft_process(current);
+		if (flag == 'l' || flag == 0)
+			ft_process(current, (char)flag);
+		else if (flag == 'p')
+			ft_job_pgid(current);
 		current = current->next;
 	}
 }

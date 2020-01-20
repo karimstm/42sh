@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/19 14:57:44 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/20 15:50:38 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,11 +264,19 @@ void					execute(t_job_list *job_list, t_node *node, t_line *line, t_list *blt);
 /*
 ** ft_jobs.c
 */
-void					ft_jobs(char **args, t_list **env, t_job_list *list);
+void					ft_jobs(char **args, t_list **env);
 
 /*
 ** ft_exit.c
 */
-
 void					ft_exit(char **cmds, t_list **env);
+
+/*
+**	execute.c
+*/
+
+t_job_list				*get_job_list(t_job_list *jobs);
+void					execute_entry(t_job_list *job_list, t_node *node, t_blt_line *blt_line, t_job_kind kind);
+int						run_built_in(t_blt_line *blt_line, t_process *process);
+
 #endif

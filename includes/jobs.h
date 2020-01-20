@@ -50,19 +50,30 @@ typedef enum	e_job_kind
 	J_NON_INTERACTIVE = 2,
 }				t_job_kind;
 
+typedef enum	e_job_current
+{
+	CURRENT_NONE,			/* EMPTY */
+	CURRENT_ACTIVE,			/* + */
+	CURRENT_PREV			/* - */
+}				t_job_current;
+
 /* A job is a pipeline of processes.  */
 typedef struct s_job
 {
-	struct		s_job *next;           /* next active job */
-	char		*command;              /* command line, used for messages */
-	t_list_process	*proc_list;     /* list of processes in this job */
-	t_list			*env;				/* environment */
-	pid_t		pgid;                 /* process group ID */
-	pid_t		sid;				/* Process session ID */
-	char 		notified;              /* true if user told about stopped job */
-	struct termios	tmodes;      /* saved terminal modes */
-	t_job_kind		kind;		/* JOB_KIND J_NOTIFIED, J_FOREGROUND, J_BACKGROUND */
-	int stdin, stdout, stderr;  /* standard i/o channels */
+	struct				s_job *next;           /* next active job */
+	char				*command;              /* command line, used for messages */
+	t_list_process		*proc_list;     /* list of processes in this job */
+	t_list				*env;				/* environment */
+	pid_t				pgid;                 /* process group ID */
+	pid_t				sid;				/* Process session ID */
+	int					pos;
+	t_job_current		current;
+	char 				notified;              /* true if user told about stopped job */
+	struct termios		tmodes;      /* saved terminal modes */
+	t_job_kind			kind;		/* JOB_KIND J_NOTIFIED, J_FOREGROUND, J_BACKGROUND */
+	int					stdin;
+	int					stdout;
+	int					stderr;  /* standard i/o channels */
 }				t_job;
 
 typedef struct	s_job_list
@@ -95,13 +106,16 @@ void			wait_for_job (t_job *j);
 void			put_job_in_foreground (t_job *j, int cont);
 void			put_job_in_background (t_job *j, int cont);
 void			do_job_notification (t_job_list *jobs);
-void			format_job_info (t_job *j, const char *status);
+void			format_job_info (t_job *j);
 void			launch_process(t_process *p, pid_t pgid, int infile, int outfile, int errfile, int foreground, char **env);
 
 void			foreground_job(t_job_list *job_list, t_job *job, int cont);
 void			background_job(t_job_list *job_list, t_job *job, int cont);
 void			dummy_process(t_job_list *job_list, t_node *node, t_job_kind kind);
 void			job_waiting(t_job_list *job_list, t_job *job);
+
+void			ft_print_node(t_node *node);
+const char		*ft_strsignal(int sig);
 
 #endif
 

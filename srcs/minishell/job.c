@@ -59,12 +59,7 @@ int		mark_process_status(t_job_list *jobs, pid_t pid, int status)
 					if (WIFSTOPPED (status))
 						p->stopped = 1;
 					else
-					{
 						p->completed = 1;
-						if (WIFSIGNALED (status))
-						ft_printf_fd (STDERR_FILENO, "%d: Terminated by signal %d.\n",
-									(int) pid, WTERMSIG (p->status));
-					}
 					return (0);
 				}
 				p = p->next;
@@ -112,9 +107,21 @@ void update_status (t_job_list *jobs)
 	while (!mark_process_status (jobs, pid, status));
 }
 
-void	format_job_info (t_job *j, const char *status)
+void	format_job_info(t_job *j)
 {
-  ft_printf_fd(STDERR_FILENO, "%ld (%s): %s\n", (long)j->pgid, status, j->command);
+	const char	*sig;
+
+	if (WIFSTOPPED(j->proc_list->tail->status))
+		sig = ft_strsignal(WSTOPSIG(j->proc_list->tail->status));
+	else if (WIFSIGNALED(j->proc_list->tail->status))
+		sig = ft_strsignal(WTERMSIG(j->proc_list->tail->status));
+	else if (WEXITSTATUS(j->proc_list->tail->status))
+		sig = ft_strsignal(WTERMSIG(j->proc_list->tail->status));
+	else
+		sig = "Done";
+	ft_printf_fd(STDERR_FILENO, "%ld %s: ", (long)j->pgid, sig);
+	ft_print_node(j->proc_list->head->node);
+	ft_printf("\n");
 }
 
 void	free_proc(t_list_process **proces)
@@ -232,14 +239,14 @@ void	job_notification(t_job_list *jobs)
 		if (job_is_completed(current))
 		{
 			if (current->kind == J_BACKGROUND)
-				format_job_info(current, "Completed");
+				format_job_info(current);
 			delete_job(jobs, current);
 			current = jobs->head;
 			continue;
 		}
 		else if (job_is_stopped (current) && !current->notified)
 		{
-			format_job_info (current, "stopped");
+			format_job_info (current);
 				current->notified = 1;
 		}
 		if (current != NULL)

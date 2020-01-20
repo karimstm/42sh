@@ -87,7 +87,7 @@ void    print_list_tokens(t_list_simple_command *list)
 		current = list->head;
 	while (current)
 	{
-		printf("%s ", current->name);
+		ft_printf("%s ", current->name);
 		current = current->next;
 	}
 }

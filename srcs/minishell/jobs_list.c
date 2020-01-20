@@ -18,6 +18,8 @@ void		job_push(t_job_list *jobs, t_list_process *p, pid_t pgid)
 	job->proc_list = p;
 	job->kind = J_FOREGROUND;
 	job->command = NULL;
+	job->pos = 0;
+	job->current = CURRENT_NONE;
 	job->stdin = 0;
 	job->stdout = 1;
 	job->stderr = 2;

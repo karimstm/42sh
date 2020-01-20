@@ -1,9 +1,13 @@
 #include <shell.h>
 
-///
-void		execute_entry(t_job_list *job_list, t_node *node, t_blt_line *blt_line, t_job_kind kind);
-int			run_built_in(t_blt_line *blt_line, t_process *process);
-///
+
+t_job_list		*get_job_list(t_job_list *jobs)
+{
+	static t_job_list	*list = NULL;
+	if (jobs != NULL)
+		list = jobs;
+	return (list);
+}
 
 void		initial_process(pid_t pgid, t_job_kind kind)
 {
@@ -20,29 +24,39 @@ void		initial_process(pid_t pgid, t_job_kind kind)
 	}
 }
 
+void		setup_redirection(t_process *p, int tmp[3])
+{
+	if (tmp[0] != STDIN_FILENO)
+	{
+		dup2 (tmp[0], STDIN_FILENO);
+		close (tmp[0]);
+	}
+	if (tmp[1] != STDOUT_FILENO)
+	{
+		dup2 (tmp[1], STDOUT_FILENO);
+		close (tmp[1]);
+	}
+	if (tmp[2] != STDERR_FILENO)
+	{
+		dup2 (tmp[2], STDERR_FILENO);
+		close (tmp[2]);
+	}
+	if (p->node->redir)
+		execute_redirection(reverse_redirection(p->node->redir));
+}
 
 void		execute_process(t_job *job, t_process *process, t_blt_line *blt_line, int infile, int outfile, int errfile)
 {
 	char		**cmd;
 	char		**p_env;
+	int			tmp[3];
 
 	initial_process(job->pgid, job->kind);
 	/* Set the standard input/output channels of the new process.  */
-	if (infile != STDIN_FILENO)
-	{
-		dup2 (infile, STDIN_FILENO);
-		close (infile);
-	}
-	if (outfile != STDOUT_FILENO)
-	{
-		dup2 (outfile, STDOUT_FILENO);
-		close (outfile);
-	}
-	if (errfile != STDERR_FILENO)
-	{
-		dup2 (errfile, STDERR_FILENO);
-		close (errfile);
-	}
+	tmp[0] = infile;
+	tmp[1] = outfile;
+	tmp[2] = errfile;
+	setup_redirection(process, tmp);
 	cmd = node_to_char(process->node->simple_command);
 	if (ft_lstsearch(blt_line->blt, cmd[0], &check_builtin))
 	{
@@ -100,6 +114,16 @@ int			command_type(t_process *p, t_list *blt, t_list *env)
 	}
 }
 
+void		job_forwarding(t_job_list *job_list, t_job *job)
+{
+	if (job->kind == J_NON_INTERACTIVE)
+		job_waiting(job_list, job);
+	else if (job->kind == J_FOREGROUND)
+		foreground_job(job_list, job, 0);
+	else if (job->kind == J_BACKGROUND)
+		background_job(job_list, job, 0);
+}
+
 void		execute_simple_command(t_job_list *job_list, t_blt_line *blt_line)
 {
 	t_job 		*job;
@@ -108,6 +132,7 @@ void		execute_simple_command(t_job_list *job_list, t_blt_line *blt_line)
 	int			pip[2];
 	int			infile;
 	int			outfile;
+	int			tmp[3];
 
 	job = job_list->tail;
 	process = (job) ? job->proc_list->head : NULL;
@@ -128,7 +153,10 @@ void		execute_simple_command(t_job_list *job_list, t_blt_line *blt_line)
 			outfile = job->stdout;
 		if (command_type(process, blt_line->blt, blt_line->line->env) == BUILT_IN &&
 			job->proc_list->node_count == 1 && job->kind == J_FOREGROUND)
+		{
 			run_built_in(blt_line, process);
+			return ;
+		}
 		else
 		{
 			child = fork();
@@ -152,6 +180,10 @@ void		execute_simple_command(t_job_list *job_list, t_blt_line *blt_line)
 					t_job_list	*jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
 					init_job_list(jobs);
 					initial_process(getpid(), job->kind);
+					tmp[0] = infile;
+					tmp[1] = outfile;
+					tmp[2] = job->stderr;
+					setup_redirection(process, tmp);
 					execute_entry(jobs, process->node, blt_line, J_NON_INTERACTIVE);
 					exit(0);
 				}
@@ -178,19 +210,13 @@ void		execute_simple_command(t_job_list *job_list, t_blt_line *blt_line)
 		}
 		process = process->next;
 		/* Pipe clean up */
-		if (infile != job->stdin)
+		if (infile != STDIN_FILENO)
 			close(infile);
-		if (outfile != job->stdout)
+		if (outfile != STDOUT_FILENO)
 			close(outfile);
 		infile = pip[0];
 	}
-	infile = STDIN_FILENO;
-	if (job->kind == J_NON_INTERACTIVE)
-		job_waiting(job_list, job);
-	else if (job->kind == J_FOREGROUND)
-		foreground_job(job_list, job, 0);
-	else if (job->kind == J_BACKGROUND)
-		background_job(job_list, job, 0);
+	job_forwarding(job_list, job);
 }
 
 void		seperator_handling(t_job_list *job_list, t_node *node, t_blt_line *blt_line)
@@ -198,14 +224,14 @@ void		seperator_handling(t_job_list *job_list, t_node *node, t_blt_line *blt_lin
 	if (node->sep_op_command->left)
 	{
 		if (node->sep_op_command->kind == ';')
-			execute(job_list, node->sep_op_command->left, blt_line->line, blt_line->blt);
+			execute_entry(job_list, node->sep_op_command->left, blt_line, J_NON_INTERACTIVE);
 		else if (node->sep_op_command->kind == '&')
 			execute_entry(job_list, node->sep_op_command->left, blt_line, J_BACKGROUND);
 	}
 	if (node->sep_op_command->right)
 	{
 		if (node->sep_op_command->kind == ';')
-			execute(job_list, node->sep_op_command->right, blt_line->line, blt_line->blt);
+			execute_entry(job_list, node->sep_op_command->right, blt_line, J_NON_INTERACTIVE);
 		else if (node->sep_op_command->kind == '&')
 			execute_entry(job_list, node->sep_op_command->right, blt_line, J_BACKGROUND);
 	}
@@ -226,9 +252,7 @@ void		and_or_foreground(t_job_list *job_list, t_node *node, t_blt_line *blt_line
 
 		if ((status == 0 && node->and_or_command->kind == TOKEN_AND_IF)
 			|| (status && node->and_or_command->kind == TOKEN_OR_IF))
-		{
 			execute_entry(job_list, node->and_or_command->right, blt_line, kind);
-		}
 	}
 }
 

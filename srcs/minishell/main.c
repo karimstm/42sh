@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/19 14:34:54 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/19 18:21:26 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ void		run_shell2(t_list *blt, t_line *line)
 
 	jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
 	init_job_list(jobs);
+	get_job_list(jobs);
 	while (read_line(line) == 0)
 	{
 		node = NULL;
