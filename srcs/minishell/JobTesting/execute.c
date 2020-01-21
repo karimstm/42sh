@@ -302,6 +302,13 @@ void		pipe_entry(t_job_list *job_list, t_node *node, t_blt_line *blt_line, t_job
 
 void		execute_entry(t_job_list *job_list, t_node *node, t_blt_line *blt_line, t_job_kind kind)
 {
+	int tmp[3];
+
+	if (node->redir && kind == J_FOREGROUND)
+	{
+		set_fds(tmp);
+		execute_redirection(reverse_redirection(node->redir));
+	}
 	if (node)
 	{
 		if (node->kind == NODE_SEMI_AND)
@@ -313,6 +320,8 @@ void		execute_entry(t_job_list *job_list, t_node *node, t_blt_line *blt_line, t_
 		else if (node->kind == NODE_SIMPLE_COMMAND)
 			simple_command(job_list, node, blt_line, kind);
 	}
+	if (node->redir && kind == J_FOREGROUND)
+		restore_std(tmp);
 }
 
 void		execute(t_job_list *job_list, t_node *node, t_line *line, t_list *blt)
