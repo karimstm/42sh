@@ -110,12 +110,18 @@ void			format_job_info (t_job *j);
 void			launch_process(t_process *p, pid_t pgid, int infile, int outfile, int errfile, int foreground, char **env);
 
 void			foreground_job(t_job_list *job_list, t_job *job, int cont);
-void			background_job(t_job_list *job_list, t_job *job, int cont);
+void			background_job(t_job *job, int cont);
 void			dummy_process(t_job_list *job_list, t_node *node, t_job_kind kind);
 void			job_waiting(t_job_list *job_list, t_job *job);
 
 void			ft_print_node(t_node *node);
 const char		*ft_strsignal(int sig);
+
+void			continue_job(t_job_list *job_list, t_job *j, int foreground);
+void			ft_fg(char **args, t_list **env);
+void			ft_bg(char **args, t_list **env);
+t_job			*get_job(t_job_list *jobs, int job_number);
+int				get_min_pos(t_job_list *job_list);
 
 #endif
 

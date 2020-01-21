@@ -116,10 +116,10 @@ void	format_job_info(t_job *j)
 	else if (WIFSIGNALED(j->proc_list->tail->status))
 		sig = ft_strsignal(WTERMSIG(j->proc_list->tail->status));
 	else if (WEXITSTATUS(j->proc_list->tail->status))
-		sig = ft_strsignal(WTERMSIG(j->proc_list->tail->status));
+		sig = ft_strsignal(WSTOPSIG(j->proc_list->tail->status));
 	else
 		sig = "Done";
-	ft_printf_fd(STDERR_FILENO, "%ld %s: ", (long)j->pgid, sig);
+	ft_printf_fd(STDERR_FILENO, "\n[%d] %ld %s: ", j->pos, (long)j->pgid, sig);
 	ft_print_node(j->proc_list->head->node);
 	ft_printf("\n");
 }
@@ -226,6 +226,56 @@ void	delete_job(t_job_list *list, t_job *target)
 	}
 }
 
+void	set_max_as_active(t_job_list *jobs)
+{
+	t_job	*current;
+	t_job	*prev;
+	t_job	*active;
+	int		max;
+
+	current = jobs->head;
+	active = NULL;
+	max = 0;
+	while (current)
+	{
+		if (current->pos > max)
+		{
+			max = current->pos;
+			prev = active;
+			active = current;
+		}
+		current = current->next;
+	}
+	if (active)
+		active->current = CURRENT_ACTIVE;
+	if (prev)
+		active->current = CURRENT_PREV;
+}
+
+void	set_active_job(t_job_list *jobs, t_job *target)
+{
+	t_job	*current;
+	int		flag;
+
+	flag = 0;
+	current = jobs->head;
+	while (current)
+	{
+		if (target && current != target)
+		{
+			if (current->current == CURRENT_ACTIVE)
+			{
+				flag = 1;
+				current->current = CURRENT_PREV;
+			}
+		}else if (target == NULL && current->current == CURRENT_PREV)
+			current->current = CURRENT_ACTIVE;
+		current = current->next;
+	}
+	if (!flag)
+		set_max_as_active(jobs);
+}
+
 void	job_notification(t_job_list *jobs)
 {
 	t_job *current;
@@ -246,8 +296,11 @@ void	job_notification(t_job_list *jobs)
 		}
 		else if (job_is_stopped (current) && !current->notified)
 		{
+			set_active_job(jobs, current);
 			format_job_info (current);
-				current->notified = 1;
+			current->current = CURRENT_ACTIVE;
+			current->notified = 1;
+			current->current = CURRENT_ACTIVE;
 		}
 		if (current != NULL)
 			current = current->next;

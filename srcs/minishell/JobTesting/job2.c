@@ -40,9 +40,9 @@ void	job_waiting(t_job_list *job_list, t_job *job)
 		&& !is_job_completed (job));
 }
 
-void	background_job(t_job_list *job_list, t_job *job, int cont)
+void	background_job(t_job *job, int cont)
 {
-	ft_printf_fd(2, "[%d] %lld\n", job_list->node_count, job->pgid);
+	ft_printf_fd(2, "[%d] %lld\n", job->pos, job->pgid);
 	/* Send the job a continue signal, if necessary.  */
 	if (cont)
 		if (kill (-job->pgid, SIGCONT) < 0)
@@ -89,5 +89,24 @@ void		continue_job(t_job_list *job_list, t_job *j, int foreground)
 	if (foreground)
 		foreground_job(job_list, j, 1);
 	else
-		background_job(job_list, j, 1);
+	{
+		j->kind = J_BACKGROUND;
+		background_job(j, 1);
+	}
+}
+
+int			get_min_pos(t_job_list *job_list)
+{
+	t_job	*current;
+	int		max;
+
+	max = 0;
+	current = job_list->head;
+	while (current)
+	{
+		if (current->pos > max)
+			max = current->pos;
+		current = current->next;
+	}
+	return (max);
 }

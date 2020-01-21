@@ -81,13 +81,6 @@ t_node			*pipe_to_stack(t_node *node, t_stack *stack)
 	return (node);
 }
 
-void			set_fds(int tmp_stds[3])
-{
-	tmp_stds[0] = dup(0);
-	tmp_stds[1] = dup(1);
-	tmp_stds[2] = dup(2);
-}
-
 
 void			execute_redirection(t_redirection *list)
 {

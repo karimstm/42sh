@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/19 17:33:37 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/21 15:53:11 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void		init_builtin(t_list **lst)
 	add_builtin(lst, "unsetenv", &ft_unsetenv);
 	add_builtin(lst, "jobs", &ft_jobs);
 	add_builtin(lst, "exit", &ft_exit);
+	add_builtin(lst, "fg", &ft_fg);
+	add_builtin(lst, "bg", &ft_bg);
 }
 
 /*

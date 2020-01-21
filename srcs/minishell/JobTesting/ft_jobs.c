@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/20 16:06:03 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/21 15:58:30 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,16 @@ void	ft_print_node(t_node *node)
 	}
 }
 
+char		current_to_char(t_job_current current)
+{
+	if (current == CURRENT_PREV)
+		return ('-');
+	else if (current == CURRENT_ACTIVE)
+		return ('+');
+	else
+		return (' ');
+}
+
 void		ft_process(t_job *job, char flag)
 {
 	t_process	*process;
@@ -93,10 +103,10 @@ void		ft_process(t_job *job, char flag)
 	process = (job->proc_list && job->proc_list->head)
 				? job->proc_list->head : NULL;
 	if (job->pgid != 0)
-		ft_printf("[%d]+", job->pos);
+		ft_printf("[%d]%c", job->pos, current_to_char(job->current));
 	if (process)
 	{
-		if (WIFSTOPPED(process->status))
+		if (process->stopped && WIFSTOPPED(process->status))
 			sig = (char *)ft_strsignal(WSTOPSIG(process->status));
 		if (process->pid != 0)
 		{

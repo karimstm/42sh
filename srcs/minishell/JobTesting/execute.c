@@ -24,40 +24,23 @@ void		initial_process(pid_t pgid, t_job_kind kind)
 	}
 }
 
-void		setup_redirection(t_process *p, int tmp[3])
+void		setup_redirection(t_process *p)
 {
-	if (tmp[0] != STDIN_FILENO)
-	{
-		dup2 (tmp[0], STDIN_FILENO);
-		close (tmp[0]);
-	}
-	if (tmp[1] != STDOUT_FILENO)
-	{
-		dup2 (tmp[1], STDOUT_FILENO);
-		close (tmp[1]);
-	}
-	if (tmp[2] != STDERR_FILENO)
-	{
-		dup2 (tmp[2], STDERR_FILENO);
-		close (tmp[2]);
-	}
 	if (p->node->redir)
 		execute_redirection(reverse_redirection(p->node->redir));
 }
 
-void		execute_process(t_job *job, t_process *process, t_blt_line *blt_line, int infile, int outfile, int errfile)
+void		execute_process(t_job *job, t_process *process, t_blt_line *blt_line, int pip[2])
 {
 	char		**cmd;
 	char		**p_env;
-	int			tmp[3];
 
 	initial_process(job->pgid, job->kind);
-	/* Set the standard input/output channels of the new process.  */
-	tmp[0] = infile;
-	tmp[1] = outfile;
-	tmp[2] = errfile;
-	setup_redirection(process, tmp);
+	close(pip[0]);
+	close(pip[1]);
+	setup_redirection(process);
 	cmd = node_to_char(process->node->simple_command);
+	p_env = env_to_tab(blt_line->line->env);
 	if (ft_lstsearch(blt_line->blt, cmd[0], &check_builtin))
 	{
 		exit(run_built_in(blt_line, process));
@@ -121,36 +104,103 @@ void		job_forwarding(t_job_list *job_list, t_job *job)
 	else if (job->kind == J_FOREGROUND)
 		foreground_job(job_list, job, 0);
 	else if (job->kind == J_BACKGROUND)
-		background_job(job_list, job, 0);
+		background_job(job, 0);
+}
+
+void			set_fds(int tmp_stds[3])
+{
+	tmp_stds[0] = dup(0);
+	tmp_stds[1] = dup(1);
+	tmp_stds[2] = dup(2);
+}
+
+void		check_pipe_and_dup(t_process *process, int *infile, int tmp[3], int pip[2])
+{
+	dup2(*infile, STDIN_FILENO);
+	close(*infile);
+	if (process->next)
+	{
+		if (pipe(pip) < 0)
+		{
+			ft_printf_fd(2, "Pipe failed\n");
+			exit(EXIT_FAILURE);
+		}
+		else
+		{
+			*infile = pip[0];
+			dup2(pip[1], STDOUT_FILENO);
+			close(pip[1]);
+		}
+	}
+	else
+		dup2(tmp[1], STDOUT_FILENO);
+}
+
+void		setup_pgid(pid_t child, t_job *job)
+{
+	if (!job->pgid)
+		job->pgid = child;
+	setpgid(child, job->pgid);
+}
+
+void		sub_shell(t_process *process, t_job *job, t_blt_line *blt_line, int pip[2])
+{
+	t_job_list *jobs;
+
+	jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
+	init_job_list(jobs);
+	initial_process(getpid(), job->kind);
+	setup_redirection(process);
+	close(pip[0]);
+	close(pip[1]);
+	execute_entry(jobs, process->node, blt_line, J_NON_INTERACTIVE);
+	free(jobs);
+	exit(0);
+}
+
+void		xfork(t_process *process, int pip[2], t_job *job, t_blt_line *blt_line)
+{
+	pid_t child;
+
+	child = fork();
+	if (child == 0)
+	{
+		process->pid = getpid();
+		if (job->kind != J_NON_INTERACTIVE)
+			setup_pgid(getpid(), job);
+		if (process->node->kind == NODE_SIMPLE_COMMAND)
+			execute_process(job, process, blt_line, pip);
+		else
+			sub_shell(process, job, blt_line, pip);
+	}
+	else if (child < 0)
+	{
+		ft_printf_fd(2, "Fork faild\n");
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		process->pid = child;
+		if (job->kind != J_NON_INTERACTIVE)
+			setup_pgid(child, job);
+	}
 }
 
 void		execute_simple_command(t_job_list *job_list, t_blt_line *blt_line)
 {
 	t_job 		*job;
 	t_process	*process;
-	pid_t		child;
 	int			pip[2];
-	int			infile;
-	int			outfile;
 	int			tmp[3];
+	int			infile;
 
 	job = job_list->tail;
 	process = (job) ? job->proc_list->head : NULL;
-
-	infile = job->stdin;
+	set_fds(tmp);
+	infile = dup(0);
 	while (process)
 	{
-		if (process->next)
-		{
-			if (pipe(pip) < 0)
-			{
-				ft_printf_fd(2, "Pipe failed\n");
-				exit(EXIT_FAILURE);
-			}
-			outfile = pip[1];
-		}
-		else
-			outfile = job->stdout;
+		check_pipe_and_dup(process, &infile, tmp, pip);
 		if (command_type(process, blt_line->blt, blt_line->line->env) == BUILT_IN &&
 			job->proc_list->node_count == 1 && job->kind == J_FOREGROUND)
 		{
@@ -158,64 +208,10 @@ void		execute_simple_command(t_job_list *job_list, t_blt_line *blt_line)
 			return ;
 		}
 		else
-		{
-			child = fork();
-			process->pid = child;
-			if (child == 0)
-			{
-				if (job->kind != J_NON_INTERACTIVE)
-				{
-					if (!job->pgid)
-					{
-						job->pgid = getpid();
-						setpgid(job->pgid, job->pgid);
-					}
-					else
-						setpgid(getpid(), job->pgid);
-				}
-				if (process->node->kind == NODE_SIMPLE_COMMAND)
-					execute_process(job, process, blt_line, infile, outfile, job->stderr);
-				else
-				{
-					t_job_list	*jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
-					init_job_list(jobs);
-					initial_process(getpid(), job->kind);
-					tmp[0] = infile;
-					tmp[1] = outfile;
-					tmp[2] = job->stderr;
-					setup_redirection(process, tmp);
-					execute_entry(jobs, process->node, blt_line, J_NON_INTERACTIVE);
-					exit(0);
-				}
-
-			}
-			else if (child < 0)
-			{
-				ft_printf_fd(2, "Fork faild\n");
-				exit(EXIT_FAILURE);
-			}
-			else
-			{
-				if (job->kind != J_NON_INTERACTIVE)
-				{
-					if (!job->pgid)
-					{
-						job->pgid = child;
-						setpgid(job->pgid, job->pgid);
-					}
-					else
-						setpgid(child, job->pgid);
-				}
-			}
-		}
+			xfork(process, pip, job, blt_line);
 		process = process->next;
-		/* Pipe clean up */
-		if (infile != STDIN_FILENO)
-			close(infile);
-		if (outfile != STDOUT_FILENO)
-			close(outfile);
-		infile = pip[0];
 	}
+	restore_std(tmp);
 	job_forwarding(job_list, job);
 }
 
