@@ -1,9 +1,9 @@
 #include <shell.h>
 
-
 t_job_list		*get_job_list(t_job_list *jobs)
 {
 	static t_job_list	*list = NULL;
+
 	if (jobs != NULL)
 		list = jobs;
 	return (list);
@@ -15,12 +15,12 @@ void		initial_process(pid_t pgid, t_job_kind kind)
 	{
 		if (kind == J_FOREGROUND)
 			tcsetpgrp(shell_terminal, pgid);
-		signal (SIGINT, SIG_DFL);
-		signal (SIGQUIT, SIG_DFL);
-		signal (SIGTSTP, SIG_DFL);
-		signal (SIGTTIN, SIG_DFL);
-		signal (SIGTTOU, SIG_DFL);
-		signal (SIGCHLD, SIG_DFL);
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		signal(SIGTSTP, SIG_DFL);
+		signal(SIGTTIN, SIG_DFL);
+		signal(SIGTTOU, SIG_DFL);
+		signal(SIGCHLD, SIG_DFL);
 	}
 }
 
@@ -30,7 +30,8 @@ void		setup_redirection(t_process *p)
 		execute_redirection(reverse_redirection(p->node->redir));
 }
 
-void		execute_process(t_job *job, t_process *process, t_blt_line *blt_line, int pip[2])
+void		execute_process(t_job *job, t_process *process,
+								t_blt_line *blt_line, int pip[2])
 {
 	char		**cmd;
 	char		**p_env;
@@ -39,17 +40,14 @@ void		execute_process(t_job *job, t_process *process, t_blt_line *blt_line, int 
 	close(pip[0]);
 	close(pip[1]);
 	setup_redirection(process);
-	cmd = node_to_char(process->node->simple_command);
+	cmd = node_to_char(process->node->spec.simple_command);
 	p_env = env_to_tab(blt_line->line->env);
 	if (ft_lstsearch(blt_line->blt, cmd[0], &check_builtin))
-	{
 		exit(run_built_in(blt_line, process));
-	}
 	else
 		execve(cmd[0], cmd, p_env);
 	exit(EXIT_FAILURE);
 }
-
 
 int				run_built_in(t_blt_line *blt_line, t_process *process)
 {
@@ -57,7 +55,8 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 	t_list		*bltin;
 
 	cmds = NULL;
-	if(blt_line->blt && (*(cmds = node_to_char(process->node->simple_command)) != NULL))
+	if (blt_line->blt
+		&& (*(cmds = node_to_char(process->node->spec.simple_command)) != NULL))
 	{
 		bltin = ft_lstsearch(blt_line->blt, cmds[0], &check_builtin);
 		((t_builtin*)bltin->content)->f(cmds + 1, &blt_line->line->env);
@@ -76,8 +75,9 @@ int			command_type(t_process *p, t_list *blt, t_list *env)
 
 	if (p->node->kind != NODE_SIMPLE_COMMAND)
 		return (0);
-	name = ( p->node && p->node->simple_command && p->node->simple_command->head)
-			 ? p->node->simple_command->head->name : NULL;
+	name = ( p->node && p->node->spec.simple_command
+				&& p->node->spec.simple_command->head)
+			 ? p->node->spec.simple_command->head->name : NULL;
 	if (name == NULL)
 		return (1);
 	if (ft_strchr(name, '/'))
@@ -91,13 +91,13 @@ int			command_type(t_process *p, t_list *blt, t_list *env)
 	}
 	else
 	{
-		ft_strdel(&p->node->simple_command->head->name);
-		p->node->simple_command->head->name = path;
+		ft_strdel(&p->node->spec.simple_command->head->name);
+		p->node->spec.simple_command->head->name = path;
 		return (1);
 	}
 }
 
-void		job_forwarding(t_job_list *job_list, t_job *job)
+void			job_forwarding(t_job_list *job_list, t_job *job)
 {
 	if (job->kind == J_NON_INTERACTIVE)
 		job_waiting(job_list, job);
@@ -114,7 +114,8 @@ void			set_fds(int tmp_stds[3])
 	tmp_stds[2] = dup(2);
 }
 
-void		check_pipe_and_dup(t_process *process, int *infile, int tmp[3], int pip[2])
+void			check_pipe_and_dup(t_process *process,
+						int *infile, int tmp[3], int pip[2])
 {
 	dup2(*infile, STDIN_FILENO);
 	close(*infile);
@@ -143,7 +144,10 @@ void		setup_pgid(pid_t child, t_job *job)
 	setpgid(child, job->pgid);
 }
 
-void		sub_shell(t_process *process, t_job *job, t_blt_line *blt_line, int pip[2])
+void		sub_shell(	t_process *process,
+						t_job *job,
+						t_blt_line *blt_line,
+						int pip[2])
 {
 	t_job_list *jobs;
 
@@ -217,19 +221,19 @@ void		execute_simple_command(t_job_list *job_list, t_blt_line *blt_line)
 
 void		seperator_handling(t_job_list *job_list, t_node *node, t_blt_line *blt_line)
 {
-	if (node->sep_op_command->left)
+	if (node->spec.sep_op_command->left)
 	{
-		if (node->sep_op_command->kind == ';')
-			execute_entry(job_list, node->sep_op_command->left, blt_line, J_NON_INTERACTIVE);
-		else if (node->sep_op_command->kind == '&')
-			execute_entry(job_list, node->sep_op_command->left, blt_line, J_BACKGROUND);
+		if (node->spec.sep_op_command->kind == ';')
+			execute_entry(job_list, node->spec.sep_op_command->left, blt_line, J_NON_INTERACTIVE);
+		else if (node->spec.sep_op_command->kind == '&')
+			execute_entry(job_list, node->spec.sep_op_command->left, blt_line, J_BACKGROUND);
 	}
-	if (node->sep_op_command->right)
+	if (node->spec.sep_op_command->right)
 	{
-		if (node->sep_op_command->kind == ';')
-			execute_entry(job_list, node->sep_op_command->right, blt_line, J_NON_INTERACTIVE);
-		else if (node->sep_op_command->kind == '&')
-			execute_entry(job_list, node->sep_op_command->right, blt_line, J_BACKGROUND);
+		if (node->spec.sep_op_command->kind == ';')
+			execute_entry(job_list, node->spec.sep_op_command->right, blt_line, J_NON_INTERACTIVE);
+		else if (node->spec.sep_op_command->kind == '&')
+			execute_entry(job_list, node->spec.sep_op_command->right, blt_line, J_BACKGROUND);
 	}
 }
 
@@ -238,17 +242,17 @@ void		and_or_foreground(t_job_list *job_list, t_node *node, t_blt_line *blt_line
 	int status;
 
 	status = 0;
-	if (node->and_or_command->left)
+	if (node->spec.and_or_command->left)
 	{
-		execute_entry(job_list, node->and_or_command->left, blt_line, kind);
+		execute_entry(job_list, node->spec.and_or_command->left, blt_line, kind);
 		status = job_list->tail->proc_list->tail->status;
 	}
-	if (node->and_or_command->right)
+	if (node->spec.and_or_command->right)
 	{
 
-		if ((status == 0 && node->and_or_command->kind == TOKEN_AND_IF)
-			|| (status && node->and_or_command->kind == TOKEN_OR_IF))
-			execute_entry(job_list, node->and_or_command->right, blt_line, kind);
+		if ((status == 0 && node->spec.and_or_command->kind == TOKEN_AND_IF)
+			|| (status && node->spec.and_or_command->kind == TOKEN_OR_IF))
+			execute_entry(job_list, node->spec.and_or_command->right, blt_line, kind);
 	}
 }
 
@@ -278,10 +282,10 @@ void		consume_pipe(t_list_process *pro_list, t_node *node)
 	{
 		if (node->kind == NODE_PIPE)
 		{
-			if (node->and_or_command->left)
-				consume_pipe(pro_list, node->and_or_command->left);
-			if (node->and_or_command->right)
-				consume_pipe(pro_list, node->and_or_command->right);
+			if (node->spec.and_or_command->left)
+				consume_pipe(pro_list, node->spec.and_or_command->left);
+			if (node->spec.and_or_command->right)
+				consume_pipe(pro_list, node->spec.and_or_command->right);
 		}
 		else
 			process_push(pro_list, 0, NULL, node);

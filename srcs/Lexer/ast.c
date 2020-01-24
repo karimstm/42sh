@@ -1,52 +1,59 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/01/24 15:53:09 by amoutik           #+#    #+#             */
+/*   Updated: 2020/01/24 16:08:46 by amoutik          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ast.h"
 #include "parse.h"
 #include "shell.h"
 
-void *xmalloc(size_t num_bytes) {
-	void *ptr = malloc(num_bytes);
-	if (!ptr) {
-		perror("xmalloc failed");
-		exit(1);
+void					*xmalloc(size_t num_bytes)
+{
+	void *ptr;
+
+	ptr = malloc(num_bytes);
+	if (!ptr)
+	{
+		ft_printf_fd(2, "xmalloc failed");
+		exit(EXIT_FAILURE);
 	}
-	return ptr;
+	return (ptr);
 }
 
-t_node *command_node(t_token_node kind)
+t_node					*command_node(t_token_node kind)
 {
-	t_node *node = (t_node *)xmalloc(sizeof(t_node));
+	t_node *node;
+
+	node = (t_node *)xmalloc(sizeof(t_node));
 	node->kind = kind;
 	node->redir = NULL;
 	return (node);
 }
 
-t_compound_cmd *compound_cmd(t_compound_kind kind)
+t_list_simple_command	*malloc_list_simple_command(void)
 {
-	t_compound_cmd *com_cmd = (t_compound_cmd *)xmalloc(sizeof(t_compound_cmd));
-	com_cmd->kind = kind;
-	return (com_cmd);
-}
+	t_list_simple_command *list;
 
-t_command *command(t_cmd_kind kind)
-{
-	t_command *cmd = (t_command *)xmalloc(sizeof(t_command));
-	cmd->kind = kind;
-	return (cmd);
-}
-
-t_list_simple_command *malloc_list_simple_command()
-{
-	t_list_simple_command *list = (t_list_simple_command *)xmalloc(sizeof(t_list_simple_command));
+	list = (t_list_simple_command *)xmalloc(sizeof(t_list_simple_command));
 	return (list);
 }
 
-void                    init_list_simple_command(t_list_simple_command *list)
+void					init_list_simple_command(t_list_simple_command *list)
 {
 	list->head = NULL;
 	list->tail = NULL;
 	list->node_count = 0;
 }
 
-void    token_push(t_list_simple_command *list, char *token_str, t_token_kind kind)
+void					token_push(t_list_simple_command *list,
+									char *token_str, t_token_kind kind)
 {
 	t_simple_command *token;
 
@@ -62,7 +69,8 @@ void    token_push(t_list_simple_command *list, char *token_str, t_token_kind ki
 	list->node_count++;
 }
 
-t_list_simple_command *merge_list(t_list_simple_command *left, t_list_simple_command *right)
+t_list_simple_command	*merge_list(t_list_simple_command *left,
+									t_list_simple_command *right)
 {
 	if (right == NULL)
 		return (left);
@@ -78,7 +86,7 @@ t_list_simple_command *merge_list(t_list_simple_command *left, t_list_simple_com
 	return (left);
 }
 
-void    print_list_tokens(t_list_simple_command *list)
+void					print_list_tokens(t_list_simple_command *list)
 {
 	t_simple_command *current;
 
@@ -92,7 +100,7 @@ void    print_list_tokens(t_list_simple_command *list)
 	}
 }
 
-void    free_list(t_list_simple_command *list)
+void					free_list(t_list_simple_command *list)
 {
 	t_simple_command *current;
 	t_simple_command *tmp;
@@ -111,31 +119,39 @@ void    free_list(t_list_simple_command *list)
 	list = NULL;
 }
 
+/*
+**	SEPERATORS SEMI ';' AND '&'
+*/
 
-/****   SEPERATORS SEMI AND & ****/
-
-t_sep_op *sep_commands(t_token_kind kind, t_node *left, t_node *right)
+t_sep_op				*sep_commands(t_token_kind kind,
+										t_node *left, t_node *right)
 {
-	t_sep_op *sep_cmd = (t_sep_op *)xmalloc(sizeof(t_sep_op));
+	t_sep_op *sep_cmd;
+
+	sep_cmd = (t_sep_op *)xmalloc(sizeof(t_sep_op));
 	sep_cmd->kind = kind;
 	sep_cmd->left = left;
 	sep_cmd->right = right;
-	return sep_cmd;
+	return (sep_cmd);
 }
 
-
-t_and_or *and_or_commands(t_token_kind kind, t_node *left, t_node *right)
+t_and_or				*and_or_commands(t_token_kind kind,
+											t_node *left, t_node *right)
 {
-	t_and_or *and_or_cmd = (t_and_or *)xmalloc(sizeof(t_and_or));
+	t_and_or *and_or_cmd;
+
+	and_or_cmd = (t_and_or *)xmalloc(sizeof(t_and_or));
 	and_or_cmd->kind = kind;
 	and_or_cmd->left = left;
 	and_or_cmd->right = right;
-	return and_or_cmd;
+	return (and_or_cmd);
 }
 
-/* = = = = = = = = = = = = = = = = = = = = = = = = = */
+/*
+** = = = = = = = = = = = REDIRECTION PART = = = = = = = = = = = = = =
+*/
 
-t_redirection *redirection_init(t_redirection *list)
+t_redirection			*redirection_init(t_redirection *list)
 {
 	list->fd1 = -1;
 	list->fd2 = -1;
@@ -144,9 +160,11 @@ t_redirection *redirection_init(t_redirection *list)
 	return (list);
 }
 
-t_redirection   *new_redir(int fd1, int fd2, t_token_kind kind)
+t_redirection			*new_redir(int fd1, int fd2, t_token_kind kind)
 {
-	t_redirection *list = (t_redirection *)xmalloc(sizeof(t_redirection));
+	t_redirection *list;
+
+	list = (t_redirection *)xmalloc(sizeof(t_redirection));
 	list->fd1 = fd1;
 	list->fd2 = fd2;
 	list->kind = kind;
@@ -155,7 +173,7 @@ t_redirection   *new_redir(int fd1, int fd2, t_token_kind kind)
 	return (list);
 }
 
-t_redirection *reverse_redirection(t_redirection *list)
+t_redirection			*reverse_redirection(t_redirection *list)
 {
 	t_redirection *prev;
 	t_redirection *current;
@@ -174,16 +192,19 @@ t_redirection *reverse_redirection(t_redirection *list)
 	return (prev);
 }
 
-/* print redirection list */
+/*
+** print redirection list
+*/
 
-void		print_redir(t_redirection *list)
+void				print_redir(t_redirection *list)
 {
 	t_redirection *current;
 
 	current = list;
 	while (current)
 	{
-		printf("(%s) %d %d ", redirect_name(current->kind), current->fd1, current->fd2);
+		ft_printf("(%s) %d %d ",\
+				redirect_name(current->kind), current->fd1, current->fd2);
 		current = current->next;
 	}
 }
@@ -206,32 +227,34 @@ void		free_redir(t_redirection **redir)
 	*redir = NULL;
 }
 
+void		free_semi_node(t_node *current)
+{
+	if (current->spec.sep_op_command->left)
+		free_tree(&current->spec.sep_op_command->left);
+	if (current->spec.sep_op_command->right)
+		free_tree(&current->spec.sep_op_command->right);
+	free(current->spec.sep_op_command);
+}
+
 void		free_tree(t_node **node)
 {
 	t_node *current;
 
 	current = *node != NULL ? *node : NULL;
-
 	if (current)
 	{
 		if (current->kind == NODE_SEMI_AND)
-		{
-			if (current->sep_op_command->left)
-				free_tree(&current->sep_op_command->left);
-			if (current->sep_op_command->right)
-				free_tree(&current->sep_op_command->right);
-			free(current->sep_op_command);
-		}
+			free_semi_node(current);
 		if (current->kind == NODE_AND_OR || current->kind == NODE_PIPE)
 		{
-			if (current->and_or_command->left)
-				free_tree(&current->and_or_command->left);
-			if (current->and_or_command->right)
-				free_tree(&current->and_or_command->right);
-			free(current->and_or_command);
+			if (current->spec.and_or_command->left)
+				free_tree(&current->spec.and_or_command->left);
+			if (current->spec.and_or_command->right)
+				free_tree(&current->spec.and_or_command->right);
+			free(current->spec.and_or_command);
 		}
 		else if (current->kind == NODE_SIMPLE_COMMAND)
-			free_list(current->simple_command);
+			free_list(current->spec.simple_command);
 		free(current);
 		current = NULL;
 	}

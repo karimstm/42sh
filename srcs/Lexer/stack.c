@@ -1,29 +1,30 @@
 #include "shell.h"
 
-
-int		get_size(t_stack *sp)
+int			get_size(t_stack *sp)
 {
 	return (sp->size);
 }
 
-int is_overflow(t_stack *sp){
-	return sp->top == sp->size - 1;
-
-}
-int is_underflow(t_stack *sp){
-	return sp->top == -1;
+int			is_overflow(t_stack *sp)
+{
+	return (sp->top == sp->size - 1);
 }
 
-void init_stack(t_stack *sp, int size){
+int			is_underflow(t_stack *sp)
+{
+	return (sp->top == -1);
+}
+
+void		init_stack(t_stack *sp, int size)
+{
 	sp->top = -1;
 	sp->lists = (t_node **)xmalloc(sizeof(t_node *) * size);
 	sp->size = size;
 }
 
-
-void	push_to_stack(t_stack *sp, t_node *list)
+void		push_to_stack(t_stack *sp, t_node *list)
 {
-	t_node 	**tmp;
+	t_node	**tmp;
 	int		i;
 
 	i = 0;
@@ -40,12 +41,12 @@ void	push_to_stack(t_stack *sp, t_node *list)
 		sp->size *= 2;
 	}
 	sp->top++;
-    sp->lists[sp->top] = list;
+	sp->lists[sp->top] = list;
 }
 
 void		reverse_stack(t_stack *sp)
 {
-	t_node **tmp;
+	t_node	**tmp;
 	int		i;
 	int		j;
 
@@ -65,7 +66,8 @@ t_node		*pop_stack(t_stack *sp)
 {
 	t_node		*value;
 
-	if (is_underflow(sp)){
+	if (is_underflow(sp))
+	{
 		ft_printf_fd(2, "Stack Underflow\n");
 		return (NULL);
 	}
@@ -74,8 +76,8 @@ t_node		*pop_stack(t_stack *sp)
 	return (value);
 }
 
-
-void deallocate(t_stack *sp){
+void		deallocate(t_stack *sp)
+{
 	if (sp->lists != NULL)
 		free(sp->lists);
 	sp->top = -1;

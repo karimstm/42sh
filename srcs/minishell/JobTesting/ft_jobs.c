@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/21 15:58:30 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/24 15:41:02 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,20 +52,20 @@ const char		*ft_strsignal(int sig)
 
 void	print_semi_and(t_node *node)
 {
-	if (node->sep_op_command->left)
-		ft_print_node(node->sep_op_command->left);
-	ft_printf("%c", node->sep_op_command->kind);
-	if (node->sep_op_command->right)
-		ft_print_node(node->sep_op_command->right);
+	if (node->spec.sep_op_command->left)
+		ft_print_node(node->spec.sep_op_command->left);
+	ft_printf("%c", node->spec.sep_op_command->kind);
+	if (node->spec.sep_op_command->right)
+		ft_print_node(node->spec.sep_op_command->right);
 }
 
 void	print_and_or_pipe(t_node *node)
 {
-	if (node->and_or_command->left)
-		ft_print_node(node->and_or_command->left);
-	ft_printf("%s", token_name(node->and_or_command->kind));
-	if (node->and_or_command->right)
-		ft_print_node(node->and_or_command->right);
+	if (node->spec.and_or_command->left)
+		ft_print_node(node->spec.and_or_command->left);
+	ft_printf("%s", token_name(node->spec.and_or_command->kind));
+	if (node->spec.and_or_command->right)
+		ft_print_node(node->spec.and_or_command->right);
 }
 
 void	ft_print_node(t_node *node)
@@ -79,7 +79,7 @@ void	ft_print_node(t_node *node)
 		else if (node->kind == NODE_SIMPLE_COMMAND)
 		{
 			ft_printf(" ");
-			print_list_tokens(node->simple_command);
+			print_list_tokens(node->spec.simple_command);
 		}
 	}
 }

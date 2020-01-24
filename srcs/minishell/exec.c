@@ -56,7 +56,7 @@ int				exec_builin(t_list *env, t_list *blt, t_node *node)
 	char		**cmds;
 
 	cmds = NULL;
-	if(blt && (*(cmds = node_to_char(node->simple_command)) != NULL))
+	if(blt && (*(cmds = node_to_char(node->spec.simple_command)) != NULL))
 	{
 		((t_builtin*)blt->content)->f(cmds + 1, &env);
 		ft_free_strtab(cmds);
@@ -71,10 +71,10 @@ t_node			*pipe_to_stack(t_node *node, t_stack *stack)
 	{
 		if (node->kind == NODE_PIPE)
 		{
-			if (node->and_or_command->left)
-				pipe_to_stack(node->and_or_command->left, stack);
-			if (node->and_or_command->right)
-				pipe_to_stack(node->and_or_command->right, stack);
+			if (node->spec.and_or_command->left)
+				pipe_to_stack(node->spec.and_or_command->left, stack);
+			if (node->spec.and_or_command->right)
+				pipe_to_stack(node->spec.and_or_command->right, stack);
 		} else
 			push_to_stack(stack, node);
 	}
