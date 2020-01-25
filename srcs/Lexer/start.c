@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   start.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:32:53 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/24 18:32:54 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/25 16:39:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int				get_new_line(void)
 	startlen = g_token.start - g_token.line;
 	new_line = readline("> ");
 	tmp = ft_strjoin(g_token.line, "\n");
-	free((char *)g_token.line);
+	ft_strdel((char **)&g_token.line);
 	tmp2 = new_line;
 	new_line = ft_strjoin(tmp, new_line);
 	ft_strdel(&tmp2);
@@ -172,7 +172,8 @@ void			scan_squotes(void)
 
 	flag = 1;
 	g_line++;
-	while (*g_line && !is_ifs(*g_line))
+	//&& !ifs
+	while (*g_line)
 	{
 		if (*g_line == '\'')
 		{
@@ -197,7 +198,7 @@ void			scan_meta_condition(char k1, t_token_kind k2)
 		g_token.kind = k2;
 		g_line++;
 		if (is_metacharacter(*g_line))
-			syntax_error("near unexpected token `%c'", *g_line);
+			syntax_error("syntax error near unexpected token");
 	}
 }
 
@@ -249,7 +250,7 @@ void			scan_meta_semi(void)
 		g_token.kind = TOKEN_DSEMI;
 		g_line++;
 		if (is_metacharacter(*g_line))
-			syntax_error("near unexpected token `%c'", *g_line);
+			syntax_error("syntax error near unexpected token.");
 	}
 }
 
@@ -338,7 +339,19 @@ void			scan_string(void)
 		else if (*g_line == '$')
 			scan_dollar();
 		else
-			g_line++;
+		{
+			if (*g_line == '\\')
+			{
+				g_line++;
+				if (*g_line == '\0')
+				{
+					get_new_line();
+					break ;
+				}
+			}
+			if (*g_line)
+				g_line++;
+		}
 	}
 	g_token.spec.word = ft_strndup(g_token.start, g_line - g_token.start);
 }
@@ -418,7 +431,10 @@ int				expect_token(t_token_kind kind)
 		return (1);
 	}
 	else
+	{
+		syntax_error("syntax error near unexpected token");
 		return (0);
+	}
 }
 
 int				is_token_eof(void)

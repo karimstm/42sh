@@ -33,11 +33,11 @@ void	job_waiting(t_job_list *job_list, t_job *job)
 	int status;
 	pid_t pid;
 
-	do
-		pid = waitpid (WAIT_ANY, &status, WUNTRACED);
-	while (!mark_process_status (job_list, pid, status)
+	pid = waitpid (WAIT_ANY, &status, WUNTRACED);
+	if (!mark_process_status (job_list, pid, status)
 		&& !is_job_stopped (job)
-		&& !is_job_completed (job));
+		&& !is_job_completed (job))
+		job_waiting(job_list, job);
 }
 
 void	background_job(t_job *job, int cont)
@@ -52,7 +52,7 @@ void	background_job(t_job *job, int cont)
 void	foreground_job(t_job_list *job_list, t_job *job, int cont)
 {
 	/* Put the job into the foreground.  */
-	tcsetpgrp (shell_terminal, job->pgid);
+	ft_tcsetpgrp (shell_terminal, job->pgid);
 
 	/* Send the job a continue signal, if necessary.  */
 	if (cont)
@@ -64,10 +64,10 @@ void	foreground_job(t_job_list *job_list, t_job *job, int cont)
 	/* Wait for it to report.  */
 	job_waiting (job_list, job);
 	/* Put the shell back in the foreground.  */
-	tcsetpgrp (shell_terminal, shell_pgid);
+	ft_tcsetpgrp (shell_terminal, shell_pgid);
 	/* Restore the shell’s terminal modes.  */
 	tcgetattr (shell_terminal, &job->tmodes);
-	tcsetattr (shell_terminal, TCSADRAIN, &shell_tmodes);
+	tcsetattr (shell_terminal, TCSADRAIN, get_termios());
 }
 
 void		mark_job_as_running (t_job *j)

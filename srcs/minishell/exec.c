@@ -19,7 +19,7 @@ char			**node_to_char(t_list_simple_command *command)
 	i = 0;
 	while (current)
 	{
-		cmds[i++] = ft_strdup(current->name);
+		cmds[i++] = quote_stripping(current->name);
 		current = current->next;
 	}
 	cmds[i] = NULL;

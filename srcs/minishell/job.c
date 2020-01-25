@@ -1,20 +1,35 @@
 #include "shell.h"
 
+int			ft_tcsetpgrp(int fd, pid_t pgrp_id)
+{
+	return ioctl(fd, TIOCSPGRP, &pgrp_id);
+}
+
+pid_t		ft_tcgetpgrp(int fd)
+{
+	int pgrp;
+
+	if (ioctl(fd, TIOCGPGRP, &pgrp) < 0)
+		return ((pid_t)-1);
+	return ((pid_t)pgrp);
+}
 
 void		init_shell()
 {
+	struct termios	*shell_tmodes;
 	/* see if we are running interactively */
 	shell_terminal = STDIN_FILENO;
-	shell_is_interactive = isatty(shell_terminal);
+	int shell_is_interactive;
 
+	shell_tmodes = get_termios();
+	shell_is_interactive = isatty(shell_terminal);
 	if (shell_is_interactive)
 	{
 		/* loop until we are in the forground */
-		while (tcgetpgrp(shell_terminal) != (shell_pgid =  getpgrp()))
+		while (ft_tcgetpgrp(shell_terminal) != (shell_pgid =  getpgrp()))
 			kill (-shell_pgid, SIGTTIN);
 		/* Ignore interactive and job-control signals.  */
-		//signal (SIGINT, sig_handler);
-		signal (SIGINT, SIG_IGN);
+		signal (SIGINT, sig_handler);
 		signal (SIGQUIT, SIG_IGN);
 		signal (SIGTSTP, SIG_IGN);
 		signal (SIGTTIN, SIG_IGN);
@@ -29,10 +44,10 @@ void		init_shell()
 			exit(EXIT_FAILURE);
 		}
 		/* Grab control of the terminal. */
-		tcsetpgrp (shell_terminal, shell_pgid);
+		ft_tcsetpgrp (shell_terminal, shell_pgid);
 
 		/* Save default terminal attributes for shell */
-		tcgetattr(shell_terminal, &shell_tmodes);
+		tcgetattr(shell_terminal, shell_tmodes);
 	}
 }
 
@@ -56,7 +71,7 @@ int		mark_process_status(t_job_list *jobs, pid_t pid, int status)
 				if (p->pid == pid)
 				{
 					p->status = status;
-					if (WIFSTOPPED (status))
+					if (WIFSTOPPED(status))
 						p->stopped = 1;
 					else
 						p->completed = 1;
@@ -74,54 +89,39 @@ int		mark_process_status(t_job_list *jobs, pid_t pid, int status)
 		return (-1);
 }
 
-/* Return true if all processes in the job have stopped or completed.  */
-int job_is_stopped (t_job *j)
-{
-  t_process *p;
-
-  for (p = j->proc_list->head; p; p = p->next)
-    if (!p->completed && !p->stopped)
-      return 0;
-  return 1;
-}
-
-/* Return true if all processes in the job have completed.  */
-int job_is_completed (t_job *j)
-{
-  t_process *p;
-
-  for (p = j->proc_list->head; p; p = p->next)
-    if (!p->completed)
-      return 0;
-  return 1;
-}
-
-
 void update_status (t_job_list *jobs)
 {
 	int status;
 	pid_t pid;
 
-	do
-		pid = waitpid (WAIT_ANY, &status, WUNTRACED | WNOHANG);
-	while (!mark_process_status (jobs, pid, status));
+	pid = waitpid (WAIT_ANY, &status, WUNTRACED | WNOHANG);
+	if (!mark_process_status (jobs, pid, status))
+		update_status(jobs);
 }
 
 void	format_job_info(t_job *j)
 {
 	const char	*sig;
+	int			status;
 
-	if (WIFSTOPPED(j->proc_list->tail->status))
-		sig = ft_strsignal(WSTOPSIG(j->proc_list->tail->status));
-	else if (WIFSIGNALED(j->proc_list->tail->status))
-		sig = ft_strsignal(WTERMSIG(j->proc_list->tail->status));
-	else if (WEXITSTATUS(j->proc_list->tail->status))
-		sig = ft_strsignal(WSTOPSIG(j->proc_list->tail->status));
-	else
+	sig = NULL;
+	status = j->proc_list->tail->status;
+	if (j->pgid == 0)
+		return ;
+	if (WIFSTOPPED(status))
+		sig = ft_strsignal(WSTOPSIG(status));
+	else if (WIFSIGNALED(status))
+		sig = ft_strsignal(WTERMSIG(status));
+	else if (WEXITSTATUS(status) && status < 127)
+		sig = ft_strsignal(WSTOPSIG(status));
+	else if (j->kind == J_BACKGROUND)
 		sig = "Done";
-	ft_printf_fd(STDERR_FILENO, "\n[%d] %ld %s: ", j->pos, (long)j->pgid, sig);
-	ft_print_node(j->proc_list->head->node);
-	ft_printf("\n");
+	if (j->pgid > 0 && sig != NULL)
+	{
+		ft_printf_fd(STDERR_FILENO, "\n[%d] %ld %s: ", j->pos, (long)j->pgid, sig);
+		ft_print_node(j->proc_list->head->node);
+		ft_printf("\n");
+	}
 }
 
 void	free_proc(t_list_process **proces)
@@ -276,6 +276,20 @@ void	set_active_job(t_job_list *jobs, t_job *target)
 		set_max_as_active(jobs);
 }
 
+int		is_job_signaled(t_job *j)
+{
+	t_process *p;
+
+	p = j->proc_list->head;
+	while (p)
+	{
+		if (!p->signaled)
+			return (0);
+		p = p->next;
+	}
+	return (1);
+}
+
 void	job_notification(t_job_list *jobs)
 {
 	t_job *current;
@@ -286,15 +300,14 @@ void	job_notification(t_job_list *jobs)
 	update_status(jobs);
 	while (current)
 	{
-		if (job_is_completed(current))
+		if (is_job_completed(current))
 		{
-			if (current->kind == J_BACKGROUND)
-				format_job_info(current);
+			format_job_info(current);
 			delete_job(jobs, current);
 			current = jobs->head;
 			continue;
 		}
-		else if (job_is_stopped (current) && !current->notified)
+		else if (is_job_stopped (current) && !current->notified)
 		{
 			set_active_job(jobs, current);
 			format_job_info (current);

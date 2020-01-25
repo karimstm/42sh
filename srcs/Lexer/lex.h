@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lex.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:13:30 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/24 16:13:31 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/25 12:51:14 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,6 @@ void				escape_space();
 void				syntax_error(const char *fmt, ...);
 int					*error_num(void);
 void				reset_error_num(void);
+int					get_new_line(void);
 
 #endif

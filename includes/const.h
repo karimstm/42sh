@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/19 15:16:58 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/25 11:31:51 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,8 @@
 # define BAD_DESCRIPTOR 104
 # define BUILT_IN 105
 # define PATH_COMMAND 106
+# define LEFT(node) node->spec.sep_op_command->left
+# define RIGHT(node) node->spec.sep_op_command->right
+# define LEFT_A(node) node->spec.and_or_command->left
+# define RIGHT_A(node) node->spec.and_or_command->right
 #endif

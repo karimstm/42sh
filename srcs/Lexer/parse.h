@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:48:13 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/24 16:48:14 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/25 16:46:40 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,5 +27,6 @@ const char		*redirect_name(t_token_kind kind);
 t_redirection	*input_aggregate(t_token_kind kind);
 t_redirection	*lenss_great(t_token_kind kind);
 const char		*token_name(t_token_kind kind);
-
+int				expect_token(t_token_kind kind);
+void			unexpected_error(void);
 #endif

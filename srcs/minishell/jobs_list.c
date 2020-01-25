@@ -48,6 +48,7 @@ void		process_push(t_list_process *list, pid_t pid, char **args, t_node *node)
 	p->completed = 0;
 	p->stopped = 0;
 	p->status = 0;
+	p->signaled = 0;
 	p->pid = pid;
 	p->argv = args;
 	p->node = node;

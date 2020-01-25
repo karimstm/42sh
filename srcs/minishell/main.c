@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/20 18:37:15 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/25 19:51:43 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ static t_node	*start_parsing_command(const char *line)
 	init_stream(line);
 	node = parse_commands();
 	if (g_token.kind != TOKEN_EOF)
-		syntax_error("42sh: parse error near `%s'", token_name(g_token.kind));
-	else if (*error_num())
+		unexpected_error();
+	if (*error_num())
 		free_tree(&node);
 	return (node);
 }
@@ -125,10 +125,7 @@ void		run_shell2(t_list *blt, t_line *line)
 			continue;
 		}
 		execute(jobs, node, line, blt);
-		//execute_cmd(node, blt, line, J_FOREGROUND, NULL);
 		job_notification(jobs);
-		ft_strdel(&new_line);
-		//free_tree(&node);
 		free_line();
 		line = init_line();
 	}
@@ -156,6 +153,7 @@ int				main(int ac, char **av, char **ev)
 	blt = NULL;
 	env = NULL;
 	history = NULL;
+	signals();
 	init_env(&env, ev);
 	init_builtin(&blt);
 	new_line = init_line();

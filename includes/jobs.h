@@ -15,9 +15,7 @@
 # include "libft.h"
 
 pid_t		shell_pgid;
-struct		termios shell_tmodes;
 int			shell_terminal;
-int			shell_is_interactive;
 
 
 /* A process is a single process.  */
@@ -31,6 +29,7 @@ typedef struct 	s_process
 	pid_t pid;                  /* process ID */
 	char completed;             /* true if process has completed */
 	char stopped;               /* true if process has stopped */
+	char signaled;				/* true if process has stopped due to a signal */
 	int status;                 /* reported status value */
 }				t_process;
 
@@ -122,15 +121,8 @@ void			ft_fg(char **args, t_list **env);
 void			ft_bg(char **args, t_list **env);
 t_job			*get_job(t_job_list *jobs, int job_number);
 int				get_min_pos(t_job_list *job_list);
+int				ft_tcsetpgrp(int fd, pid_t pgrp_id);
+int				is_job_stopped(t_job *j);
+int				is_job_completed(t_job *j);
 
 #endif
-
-
-
-struct job {
-    pid_t gleader;		/* process group leader of this job  */
-    int stat;                   /* see STATs below                   */
-    char *pwd;			/* current working dir of shell when * this job was spawned              */
-    struct s_process *procs;	/* list of processes                 */
-    int stty_in_env;		/* if STTY=... is present            */
-};

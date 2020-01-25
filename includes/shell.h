@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/21 13:01:04 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/25 15:06:45 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -279,4 +279,9 @@ t_job_list				*get_job_list(t_job_list *jobs);
 void					execute_entry(t_job_list *job_list, t_node *node, t_blt_line *blt_line, t_job_kind kind);
 int						run_built_in(t_blt_line *blt_line, t_process *process);
 
+/*
+**	quote_stripping.c
+*/
+
+char					*quote_stripping(char *str);
 #endif

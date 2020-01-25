@@ -1,5 +1,8 @@
 {
 	"files.associations": {
-		"shell.h": "c"
+		"shell.h": "c",
+		"jobs.h": "c",
+		"ios": "cpp",
+		"parse.h": "c"
 	}
 }
