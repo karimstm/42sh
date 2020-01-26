@@ -82,29 +82,34 @@ t_node			*pipe_to_stack(t_node *node, t_stack *stack)
 }
 
 
-void			execute_redirection(t_redirection *list)
+int		execute_redirection(t_redirection *list)
 {
 	t_redirection	*current;
+	int				error;
 
+	error = 0;
 	current = list;
 	while (current)
 	{
+		if (error)
+			return (1);
 		if (current->kind == '>' || current->kind == TOKEN_CLOBBER)
-			output(current);
+			error = output(current);
 		else if (current->kind == TOKEN_DGREAT)
-			output_append(current);
+			error = output_append(current);
 		else if (current->kind == TOKEN_GREATAND)
-			output_with_aggregate(current);
+			error = output_with_aggregate(current, 0);
 		else if (current->kind == TOKEN_DGREATAND)
-			output_with_aggregate_append(current);
+			error = output_with_aggregate(current, 1);
 		else if (current->kind == '<')
-			input(current);
+			error = input(current);
 		else if (current->kind == TOKEN_DLESS)
-			input_here_doc(current);
+			error = input_here_doc(current);
 		else if (current->kind == TOKEN_LESSAND)
-			input_with_aggregate(current);
+			error = input_with_aggregate(current);
 		else if (current->kind == TOKEN_LESSGREAT)
-			input_output(current);
+			error = input_output(current);
 		current = current->next;
 	}
+	return (error);
 }

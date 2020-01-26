@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:50:32 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/24 18:35:52 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/26 16:34:35 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ t_redirection			*output_redirection(t_token_kind kind)
 }
 
 void					aggregate_number(int *fd2,
-							int *fd1, t_redirection **list)
+							int *fd1, t_redirection **list, t_token_kind kind)
 {
 	*fd2 = ft_atoi(g_token.spec.word);
-	*list = new_redir(*fd1, *fd2, TOKEN_GREATAND);
+	*list = new_redir(*fd1, *fd2, kind);
 	if (ft_strchr(g_token.spec.word, '-'))
 	{
 		ft_strdel(&g_token.spec.word);
@@ -65,19 +65,19 @@ void					aggregate_number(int *fd2,
 		ft_strdel(&g_token.spec.word);
 }
 
-void					aggregate_word(int *fd2, int *fd1, t_redirection **list)
+void					aggregate_word(int *fd2, int *fd1, t_redirection **list, t_token_kind kind)
 {
 	if (*fd1 < 0)
 		syntax_error("42sh: %s: ambiguous redirect", g_token.spec.word);
 	else
 	{
 		*fd2 = -1;
-		(*list) = new_redir(*fd1, *fd2, TOKEN_GREATAND);
+		(*list) = new_redir(*fd1, *fd2, kind);
 		(*list)->word = g_token.spec.word;
 	}
 }
 
-t_redirection			*output_aggregate(void)
+t_redirection			*output_aggregate(t_token_kind kind)
 {
 	int				fd1;
 	int				fd2;
@@ -93,9 +93,9 @@ t_redirection			*output_aggregate(void)
 		if (g_token.spec.word[len - 1] == '-')
 			len -= 1;
 		if (ft_isnumber(g_token.spec.word, len))
-			aggregate_number(&fd2, &fd1, &list);
+			aggregate_number(&fd2, &fd1, &list, kind);
 		else
-			aggregate_word(&fd2, &fd1, &list);
+			aggregate_word(&fd2, &fd1, &list, kind);
 	}
 	else
 		syntax_error("42sh: syntax error near unexpected token");
@@ -205,7 +205,7 @@ t_redirection			*input_aggregate(t_token_kind kind)
 		if (g_token.spec.word[len - 1] == '-')
 			len -= 1;
 		if (ft_isnumber(g_token.spec.word, len))
-			aggregate_number(&fd2, &fd1, &list);
+			aggregate_number(&fd2, &fd1, &list, kind);
 		else
 		{
 			if (g_token.spec.word && ft_strcmp(g_token.spec.word, "-") == 0)

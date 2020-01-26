@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/25 15:06:45 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/26 16:25:54 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -239,20 +239,20 @@ int						execute_cmd(t_node *node, t_list *blt, t_line *line, t_job_kind kind, t
 char					**node_to_char(t_list_simple_command *command);
 char					*working_path(t_list *env, char *cmd);
 t_job_list				*start_exec(t_node *node, t_list *env);
-void					execute_redirection(t_redirection *list);
+int						execute_redirection(t_redirection *list);
 
 /*
 **	redir.c
 */
 
-void					output(t_redirection *redir);
-void					output_append(t_redirection *redir);
-void					output_with_aggregate(t_redirection *redir);
-void					output_with_aggregate_append(t_redirection *redir);
-void					input(t_redirection *redir);
-void					input_here_doc(t_redirection *redir);
-void					input_with_aggregate(t_redirection *redir);
-void					input_output(t_redirection *redir);
+int						output(t_redirection *redir);
+int						output_append(t_redirection *redir);
+int						output_with_aggregate(t_redirection *redir, int is_append);
+int						output_with_aggregate_append(t_redirection *redir);
+int						input(t_redirection *redir);
+int						input_here_doc(t_redirection *redir);
+int						input_with_aggregate(t_redirection *redir);
+int						input_output(t_redirection *redir);
 int						check_file_status(char *filename);
 
 /*

@@ -24,10 +24,18 @@ void			initial_process(pid_t pgid, t_job_kind kind)
 	}
 }
 
-void			setup_redirection(t_process *p)
+int			setup_redirection(t_process *p, int doexit)
 {
 	if (p->node->redir)
-		execute_redirection(reverse_redirection(p->node->redir));
+	{
+		if (execute_redirection(reverse_redirection(p->node->redir)))
+		{
+			if (doexit)
+				exit(EXIT_FAILURE);
+			return (0);
+		}
+	}
+	return (1);
 }
 
 void			execute_process(t_job *job, t_process *process,
@@ -39,7 +47,7 @@ void			execute_process(t_job *job, t_process *process,
 	initial_process(job->pgid, job->kind);
 	close(pip[0]);
 	close(pip[1]);
-	setup_redirection(process);
+	setup_redirection(process, EXIT_FAILURE);
 	cmd = node_to_char(process->node->spec.simple_command);
 	p_env = env_to_tab(blt_line->line->env);
 	if (ft_lstsearch(blt_line->blt, cmd[0], &check_builtin))
@@ -109,9 +117,9 @@ void			job_forwarding(t_job_list *job_list, t_job *job)
 
 void			set_fds(int tmp_stds[3])
 {
-	tmp_stds[0] = dup(0);
-	tmp_stds[1] = dup(1);
-	tmp_stds[2] = dup(2);
+	tmp_stds[0] = dup2(0, 100);
+	tmp_stds[1] = dup2(1, 101);
+	tmp_stds[2] = dup2(2, 102);
 }
 
 void			check_pipe_and_dup(t_process *process,
@@ -154,7 +162,7 @@ void			sub_shell(t_process *process,
 	jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
 	init_job_list(jobs);
 	initial_process(getpid(), job->kind);
-	setup_redirection(process);
+	setup_redirection(process, EXIT_FAILURE);
 	close(pip[0]);
 	close(pip[1]);
 	execute_entry(jobs, process->node, blt_line, J_NON_INTERACTIVE);
@@ -204,14 +212,18 @@ void			execute_simple_command(t_job_list *job_list,
 	job = job_list->tail;
 	process = (job) ? job->proc_list->head : NULL;
 	set_fds(tmp);
-	infile = dup(0);
+	infile = dup2(0, 103);
 	while (process)
 	{
 		check_pipe_and_dup(process, &infile, tmp, pip);
 		if (cmd_type(process, blt_line->blt, blt_line->line->env) == BUILT_IN
 			&& job->proc_list->node_count == 1 && job->kind == J_FOREGROUND)
 		{
-			run_built_in(blt_line, process);
+			if(setup_redirection(process, 0))
+				run_built_in(blt_line, process);
+			else
+				process->status = 1;
+			restore_std(tmp);
 			return ;
 		}
 		else
@@ -317,7 +329,7 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 {
 	int		tmp[3];
 
-	if (node->redir && kind == J_FOREGROUND)
+	if (node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 	{
 		set_fds(tmp);
 		execute_redirection(reverse_redirection(node->redir));
@@ -333,7 +345,7 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 		else if (node->kind == NODE_SIMPLE_COMMAND)
 			simple_command(job_list, node, blt_line, kind);
 	}
-	if (node->redir && kind == J_FOREGROUND)
+	if (node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 		restore_std(tmp);
 }
 

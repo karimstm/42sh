@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/25 16:46:40 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/26 16:33:41 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,9 @@ t_redirection				*output_redir(void)
 	else if (g_token.kind == TOKEN_DGREAT)
 		tmp = output_redirection(TOKEN_DGREAT);
 	else if (g_token.kind == TOKEN_GREATAND)
-		tmp = output_aggregate();
+		tmp = output_aggregate(g_token.kind);
+	else if (g_token.kind == TOKEN_DGREATAND)
+		tmp = output_aggregate(g_token.kind);
 	return (tmp);
 }
 
@@ -163,7 +165,7 @@ void						node_is_word_or_redirection(
 	else
 	{
 		if ((tmp = parse_redirection()) == NULL)
-			unexpected_error();
+			return (unexpected_error());
 		tmp->next = redir;
 		redir = tmp;
 	}

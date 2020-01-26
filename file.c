@@ -11,3 +11,4 @@ int			main()
 	dprintf(2, "\nmy pid is %d and my group is %d\n", pid, getpgid(pid));
 	return (0);
 }
+
