@@ -146,6 +146,7 @@ int			input_here_doc(t_redirection *redir)
 			dup2(redir->fd2, redir->fd1);
 			if (redir->fd2 != redir->fd1)
 				close(redir->fd2);
+			return (0);
 		}
 	}
 	ft_strdel(&path);
