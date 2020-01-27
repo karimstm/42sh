@@ -17,36 +17,28 @@ pid_t		ft_tcgetpgrp(int fd)
 void		init_shell()
 {
 	struct termios	*shell_tmodes;
-	/* see if we are running interactively */
-	shell_terminal = STDIN_FILENO;
-	int shell_is_interactive;
+	int				shell_is_interactive;
 
+	shell_terminal = STDIN_FILENO;
 	shell_tmodes = get_termios();
 	shell_is_interactive = isatty(shell_terminal);
 	if (shell_is_interactive)
 	{
-		/* loop until we are in the forground */
 		while (ft_tcgetpgrp(shell_terminal) != (shell_pgid =  getpgrp()))
 			kill (-shell_pgid, SIGTTIN);
-		/* Ignore interactive and job-control signals.  */
 		signal (SIGINT, sig_handler);
 		signal (SIGQUIT, SIG_IGN);
 		signal (SIGTSTP, SIG_IGN);
 		signal (SIGTTIN, SIG_IGN);
 		signal (SIGTTOU, SIG_IGN);
 		signal (SIGCHLD, SIG_DFL);
-
-		/* Put ourselves in our own process group */
 		shell_pgid = getpid();
 		if (setpgid (shell_pgid, shell_pgid) < 0)
 		{
 			ft_printf_fd(2, "Couldn't put the shell in its own process group");
 			exit(EXIT_FAILURE);
 		}
-		/* Grab control of the terminal. */
 		ft_tcsetpgrp (shell_terminal, shell_pgid);
-
-		/* Save default terminal attributes for shell */
 		tcgetattr(shell_terminal, shell_tmodes);
 	}
 }
@@ -235,44 +227,61 @@ void	set_max_as_active(t_job_list *jobs)
 
 	current = jobs->head;
 	active = NULL;
+	prev = NULL;
 	max = 0;
 	while (current)
 	{
-		if (current->pos > max)
+		if (current->pos > max && current->pgid > 0)
 		{
 			max = current->pos;
 			prev = active;
 			active = current;
 		}
+
 		current = current->next;
 	}
 	if (active)
 		active->current = CURRENT_ACTIVE;
 	if (prev)
-		active->current = CURRENT_PREV;
+		prev->current = CURRENT_PREV;
 }
 
-void	set_active_job(t_job_list *jobs, t_job *target)
+t_job		*get_prev_stopped(t_job_list *list)
 {
 	t_job	*current;
-	int		flag;
 
-	flag = 0;
+	current = list->head;
+	while (current)
+	{
+		if (current->current == CURRENT_ACTIVE)
+			return (current);
+		current->current = CURRENT_NONE;
+		current = current->next;
+	}
+	return (NULL);
+}
+
+t_job	*notified_jobs(t_job_list *jobs)
+{
+	t_job *current;
+
 	current = jobs->head;
 	while (current)
 	{
-		if (target && current != target)
-		{
-			if (current->current == CURRENT_ACTIVE)
-			{
-				flag = 1;
-				current->current = CURRENT_PREV;
-			}
-		}else if (target == NULL && current->current == CURRENT_PREV)
-			current->current = CURRENT_ACTIVE;
+		if (current->notified)
+			return (current);
 		current = current->next;
 	}
-	if (!flag)
+	return (NULL);
+}
+
+void	set_active_job2(t_job_list *jobs, t_job *target)
+{
+	t_job	*current;
+
+	if ((current = get_prev_stopped(jobs)) && current != target)
+		current->current = CURRENT_PREV;
+	else if (notified_jobs(jobs) == NULL)
 		set_max_as_active(jobs);
 }
 
@@ -292,11 +301,13 @@ int		is_job_signaled(t_job *j)
 
 void	job_notification(t_job_list *jobs)
 {
-	t_job *current;
+	t_job	*current;
+	int		stopped_once;
 
 	if (jobs == NULL)
 		return ;
 	current = jobs->head;
+	stopped_once = 0;
 	update_status(jobs);
 	while (current)
 	{
@@ -307,17 +318,20 @@ void	job_notification(t_job_list *jobs)
 			current = jobs->head;
 			continue;
 		}
-		else if (is_job_stopped (current) && !current->notified)
+		else if (is_job_stopped(current) && !current->notified)
 		{
-			set_active_job(jobs, current);
 			format_job_info (current);
+			set_active_job2(jobs, current);
 			current->current = CURRENT_ACTIVE;
 			current->notified = 1;
-			current->current = CURRENT_ACTIVE;
 		}
+		if (current->notified)
+			stopped_once = 1;
 		if (current != NULL)
 			current = current->next;
 	}
+	if (!stopped_once)
+		set_max_as_active(jobs);
 }
 
 void	dummy_process(t_job_list *job_list, t_node *node, t_job_kind kind)
@@ -329,14 +343,4 @@ void	dummy_process(t_job_list *job_list, t_node *node, t_job_kind kind)
 	process_push(procs, 0, NULL, node);
 	job_push(job_list, procs, 0);
 	job_list->tail->kind = kind;
-}
-
-void	dumpy_process(t_job_list *job_list, t_node *node)
-{
-	t_list_process *procs;
-
-	procs = (t_list_process *)xmalloc(sizeof(t_list_process));
-	init_process_list(procs);
-	process_push(procs, 0, NULL, node);
-	job_push(job_list, procs, 0);
 }

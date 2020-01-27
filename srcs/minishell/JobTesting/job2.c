@@ -43,7 +43,6 @@ void	job_waiting(t_job_list *job_list, t_job *job)
 void	background_job(t_job *job, int cont)
 {
 	ft_printf_fd(2, "[%d] %lld\n", job->pos, job->pgid);
-	/* Send the job a continue signal, if necessary.  */
 	if (cont)
 		if (kill (-job->pgid, SIGCONT) < 0)
 			ft_printf_fd(2, "kill (SIGCONT)");
@@ -51,21 +50,15 @@ void	background_job(t_job *job, int cont)
 
 void	foreground_job(t_job_list *job_list, t_job *job, int cont)
 {
-	/* Put the job into the foreground.  */
 	ft_tcsetpgrp (shell_terminal, job->pgid);
-
-	/* Send the job a continue signal, if necessary.  */
 	if (cont)
 	{
 		tcsetattr (shell_terminal, TCSADRAIN, &job->tmodes);
 		if (kill (- job->pgid, SIGCONT) < 0)
 			perror ("kill (SIGCONT)");
 	}
-	/* Wait for it to report.  */
 	job_waiting (job_list, job);
-	/* Put the shell back in the foreground.  */
 	ft_tcsetpgrp (shell_terminal, shell_pgid);
-	/* Restore the shell’s terminal modes.  */
 	tcgetattr (shell_terminal, &job->tmodes);
 	tcsetattr (shell_terminal, TCSADRAIN, get_termios());
 }

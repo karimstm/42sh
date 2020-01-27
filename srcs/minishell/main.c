@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/26 19:43:37 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/27 17:42:18 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ void		run_shell2(t_list *blt, t_line *line)
 	get_job_list(jobs);
 	while (read_line(line) == 0)
 	{
+		job_notification(jobs);
 		node = NULL;
 		init_shell();
 		reset_error_num();
@@ -118,14 +119,12 @@ void		run_shell2(t_list *blt, t_line *line)
 		if (ft_str_isnull(new_line) ||
 			(node = start_parsing_command(new_line)) == NULL)
 		{
-			job_notification(jobs);
 			ft_strdel(&new_line);
 			free_line();
 			line = init_line();
 			continue;
 		}
 		execute(jobs, node, line, blt);
-		job_notification(jobs);
 		free_line();
 		line = init_line();
 	}
