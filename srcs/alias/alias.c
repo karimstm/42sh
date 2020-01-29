@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   alias.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 16:16:54 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/03 16:16:55 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/28 17:33:05 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "alias.h"
+#include "shell.h"
 
 void			init_alias(t_alias_list *list)
 {
@@ -26,7 +27,7 @@ void			alias_push(t_alias_list *list, char *alias, char *value)
 	new_alias = (t_alias *)malloc(sizeof(t_alias));
 	new_alias->alias = alias;
 	new_alias->value = value;
-	new_alias->alias_len = strlen(alias);
+	new_alias->alias_len = ft_strlen(alias);
 	new_alias->next = NULL;
 	if (list->node_count == 0 || list->head == NULL)
 		list->head = new_alias;
@@ -56,8 +57,8 @@ char			**split_eq(char *str)
 	const int	len = is_alias_pattern(str);
 
 	list = (char **)malloc(sizeof(char *) * 3);
-	list[0] = strndup(str, len);
-	list[1] = strdup(&str[len + 1]);
+	list[0] = ft_strndup(str, len);
+	list[1] = ft_strdup(&str[len + 1]);
 	list[2] = NULL;
 	return (list);
 }
@@ -77,7 +78,7 @@ void			alias_insert(t_alias_list *list, char *args)
 	if (list && list->head)
 		current = list->head;
 	alias = split_eq(args);
-	len = strlen(alias[0]);
+	len = ft_strlen(alias[0]);
 	while (current)
 	{
 		if (len == current->alias_len && strcmp(alias[0], current->alias) == 0)
@@ -99,7 +100,7 @@ void			alias_insert(t_alias_list *list, char *args)
 t_alias			*alias_find(t_alias_list *list, char *alias)
 {
 	t_alias			*current;
-	const size_t	len = strlen(alias);
+	const size_t	len = ft_strlen(alias);
 
 	current = NULL;
 	if (list && list->head)
@@ -151,7 +152,7 @@ char			*get_alias_value(t_alias_list *list,
 	current = NULL;
 	value = NULL;
 	current = (list && list->head) ? list->head : NULL;
-	len = strlen(alias);
+	len = ft_strlen(alias);
 	init_alias((tmp_list = (t_alias_list *)malloc(sizeof(t_alias_list))));
 	while (current)
 	{
@@ -165,9 +166,9 @@ char			*get_alias_value(t_alias_list *list,
 				break ;
 			}
 			value = current->value;
-			alias_push(tmp_list, strdup(alias), strdup(value));
+			alias_push(tmp_list, ft_strdup(alias), ft_strdup(value));
 			alias = value;
-			len = strlen(alias);
+			len = ft_strlen(alias);
 			current = list->head;
 		}
 		current = current->next;
@@ -181,7 +182,7 @@ void			delete_alias(t_alias_list *list, char *to_find)
 	t_alias			*current;
 	t_alias			*next;
 	t_alias			*prev;
-	const size_t	len = strlen(to_find);
+	const size_t	len = ft_strlen(to_find);
 
 	prev = NULL;
 	current = (list && list->head) ? list->head : NULL;
