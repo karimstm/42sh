@@ -50,7 +50,7 @@ void			execute_process(t_job *job, t_process *process,
 	setup_redirection(process, EXIT_FAILURE);
 	cmd = node_to_char(process->node->spec.simple_command);
 	p_env = env_to_tab(blt_line->line->env);
-	if (ft_lstsearch(blt_line->blt, cmd[0], &check_builtin))
+	if (ft_lstsearch(get_set_blt(NULL), cmd[0], &check_builtin))
 		exit(run_built_in(blt_line, process));
 	else
 		execve(cmd[0], cmd, p_env);
