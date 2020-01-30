@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/30 12:14:13 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 20:12:05 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int						check_builtin(t_list *elem, void *obj);
 void					free_builtin(t_list *lst);
 void					run_builtin(t_list **env, t_list *bltin,
 		t_token *node, int std[2]);
+t_list					*get_set_blt(t_list	*blt);
 
 /*
 **	env.c

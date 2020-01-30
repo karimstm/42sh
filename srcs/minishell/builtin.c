@@ -6,11 +6,20 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/30 12:14:46 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 20:11:40 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+t_list		*get_set_blt(t_list	*blt)
+{
+	static t_list *list = NULL;
+
+	if (blt != NULL)
+		list = blt;
+	return (list);
+}
 
 /*
 **	called from init_builtin,
@@ -27,6 +36,7 @@ static void	add_builtin(t_list **lst, char *cmd, int (*f)())
 	ft_strcpy(elem->cmd, cmd);
 	elem->f = f;
 	ft_lstadd(lst, ft_lstnew(elem, 0));
+	get_set_blt(*lst);
 }
 
 /*

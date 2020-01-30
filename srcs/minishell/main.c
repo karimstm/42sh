@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/30 14:54:36 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 20:09:41 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,6 @@ void		run_shell2(t_list *blt, t_line *line)
 	ft_printf(WRONG_READ);
 	free_line();
 }
-
 
 /*
 **	The Main Function of Minishell
