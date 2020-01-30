@@ -139,6 +139,20 @@ void	free_job(t_job *job)
 	job = NULL;
 }
 
+void	free_job_list(t_job_list *jobs)
+{
+	t_job *job;
+
+	job = jobs->head;
+	while (job)
+	{
+		free_job(job);
+		job = NULL;
+		job = job->next;
+	}
+	free(jobs);
+}
+
 t_job	*find_job(t_job_list *list, t_job *job, t_job **prev)
 {
 	t_job *current;
@@ -169,7 +183,7 @@ void	delete_first(t_job_list *list)
 	}
 	else
 		list->head = first->next;
-	free(first);
+	free_job(first);
 	list->node_count--;
 }
 
@@ -194,7 +208,7 @@ void	delete_last(t_job_list *list)
 		list->tail = current;
 		list->tail->next = NULL;
 	}
-	free(last);
+	free_job(last);
 	list->node_count--;
 }
 
@@ -213,7 +227,7 @@ void	delete_job(t_job_list *list, t_job *target)
 	else
 	{
 		prev->next = current->next;
-		free(current);
+		free_job(current);
 		list->node_count--;
 	}
 }

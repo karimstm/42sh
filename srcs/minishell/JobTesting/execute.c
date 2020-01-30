@@ -45,8 +45,8 @@ void			execute_process(t_job *job, t_process *process,
 	char		**p_env;
 
 	initial_process(job->pgid, job->kind);
-	close(pip[0]);
-	close(pip[1]);
+	(pip[0] != -1) ? close(pip[0]) : 0;
+	(pip[1] != -1) ? close(pip[1]) : 0;
 	setup_redirection(process, EXIT_FAILURE);
 	cmd = node_to_char(process->node->spec.simple_command);
 	p_env = env_to_tab(blt_line->line->env);
@@ -161,8 +161,8 @@ void			sub_shell(t_process *process,
 	init_job_list(jobs);
 	initial_process(getpid(), job->kind);
 	setup_redirection(process, EXIT_FAILURE);
-	close(pip[0]);
-	close(pip[1]);
+	(pip[0] != -1) ? close(pip[0]) : 0;
+	(pip[1] != -1) ? close(pip[1]) : 0;
 	execute_entry(jobs, process->node, blt_line, J_NON_INTERACTIVE);
 	free(jobs);
 	exit(0);
@@ -207,6 +207,8 @@ void			execute_simple_command(t_job_list *job_list,
 	int			tmp[3];
 	int			infile;
 
+	pip[0] = -1;
+	pip[1] = -1;
 	job = job_list->tail;
 	process = (job) ? job->proc_list->head : NULL;
 	set_fds(tmp);

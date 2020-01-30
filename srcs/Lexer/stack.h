@@ -2,6 +2,8 @@
 # define STACK_H
 # include "ast.h"
 
+# define INIT_STACK_SIZE 30
+
 typedef struct		s_stack
 {
 	t_node			**lists;

@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:32:53 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/30 13:48:01 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 14:19:06 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void			reset_error_num(void)
 void			syntax_error(const char *fmt, ...)
 {
 	va_list	args;
-	int		*error;
 
 	va_start(args, fmt);
 	ft_vprintf(2, fmt, &args);
@@ -48,8 +47,7 @@ void			syntax_error(const char *fmt, ...)
 	va_end(args);
 	g_token.kind = TOKEN_EOF;
 	g_line = NULL;
-	error = error_num();
-	*error = 1;
+	set_errno(1);
 }
 
 int				is_ifs(char c)
