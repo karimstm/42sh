@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:32:53 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/26 16:29:42 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 13:48:01 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,14 @@ int				*error_num(void)
 	static int error = 0;
 
 	return (&error);
+}
+
+void			set_errno(int err_num)
+{
+	int		*error;
+
+	error = error_num();
+	*error = err_num;
 }
 
 void			reset_error_num(void)

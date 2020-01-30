@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/09 21:26:42 by zoulhafi          #+#    #+#             */
-/*   Updated: 2019/04/22 11:49:28 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/01/30 12:16:29 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ static int	check_setenv_args(char **args, t_list **lst)
 **	to the list t_list that contains t_env elements.
 */
 
-void		ft_setenv(char **args, t_list **lst)
+int		ft_setenv(char **args, t_list **lst)
 {
 	t_list	*cpy;
 	t_env	*env;
 
 	if (check_setenv_args(args, lst) == -1)
-		return ;
+		return (1);
 	cpy = *lst;
 	while (cpy)
 	{
@@ -82,11 +82,12 @@ void		ft_setenv(char **args, t_list **lst)
 		{
 			free(env->value);
 			env->value = args[1] ? ft_strdup(args[1]) : ft_strdup("");
-			return ;
+			return (0);
 		}
 		cpy = cpy->next;
 	}
 	add_env(lst, args[0], args[1], 1);
+	return (0);
 }
 
 /*
@@ -94,7 +95,7 @@ void		ft_setenv(char **args, t_list **lst)
 **	from the list t_list that contains t_env elements.
 */
 
-void		ft_unsetenv(char **args, t_list **lst)
+int		ft_unsetenv(char **args, t_list **lst)
 {
 	t_list	*cpy;
 	t_list	*previous;
@@ -120,13 +121,14 @@ void		ft_unsetenv(char **args, t_list **lst)
 			cpy = cpy->next;
 		}
 	}
+	return (0);
 }
 
 /*
 **	a builtin command, it prints all environment variables
 */
 
-void		ft_env(char **args, t_list **lst)
+int		ft_env(char **args, t_list **lst)
 {
 	t_list	*cpy;
 	t_env	*env;
@@ -139,4 +141,5 @@ void		ft_env(char **args, t_list **lst)
 		ft_printf("%s=%s\n", env->name, env->value);
 		cpy = cpy->next;
 	}
+	return (0);
 }

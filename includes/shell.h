@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/26 16:25:54 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 12:14:13 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@
 typedef struct			s_builtin
 {
 	char				*cmd;
-	void				(*f)();
+	int					(*f)();
 }						t_builtin;
 
 typedef struct			s_env
@@ -133,12 +133,12 @@ char					*get_env_value(char *name, t_list *lst);
 /*
 **	builtins commands.
 */
-void					ft_cd(char **args, t_list **env);
-void					ft_echo(char **args, t_list **env);
-void					ft_env(char **args, t_list **env);
-void					ft_setenv(char **args, t_list **env);
-void					ft_unsetenv(char **args, t_list **env);
-void					ft_pwd(char **args, t_list **env);
+int						ft_cd(char **args, t_list **env);
+int						ft_echo(char **args, t_list **env);
+int						ft_env(char **args, t_list **env);
+int						ft_setenv(char **args, t_list **env);
+int						ft_unsetenv(char **args, t_list **env);
+int						ft_pwd(char **args, t_list **env);
 
 /*
 **	=============================== READLINE ==================================
@@ -264,12 +264,12 @@ void					execute(t_job_list *job_list, t_node *node, t_line *line, t_list *blt);
 /*
 ** ft_jobs.c
 */
-void					ft_jobs(char **args, t_list **env);
+int						ft_jobs(char **args, t_list **env);
 
 /*
 ** ft_exit.c
 */
-void					ft_exit(char **cmds, t_list **env);
+int						ft_exit(char **cmds, t_list **env);
 
 /*
 **	execute.c

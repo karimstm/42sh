@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 15:52:28 by zoulhafi          #+#    #+#             */
-/*   Updated: 2019/04/22 11:53:35 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/01/30 12:16:57 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 **	otherwise, we have an autorised function getcwd that do the same thing.
 */
 
-void	ft_pwd(char **args, t_list **lst)
+int		ft_pwd(char **args, t_list **lst)
 {
 	t_list		*cpy;
 	t_env		*env;
@@ -34,10 +34,11 @@ void	ft_pwd(char **args, t_list **lst)
 		if (ft_strcmp(env->name, "PWD") == 0)
 		{
 			ft_printf("%s\n", env->value);
-			return ;
+			return (0);
 		}
 		cpy = cpy->next;
 	}
 	ft_printf("%s\n", (pwd = getcwd(NULL, 0)));
 	free(pwd);
+	return (0);
 }

@@ -67,10 +67,8 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 		&& (*(cmds = node_to_char(process->node->spec.simple_command)) != NULL))
 	{
 		bltin = ft_lstsearch(blt_line->blt, cmds[0], &check_builtin);
-		((t_builtin*)bltin->content)->f(cmds + 1, &blt_line->line->env);
+		process->status = ((t_builtin*)bltin->content)->f(cmds + 1, &blt_line->line->env);
 		ft_free_strtab(cmds);
-		process->status = 0; // should be related to the return value of built_in
-		process->completed = 1;
 		return (process->status);
 	}
 	return (1);
