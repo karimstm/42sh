@@ -27,6 +27,8 @@ void		push_to_stack(t_stack *sp, t_node *list)
 	t_node	**tmp;
 	int		i;
 
+	if (list == NULL)
+		return ;
 	i = 0;
 	if (is_overflow(sp))
 	{
@@ -67,10 +69,7 @@ t_node		*pop_stack(t_stack *sp)
 	t_node		*value;
 
 	if (is_underflow(sp))
-	{
-		ft_printf_fd(2, "Stack Underflow\n");
 		return (NULL);
-	}
 	value = sp->lists[sp->top];
 	sp->top--;
 	return (value);

@@ -68,7 +68,7 @@ t_job			*get_job(t_job_list *jobs, int job_number)
 	return (current);
 }
 
-void		ft_fg(char **args, t_list **env)
+int		ft_fg(char **args, t_list **env)
 {
 	t_job		*current;
 	t_job_list	*list;
@@ -77,7 +77,8 @@ void		ft_fg(char **args, t_list **env)
 	(void)env;
 	list = get_job_list(NULL);
 	if ((job_number = get_job_number(args)) == -1)
-		return ;
+		return(1);
 	if ((current = get_job(list, job_number)))
 		continue_job(list, current, 1);
+	return (0);
 }

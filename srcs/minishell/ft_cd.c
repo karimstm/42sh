@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:50:18 by zoulhafi          #+#    #+#             */
-/*   Updated: 2019/04/19 21:13:29 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/01/30 12:15:46 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ static int	check_dir(char *home)
 **	before it makes any change.
 */
 
-void		ft_cd(char **args, t_list **env)
+int			ft_cd(char **args, t_list **env)
 {
 	char		*home;
 	char		*new;
@@ -122,6 +122,10 @@ void		ft_cd(char **args, t_list **env)
 		chdir(home);
 		change_pwd("PWD", env);
 	}
+	else
+		return (1);
+
 	if (new != NULL)
 		free(new);
+	return (0);
 }

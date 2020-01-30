@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/24 15:41:02 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 12:11:59 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,7 @@ int			ft_job_pgid(t_job *job)
 	return (0);
 }
 
-void		ft_jobs(char **args, t_list **env)
+int		ft_jobs(char **args, t_list **env)
 {
 	t_job		*current;
 	t_job_list	*list;
@@ -186,7 +186,7 @@ void		ft_jobs(char **args, t_list **env)
 	list = get_job_list(NULL);
 	flag = 0;
 	if ((flag = parse_args(args)) == 1)
-		return ;
+		return(1) ;
 	current = (list && list->head) ? list->head : NULL;
 	while (current)
 	{
@@ -196,4 +196,5 @@ void		ft_jobs(char **args, t_list **env)
 			ft_job_pgid(current);
 		current = current->next;
 	}
+	return (0);
 }

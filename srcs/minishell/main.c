@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/27 17:42:18 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 14:54:36 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,21 +92,37 @@ static t_node	*start_parsing_command(const char *line)
 	node = NULL;
 	init_stream(line);
 	node = parse_commands();
-	if (g_token.kind != TOKEN_EOF)
+	if (g_token.kind != TOKEN_EOF && !*error_num())
 		unexpected_error();
 	if (*error_num())
 		free_tree(&node);
 	return (node);
 }
 
+void		free_stacked_node(t_stack *sp, t_job_list *jobs)
+{
+	t_node *node;
+
+	node = NULL;
+	if (jobs->node_count == 0)
+	{
+		while (!is_underflow(sp))
+		{
+			node = pop_stack(sp);
+			free_tree(&node);
+		}
+	}
+}
 
 void		run_shell2(t_list *blt, t_line *line)
 {
 	t_node			*node;
 	char			*new_line;
 	t_job_list		*jobs;
+	t_stack			sp;
 
 	jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
+	init_stack(&sp, INIT_STACK_SIZE);
 	init_job_list(jobs);
 	get_job_list(jobs);
 	while (read_line(line) == 0)
@@ -124,10 +140,15 @@ void		run_shell2(t_list *blt, t_line *line)
 			line = init_line();
 			continue;
 		}
+		push_to_stack(&sp, node);
 		execute(jobs, node, line, blt);
+		job_notification(jobs);
+		free_stacked_node(&sp, jobs);
 		free_line();
+		ft_strdel(&new_line);
 		line = init_line();
 	}
+	deallocate(&sp);
 	ft_printf(WRONG_READ);
 	free_line();
 }

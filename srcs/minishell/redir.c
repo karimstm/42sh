@@ -2,7 +2,7 @@
 
 int fd_is_valid(int fd)
 {
-    return (fcntl(fd, F_GETFD) != -1 || errno != EBADF);
+    return (fcntl(fd, F_GETFD) != -1);
 }
 
 int		bad_fd(int fd)

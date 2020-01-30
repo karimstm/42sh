@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:48:01 by zoulhafi          #+#    #+#             */
-/*   Updated: 2019/04/20 15:36:44 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 12:03:23 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **        we should print the new line or not
 */
 
-void		ft_echo(char **args, t_list **env)
+int		ft_echo(char **args, t_list **env)
 {
 	int flag;
 
@@ -38,4 +38,5 @@ void		ft_echo(char **args, t_list **env)
 	}
 	if (!flag)
 		ft_printf("\n");
+	return (0);
 }

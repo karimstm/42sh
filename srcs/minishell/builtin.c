@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/21 15:53:11 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/01/30 12:14:46 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 **	and call ft_lstadd libft function to add this element to the list
 */
 
-static void	add_builtin(t_list **lst, char *cmd, void (*f)())
+static void	add_builtin(t_list **lst, char *cmd, int (*f)())
 {
 	t_builtin	*elem;
 

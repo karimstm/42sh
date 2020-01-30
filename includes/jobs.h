@@ -116,13 +116,13 @@ void			ft_print_node(t_node *node);
 const char		*ft_strsignal(int sig);
 
 void			continue_job(t_job_list *job_list, t_job *j, int foreground);
-void			ft_fg(char **args, t_list **env);
-void			ft_bg(char **args, t_list **env);
+int				ft_fg(char **args, t_list **env);
+int				ft_bg(char **args, t_list **env);
 t_job			*get_job(t_job_list *jobs, int job_number);
 int				get_min_pos(t_job_list *job_list);
 int				ft_tcsetpgrp(int fd, pid_t pgrp_id);
 int				is_job_stopped(t_job *j);
 int				is_job_completed(t_job *j);
 void			set_active_job2(t_job_list *jobs, t_job *target);
-
+void			free_job_list(t_job_list *jobs);
 #endif
