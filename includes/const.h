@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/25 11:31:51 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/02 12:45:43 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,4 +90,6 @@
 # define RIGHT(node) node->spec.sep_op_command->right
 # define LEFT_A(node) node->spec.and_or_command->left
 # define RIGHT_A(node) node->spec.and_or_command->right
+# define SIMPLE_CMD(node) node->spec.simple_command
+# define CTR_C_ERROR 100
 #endif

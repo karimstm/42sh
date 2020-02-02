@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 13:10:15 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/29 16:31:43 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/02 12:59:26 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,10 @@
 
 void	sig_handler(int sig)
 {
-	t_line	*line;
-
-	(void)sig;
-	line = get_t_line();
-	go_end(line);
-	ft_printf("\n");
-	ft_printf(MSG);
-	free_line();
-	line = init_line();
-	if (line->print_msg)
-		line->print_msg = 1;
+	ft_printf("\n"); // Move to a new line
+    (void)sig;
+	// We need to clear the readline buffer here
+	// nad redisplay a new prompt
 }
 
 void		child_handler(int sig)

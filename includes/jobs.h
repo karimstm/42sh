@@ -18,19 +18,21 @@ pid_t		shell_pgid;
 int			shell_terminal;
 
 
-/* A process is a single process.  */
+/*
+** A process is a single process.
+*/
 typedef struct 	s_process
 {
-	struct s_process *next;       /* next process in pipeline */
+	struct s_process *next;
 	char **argv;                /* for exec */
 	char *command;				/* command name it could be somethign *
 								* like this (ls -la && echo karim)*/
 	t_node *node;				/* for exec */
-	pid_t pid;                  /* process ID */
-	char completed;             /* true if process has completed */
-	char stopped;               /* true if process has stopped */
+	pid_t pid;					/* process ID */
+	char completed;				/* true if process has completed */
+	char stopped;				/* true if process has stopped */
 	char signaled;				/* true if process has stopped due to a signal */
-	int status;                 /* reported status value */
+	int status;					/* reported status value */
 }				t_process;
 
 
@@ -56,23 +58,26 @@ typedef enum	e_job_current
 	CURRENT_PREV			/* - */
 }				t_job_current;
 
-/* A job is a pipeline of processes.  */
+/*
+** A job is a pipeline of processes.
+** Think of a job as a group with a pipeline of processes
+** Fortunatly I don't have to deal with sessions in here `sid`
+** notified: true if user told about stopped job
+** kind: JOB_KIND J_NOTIFIED, J_FOREGROUND, J_BACKGROUND
+*/
 typedef struct s_job
 {
-	struct				s_job *next;           /* next active job */
-	char				*command;              /* command line, used for messages */
-	t_list_process		*proc_list;     /* list of processes in this job */
-	t_list				*env;				/* environment */
-	pid_t				pgid;                 /* process group ID */
-	pid_t				sid;				/* Process session ID */
+	struct				s_job *next;
+	char				*command;
+	t_list_process		*proc_list;
+	t_list				*env;
+	pid_t				pgid;
+	pid_t				sid;
 	int					pos;
 	t_job_current		current;
-	char 				notified;              /* true if user told about stopped job */
-	struct termios		tmodes;      /* saved terminal modes */
-	t_job_kind			kind;		/* JOB_KIND J_NOTIFIED, J_FOREGROUND, J_BACKGROUND */
-	int					stdin;
-	int					stdout;
-	int					stderr;  /* standard i/o channels */
+	char 				notified;
+	struct termios		tmodes;
+	t_job_kind			kind;
 }				t_job;
 
 typedef struct	s_job_list
@@ -83,13 +88,8 @@ typedef struct	s_job_list
 	int		node_count;
 }				t_job_list;
 
-// Should not be here
 
-t_job_list jobs;
 
-/*
-**
-*/
 void			process_push(t_list_process *list, pid_t pid, char **args, t_node *node);
 void			init_process_list(t_list_process *p);
 void			job_push(t_job_list *jobs, t_list_process *p, pid_t pgid);
