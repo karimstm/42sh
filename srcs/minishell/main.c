@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/30 20:09:41 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/01 14:48:01 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,32 +125,26 @@ void		run_shell2(t_list *blt, t_line *line)
 	init_stack(&sp, INIT_STACK_SIZE);
 	init_job_list(jobs);
 	get_job_list(jobs);
-	while (read_line(line) == 0)
+	while ((new_line = readline(MSG)))
 	{
 		job_notification(jobs);
 		node = NULL;
 		init_shell();
 		reset_error_num();
-		new_line = ft_strdup(line->command);
 		if (ft_str_isnull(new_line) ||
 			(node = start_parsing_command(new_line)) == NULL)
 		{
-			ft_strdel(&new_line);
-			free_line();
-			line = init_line();
+			ft_strdel((char **)&g_token.line);
 			continue;
 		}
 		push_to_stack(&sp, node);
 		execute(jobs, node, line, blt);
 		job_notification(jobs);
 		free_stacked_node(&sp, jobs);
-		free_line();
-		ft_strdel(&new_line);
-		line = init_line();
+		ft_strdel((char **)&g_token.line);
 	}
 	deallocate(&sp);
 	ft_printf(WRONG_READ);
-	free_line();
 }
 
 /*

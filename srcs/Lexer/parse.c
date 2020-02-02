@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/30 13:55:16 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/02 14:53:29 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,16 +157,6 @@ t_redirection				*parse_redirection(void)
 	return (head);
 }
 
-t_list_simple_command		*parse_list_cmd(void)
-{
-	t_list_simple_command *list;
-
-	list = NULL;
-	if (g_token.kind == TOKEN_WORD)
-		list = parse_word_cmd();
-	return (list);
-}
-
 void						node_is_word_or_redirection(
 								t_list_simple_command *list,
 								t_redirection *tmp, t_redirection *redir)
@@ -181,6 +171,10 @@ void						node_is_word_or_redirection(
 		redir = tmp;
 	}
 }
+
+/*
+** Parse compound command or as known as  grouping commands
+*/
 
 void						compound_command(t_node **node,
 								t_redirection *redir)
@@ -238,6 +232,8 @@ t_node						*parse_sep_cmd(t_token_kind kind, t_node *left)
 	t_sep_op		*sep_cmd;
 	t_node			*node;
 
+	if (*error_num() || left == NULL)
+		return (left);
 	sep_cmd = NULL;
 	node = NULL;
 	escape_space();
@@ -254,6 +250,8 @@ t_node						*parse_pipe(t_token_kind kind, t_node *left)
 	t_and_or	*pipe;
 
 	second_node = left;
+	if (*error_num() || second_node == NULL)
+		return (second_node);
 	while (g_token.kind == '|')
 	{
 		escape_space();
@@ -275,9 +273,9 @@ t_node						*parse_pipe_and(void)
 {
 	t_node *node;
 
-	if (*error_num())
-		return (NULL);
 	node = init_parse_initial();
+	if (*error_num() || node == NULL)
+		return (node);
 	if (g_token.kind == '|')
 		return (parse_pipe(g_token.kind, node));
 	return (node);
@@ -286,15 +284,13 @@ t_node						*parse_pipe_and(void)
 
 t_node						*parse_and_or(void)
 {
-	t_node			*node;
 	t_node			*second_node;
 	t_and_or		*and_or_cmd;
 	t_token_kind	kind;
 
-	if (*error_num())
-		return (NULL);
-	node = parse_pipe_and();
-	second_node = node;
+	second_node = parse_pipe_and();
+	if (*error_num() || second_node == NULL)
+		return (second_node);
 	while (g_token.kind == TOKEN_AND_IF || g_token.kind == TOKEN_OR_IF)
 	{
 		kind = g_token.kind;
@@ -314,9 +310,9 @@ t_node						*parse_commands(void)
 {
 	t_node *node;
 
-	if (*error_num())
-		return (NULL);
 	node = parse_and_or();
+	if (*error_num() || node == NULL)
+		return (node);
 	if (node && !*error_num() && (g_token.kind == ';' || g_token.kind == '&'))
 		return (parse_sep_cmd(g_token.kind, node));
 	return (node);

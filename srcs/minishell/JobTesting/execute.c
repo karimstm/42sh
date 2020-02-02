@@ -44,15 +44,19 @@ void			execute_process(t_job *job, t_process *process,
 	char		**cmd;
 	char		**p_env;
 
+	cmd = NULL;
 	initial_process(job->pgid, job->kind);
 	(pip[0] != -1) ? close(pip[0]) : 0;
 	(pip[1] != -1) ? close(pip[1]) : 0;
 	setup_redirection(process, EXIT_FAILURE);
-	cmd = node_to_char(process->node->spec.simple_command);
+	if (SIMPLE_CMD(process->node) && SIMPLE_CMD(process->node)->node_count)
+		cmd = node_to_char(SIMPLE_CMD(process->node));
+	else
+		exit(EXIT_SUCCESS);
 	p_env = env_to_tab(blt_line->line->env);
 	if (ft_lstsearch(get_set_blt(NULL), cmd[0], &check_builtin))
 		exit(run_built_in(blt_line, process));
-	else
+	else if (cmd)
 		execve(cmd[0], cmd, p_env);
 	exit(EXIT_FAILURE);
 }
