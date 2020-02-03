@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/01 14:48:01 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/03 14:09:44 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ static t_node	*start_parsing_command(const char *line)
 	node = NULL;
 	init_stream(line);
 	node = parse_commands();
-	if (g_token.kind != TOKEN_EOF && !*error_num())
+	if (g_token.kind != TOKEN_EOF && !ERRNO)
 		unexpected_error();
-	if (*error_num())
+	if (ERRNO)
 		free_tree(&node);
 	return (node);
 }

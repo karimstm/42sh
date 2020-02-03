@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/02 12:51:42 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/03 17:20:25 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -285,4 +285,9 @@ int						run_built_in(t_blt_line *blt_line, t_process *process);
 */
 
 char					*quote_stripping(char *str);
+
+/*
+**	fds.c
+*/
+int						dup3(int oldfd);
 #endif

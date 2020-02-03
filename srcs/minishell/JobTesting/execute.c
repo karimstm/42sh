@@ -119,9 +119,9 @@ void			job_forwarding(t_job_list *job_list, t_job *job)
 
 void			set_fds(int tmp_stds[3])
 {
-	tmp_stds[0] = dup2(0, 100);
-	tmp_stds[1] = dup2(1, 101);
-	tmp_stds[2] = dup2(2, 102);
+	tmp_stds[0] = dup3(0);
+	tmp_stds[1] = dup3(1);
+	tmp_stds[2] = dup3(2);
 }
 
 void			check_pipe_and_dup(t_process *process,
@@ -210,13 +210,12 @@ void			execute_simple_command(t_job_list *job_list,
 	int			pip[2];
 	int			tmp[3];
 	int			infile;
-
 	pip[0] = -1;
 	pip[1] = -1;
 	job = job_list->tail;
 	process = (job) ? job->proc_list->head : NULL;
 	set_fds(tmp);
-	infile = dup2(0, 103);
+	infile = dup3(0);
 	while (process)
 	{
 		check_pipe_and_dup(process, &infile, tmp, pip);
@@ -332,7 +331,6 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 							t_blt_line *blt_line, t_job_kind kind)
 {
 	int		tmp[3];
-
 	if (node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 	{
 		set_fds(tmp);

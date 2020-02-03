@@ -94,3 +94,6 @@ ech: Command not dfound$
 
 ls || (&&)
 ls && ||
+
+
+((ls -la && echo karim) && (ls -la || echo ahmed)) > file
