@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/02 14:53:29 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/03 14:08:29 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 int							is_valid_token(t_token_kind kind)
 {
 	if (kind == TOKEN_WORD || kind == TOKEN_ASSIGNMENT_WORD
-		|| redirect_name(kind))
+		|| redirect_name(kind) || kind == '(' || kind == TOKEN_LBRACE)
 		return (1);
 	return (0);
 }
 
 void						unexpected_error(void)
 {
-	if (!*error_num())
+	if (!ERRNO)
 		syntax_error("syntax error near unexpected token");
 }
 
@@ -85,7 +85,7 @@ t_list_simple_command		*parse_word_cmd(void)
 {
 	t_list_simple_command *list;
 
-	if (*error_num())
+	if (ERRNO)
 		return (NULL);
 	list = NULL;
 	if (g_token.kind == TOKEN_WORD || g_token.kind == TOKEN_ASSIGNMENT_WORD)
@@ -184,7 +184,7 @@ void						compound_command(t_node **node,
 	kind = g_token.kind;
 	escape_space();
 	*node = parse_commands();
-	if (*node == NULL || *error_num())
+	if (*node == NULL || ERRNO)
 		return (unexpected_error());
 	(*node)->goup_kind = grouping_kind(kind);
 	if ((kind == '(' && is_token(')'))
@@ -232,7 +232,7 @@ t_node						*parse_sep_cmd(t_token_kind kind, t_node *left)
 	t_sep_op		*sep_cmd;
 	t_node			*node;
 
-	if (*error_num() || left == NULL)
+	if (ERRNO || left == NULL)
 		return (left);
 	sep_cmd = NULL;
 	node = NULL;
@@ -250,7 +250,7 @@ t_node						*parse_pipe(t_token_kind kind, t_node *left)
 	t_and_or	*pipe;
 
 	second_node = left;
-	if (*error_num() || second_node == NULL)
+	if (ERRNO || second_node == NULL)
 		return (second_node);
 	while (g_token.kind == '|')
 	{
@@ -274,7 +274,7 @@ t_node						*parse_pipe_and(void)
 	t_node *node;
 
 	node = init_parse_initial();
-	if (*error_num() || node == NULL)
+	if (ERRNO || node == NULL)
 		return (node);
 	if (g_token.kind == '|')
 		return (parse_pipe(g_token.kind, node));
@@ -289,7 +289,7 @@ t_node						*parse_and_or(void)
 	t_token_kind	kind;
 
 	second_node = parse_pipe_and();
-	if (*error_num() || second_node == NULL)
+	if (ERRNO || second_node == NULL)
 		return (second_node);
 	while (g_token.kind == TOKEN_AND_IF || g_token.kind == TOKEN_OR_IF)
 	{
@@ -297,7 +297,7 @@ t_node						*parse_and_or(void)
 		escape_space();
 		if (g_token.kind == TOKEN_EOF)
 			eol_continuation();
-		if (!(is_token(TOKEN_WORD) || is_token(TOKEN_ASSIGNMENT_WORD)))
+		if (!is_valid_token(g_token.kind))
 			unexpected_error();
 		and_or_cmd = and_or_commands(kind, second_node, parse_pipe_and());
 		second_node = command_node(NODE_AND_OR);
@@ -311,9 +311,9 @@ t_node						*parse_commands(void)
 	t_node *node;
 
 	node = parse_and_or();
-	if (*error_num() || node == NULL)
+	if (ERRNO || node == NULL)
 		return (node);
-	if (node && !*error_num() && (g_token.kind == ';' || g_token.kind == '&'))
+	if (node && !ERRNO && (g_token.kind == ';' || g_token.kind == '&'))
 		return (parse_sep_cmd(g_token.kind, node));
 	return (node);
 }

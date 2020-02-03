@@ -6,12 +6,15 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:48:13 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/30 13:47:59 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/03 14:12:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PARSE_H
 # define PARSE_H
+
+
+# define ERRNO (*error_num())
 
 void			test_parse();
 t_node			*parse_commands();

@@ -7,7 +7,7 @@ LIB = libft
 BUILT = builtin
 LEXINC = srcs/Lexer/
 
-SRC_MIN = $(patsubst %.c, $(SRC)/minishell/%.c, builtin.c env.c errors.c fork.c free.c ft_cd.c ft_echo.c ft_env.c ft_pwd.c main.c shell.c exec.c redir.c job.c jobs_list.c exec2.c JobTesting/execute.c JobTesting/job2.c JobTesting/ft_jobs.c JobTesting/ft_fg.c JobTesting/ft_bg.c)
+SRC_MIN = $(patsubst %.c, $(SRC)/minishell/%.c, fds.c builtin.c env.c errors.c fork.c free.c ft_cd.c ft_echo.c ft_env.c ft_pwd.c main.c shell.c exec.c redir.c job.c jobs_list.c exec2.c JobTesting/execute.c JobTesting/job2.c JobTesting/ft_jobs.c JobTesting/ft_fg.c JobTesting/ft_bg.c)
 SRC_QUO = $(patsubst %.c, $(SRC)/quotes/%.c, error.c free_string.c is_number.c list.c quote.c quote2.c spliter.c string.c til_dol.c util.c)
 SRC_REA = $(patsubst %.c, $(SRC)/readline/%.c, copy.c cursor.c cursor2.c cursor3.c cursor4.c edit_line.c handlers.c history.c line.c paste.c read_line.c terms.c)
 SRC_RED = $(patsubst %.c, $(SRC)/redirection/%.c, left_redirect.c parsing.c right_redirect.c)
