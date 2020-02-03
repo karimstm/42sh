@@ -11,12 +11,7 @@ char		*quote_stripping(char *str)
 	while (*tmp)
 	{
 		if (*tmp == '\\')
-		{
 			tmp++;
-			if (*tmp)
-				tmp++;
-			continue;
-		}
 		else if (*tmp == '"' || *tmp == '\'')
 			tmp++;
 		else if (*tmp)

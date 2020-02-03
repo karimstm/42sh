@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/03 14:08:29 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/03 17:26:48 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,8 @@ void						compound_command(t_node **node,
 		while (redirect_name(g_token.kind))
 			redir = parse_redirection();
 		(*node)->redir = redir;
-	}
+	}else
+		unexpected_error();
 }
 
 void						simple_node(t_node **node,
