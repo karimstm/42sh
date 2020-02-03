@@ -6,3 +6,20 @@ shift_expr: arith_expr (('<<'|'>>') arith_expr)*
 arith_expr: term (('+'|'-') term)*
 term: factor (('*'|'@'|'/'|'%'|'//') factor)*
 factor: ('+'|'-'|'~') factor | power
+
+========================================================
+
+LSHIFT <<
+RSHIFT >>
+
+operand_expr =	INT
+				| FLOAT (We are not interested in this one)
+
+base_expr = operand_expr ('(' expr_list ')' | '[' expr ']' | '.' NAME)*
+unary_expr = [+-~!&*] unary_expr
+			| base_expr
+mul_op = [*/%&] | LSHIFT | RSHIFT
+mul_expr = unary_expr (mul_op unary_expr)*
+add_op = [+-|^]
+add_expr = mul_expr (add_op mul_expr)*
+expr = add_expr
