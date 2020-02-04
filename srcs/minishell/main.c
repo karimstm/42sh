@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/03 18:48:17 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 18:40:16 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static t_node	*start_parsing_command(const char *line)
 		unexpected_error();
 	if (ERRNO)
 		free_tree(&node);
-	ERRNO = 0;
 	return (node);
 }
 
@@ -128,6 +127,7 @@ void		run_shell2(t_list *blt, t_line *line)
 	get_job_list(jobs);
 	while ((new_line = readline(MSG)))
 	{
+		ERRNO = 0;
 		job_notification(jobs);
 		node = NULL;
 		init_shell();
@@ -147,6 +147,17 @@ void		run_shell2(t_list *blt, t_line *line)
 	ft_printf(WRONG_READ);
 }
 
+void    ft_printenv()
+{
+    t_variables *cur;
+
+    cur = env2->head;
+    while (cur)
+    {
+        ft_printf("%d /// %s=%s\n",cur->is_exported, cur->key, cur->value);
+        cur = cur->next;
+    }
+}
 /*
 **	The Main Function of Minishell
 **	it initiates the builtins and environment lists,
@@ -168,6 +179,7 @@ int				main(int ac, char **av, char **ev)
 	history = NULL;
 	signals();
 	init_env(&env, ev);
+	ft_init_env(ev);
 	init_builtin(&blt);
 	init_shell();
 	new_line = init_line();

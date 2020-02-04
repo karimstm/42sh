@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/30 20:11:40 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 18:39:13 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,13 @@ void		init_builtin(t_list **lst)
 	add_builtin(lst, "cd", &ft_cd);
 	add_builtin(lst, "env", &ft_env);
 	add_builtin(lst, "pwd", &ft_pwd);
-	add_builtin(lst, "setenv", &ft_setenv);
-	add_builtin(lst, "unsetenv", &ft_unsetenv);
+	add_builtin(lst, "set", &ft_set);
+	add_builtin(lst, "unset", &ft_unset);
 	add_builtin(lst, "jobs", &ft_jobs);
 	add_builtin(lst, "exit", &ft_exit);
 	add_builtin(lst, "fg", &ft_fg);
 	add_builtin(lst, "bg", &ft_bg);
+	add_builtin(lst, "export", &ft_export);
 }
 
 /*

@@ -1,11 +1,10 @@
 
 #include "shell.h"
 
-int	ft_exit(char **cmds, t_list **env)
+int	ft_exit(char **cmds)
 {
 	int status;
 
-	(void)env;
 	status = 0;
 	if (cmds[0] && cmds[1])
 	{

@@ -68,13 +68,12 @@ t_job			*get_job(t_job_list *jobs, int job_number)
 	return (current);
 }
 
-int		ft_fg(char **args, t_list **env)
+int		ft_fg(char **args)
 {
 	t_job		*current;
 	t_job_list	*list;
 	int			job_number;
 
-	(void)env;
 	list = get_job_list(NULL);
 	if ((job_number = get_job_number(args)) == -1)
 		return(1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_jobs.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/30 12:11:59 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 15:32:00 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,13 +176,12 @@ int			ft_job_pgid(t_job *job)
 	return (0);
 }
 
-int		ft_jobs(char **args, t_list **env)
+int		ft_jobs(char **args)
 {
 	t_job		*current;
 	t_job_list	*list;
 	int			flag;
 
-	(void)env;
 	list = get_job_list(NULL);
 	flag = 0;
 	if ((flag = parse_args(args)) == 1)

@@ -116,8 +116,8 @@ void			ft_print_node(t_node *node);
 const char		*ft_strsignal(int sig);
 
 void			continue_job(t_job_list *job_list, t_job *j, int foreground);
-int				ft_fg(char **args, t_list **env);
-int				ft_bg(char **args, t_list **env);
+int				ft_fg(char **args);
+int				ft_bg(char **args);
 t_job			*get_job(t_job_list *jobs, int job_number);
 int				get_min_pos(t_job_list *job_list);
 int				ft_tcsetpgrp(int fd, pid_t pgrp_id);
