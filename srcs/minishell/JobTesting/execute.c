@@ -53,7 +53,7 @@ void			execute_process(t_job *job, t_process *process,
 		cmd = node_to_char(SIMPLE_CMD(process->node));
 	else
 		exit(EXIT_SUCCESS);
-	p_env = env_to_tab(blt_line->line->env);
+	p_env = get_tab_env();
 	if (ft_lstsearch(get_set_blt(NULL), cmd[0], &check_builtin))
 		exit(run_built_in(blt_line, process));
 	else if (cmd)
@@ -71,30 +71,46 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 		&& (*(cmds = node_to_char(process->node->spec.simple_command)) != NULL))
 	{
 		bltin = ft_lstsearch(blt_line->blt, cmds[0], &check_builtin);
-		process->status = ((t_builtin*)bltin->content)->f(cmds + 1, &blt_line->line->env);
+		process->status = ((t_builtin*)bltin->content)->f(cmds + 1);
 		ft_free_strtab(cmds);
 		return (process->status);
 	}
 	return (1);
 }
 
-int				cmd_type(t_process *p, t_list *blt, t_list *env)
+char			*get_command_name(t_process *p)
+{
+	char				*name;
+	t_simple_command	*current;
+
+	name = NULL;
+	current = NULL;
+	if (p->node && p->node->spec.simple_command)
+		current = p->node->spec.simple_command->head;
+	while (current)
+	{
+		if (current->kind == TOKEN_WORD)
+			return (current->name);
+		current = current->next;
+	}
+	return (name);
+}
+
+int				cmd_type(t_process *p, t_list *blt)
 {
 	char	*path;
 	char	*name;
 
 	if (p->node->kind != NODE_SIMPLE_COMMAND)
 		return (0);
-	name = (p->node && p->node->spec.simple_command
-				&& p->node->spec.simple_command->head)
-				? p->node->spec.simple_command->head->name : NULL;
+	name = get_command_name(p);
 	if (name == NULL)
 		return (1);
 	if (ft_strchr(name, '/'))
 		return (PATH_COMMAND);
 	else if (ft_lstsearch(blt, name, &check_builtin))
 		return (BUILT_IN);
-	else if ((path = working_path(env, name)) == NULL)
+	else if ((path = working_path(name)) == NULL)
 	{
 		p->status = 127;
 		return (0);
@@ -119,9 +135,9 @@ void			job_forwarding(t_job_list *job_list, t_job *job)
 
 void			set_fds(int tmp_stds[3])
 {
-	tmp_stds[0] = dup(0);
-	tmp_stds[1] = dup(1);
-	tmp_stds[2] = dup(2);
+	tmp_stds[0] = dup3(0);
+	tmp_stds[1] = dup3(1);
+	tmp_stds[2] = dup3(2);
 }
 
 void			check_pipe_and_dup(t_process *process,
@@ -215,11 +231,11 @@ void			execute_simple_command(t_job_list *job_list,
 	job = job_list->tail;
 	process = (job) ? job->proc_list->head : NULL;
 	set_fds(tmp);
-	infile = dup(0);
+	infile = dup3(0);
 	while (process)
 	{
 		check_pipe_and_dup(process, &infile, tmp, pip);
-		if (cmd_type(process, blt_line->blt, blt_line->line->env) == BUILT_IN
+		if (cmd_type(process, blt_line->blt) == BUILT_IN
 			&& job->proc_list->node_count == 1 && job->kind == J_FOREGROUND)
 		{
 			if(setup_redirection(process, 0))
@@ -237,20 +253,28 @@ void			execute_simple_command(t_job_list *job_list,
 	job_forwarding(job_list, job);
 }
 
+/*
+** I changed J_NON_INTERACTIVE TO J_FOREGROUND
+** STILL I DON'T KNOW WHY I USED NON INTERACTIVE MODE HERE
+** thus I used kind = getpid() != shell_pgid ? J_NON_INTERACTIVE : J_FOREGROUND
+*/
 void			seperator_handling(t_job_list *job_list,
 								t_node *node, t_blt_line *blt_line)
 {
+	t_job_kind kind;
+
+	kind = getpid() != shell_pgid ? J_NON_INTERACTIVE : J_FOREGROUND;
 	if (LEFT(node))
 	{
 		if (node->spec.sep_op_command->kind == ';')
-			execute_entry(job_list, LEFT(node), blt_line, J_NON_INTERACTIVE);
+			execute_entry(job_list, LEFT(node), blt_line, kind);
 		else if (node->spec.sep_op_command->kind == '&')
 			execute_entry(job_list, LEFT(node), blt_line, J_BACKGROUND);
 	}
 	if (RIGHT(node))
 	{
 		if (node->spec.sep_op_command->kind == ';')
-			execute_entry(job_list, RIGHT(node), blt_line, J_NON_INTERACTIVE);
+			execute_entry(job_list, RIGHT(node), blt_line, kind);
 		else if (node->spec.sep_op_command->kind == '&')
 			execute_entry(job_list, RIGHT(node), blt_line, J_BACKGROUND);
 	}

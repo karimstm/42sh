@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:50:18 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/04 15:38:25 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/05 10:06:04 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void	change_pwd(char *pwd)
 	}
 	new_home = NULL;
 	variable_push(pwd, getcwd(new_home, 0), 1);
-	free(new_home);
+	ft_strdel(&new_home);
 }
 
 /*

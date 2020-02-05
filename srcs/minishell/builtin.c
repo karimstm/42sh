@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/04 18:39:13 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/05 10:31:01 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,34 +91,4 @@ void		free_builtin(t_list *lst)
 		lst = lst->next;
 		free(previous);
 	}
-}
-
-/*
-** Running a builtin command
-*/
-
-void		run_builtin(t_list **env, t_list *bltin, t_token *node, int std[2])
-{
-	char	**cmds;
-	char	status;
-	int		tmp[3];
-	int		fd_backup;
-
-	tmp[0] = dup(0);
-	tmp[1] = dup(1);
-	tmp[2] = dup(2);
-	dup2(std[0], 0);
-	dup2(std[1], 1);
-	fd_backup = -1;
-	if ((status = handle_redirection(node, &fd_backup)) == 0 &&
-			bltin && (*(cmds = list_to_chars(node)) != NULL))
-	{
-		((t_builtin*)bltin->content)->f(cmds + 1, env);
-		ft_free_strtab(cmds);
-	}
-	else
-		handle_errors(status, 0);
-	if (fd_backup != -1 && fd_backup != -3)
-		close(fd_backup);
-	restore_std(tmp);
 }

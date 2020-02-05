@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:53:09 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/24 16:08:46 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 09:30:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,13 @@ void				print_redir(t_redirection *list)
 	current = list;
 	while (current)
 	{
-		ft_printf("(%s) %d %d ",\
-				redirect_name(current->kind), current->fd1, current->fd2);
+		if(current->fd1 >= 0)
+			ft_printf("%d", current->fd1);
+		ft_printf("%s", redirect_name(current->kind));
+		if (current->word)
+			ft_printf("%s", current->word);
+		else
+			ft_printf("%d", current->fd2);
 		current = current->next;
 	}
 }

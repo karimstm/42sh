@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_jobs.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/04 15:32:00 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/05 09:20:33 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void	ft_print_node(t_node *node)
 			ft_printf(" ");
 			print_list_tokens(node->spec.simple_command);
 		}
+		print_redir(node->redir);
 	}
 }
 

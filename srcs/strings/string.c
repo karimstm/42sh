@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   string.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/29 16:12:36 by amoutik           #+#    #+#             */
-/*   Updated: 2019/05/07 09:48:45 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 10:33:17 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "quote.h"
+#include "shell.h"
 
 void				new_string(t_string *str)
 {
@@ -54,15 +54,4 @@ char				space(char c)
 		return ('\b');
 	else
 		return (0);
-}
-
-int					insert_token(t_token_list *list,
-		t_string *str, enum e_token_type type)
-{
-	if (str->len)
-	{
-		push_token(list, ft_strdup(str->string), type);
-		new_string(str);
-	}
-	return (1);
 }

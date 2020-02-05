@@ -26,13 +26,15 @@ char			**node_to_char(t_list_simple_command *command)
 	return (cmds);
 }
 
-char			*working_path(t_list *env, char *cmd)
+char			*working_path(char *cmd)
 {
-	char	**all_paths;
-	char	**tmp;
-	char	*full_path;
+	char		**all_paths;
+	char		**tmp;
+	t_variables	*var;
+	char		*full_path;
 
-	all_paths = get_path(env);
+	var = get_var("PATH");
+	all_paths = var ? ft_strsplit(var->value, ':') : NULL;
 	tmp = all_paths;
 	full_path = NULL;
 	while (*tmp)
@@ -63,24 +65,6 @@ int				exec_builin(t_list *env, t_list *blt, t_node *node)
 	}
 	return (0);
 }
-
-
-t_node			*pipe_to_stack(t_node *node, t_stack *stack)
-{
-	if (node)
-	{
-		if (node->kind == NODE_PIPE)
-		{
-			if (node->spec.and_or_command->left)
-				pipe_to_stack(node->spec.and_or_command->left, stack);
-			if (node->spec.and_or_command->right)
-				pipe_to_stack(node->spec.and_or_command->right, stack);
-		} else
-			push_to_stack(stack, node);
-	}
-	return (node);
-}
-
 
 int		execute_redirection(t_redirection *list)
 {

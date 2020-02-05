@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/04 19:43:03 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/05 10:47:34 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 # include "const.h"
 # include "libft.h"
 # include "quote.h"
-# include "redirection.h"
 # include "ast.h"
 # include "stack.h"
 # include "parse.h"
@@ -41,12 +40,6 @@ typedef struct			s_builtin
 	char				*cmd;
 	int					(*f)();
 }						t_builtin;
-
-typedef struct			s_env
-{
-	char				*name;
-	char				*value;
-}						t_env;
 
 typedef struct			s_line
 {
@@ -103,15 +96,8 @@ void					restore_std(int std[3]);
 /*
 **	shell.c
 */
-void					shell(t_list *blt, t_list **env, t_token_list *tokens);
 int						is_directory(const char *path);
 
-/*
-** fork.c
-*/
-void					handle_errors(char status, char exit_flag);
-void					forkit(char *path, t_list **env, t_token *token,
-		int pipe[2]);
 
 /*
 **	builtin.c
@@ -119,24 +105,8 @@ void					forkit(char *path, t_list **env, t_token *token,
 void					init_builtin(t_list **lst);
 int						check_builtin(t_list *elem, void *obj);
 void					free_builtin(t_list *lst);
-void					run_builtin(t_list **env, t_list *bltin,
-		t_token *node, int std[2]);
 t_list					*get_set_blt(t_list	*blt);
 
-/*
-**	env.c
-*/
-char					**get_path(t_list *env);
-void					add_env(t_list **lst, char *name, char *value, int end);
-void					init_env(t_list **lst, char **env);
-char					**env_to_tab(t_list *lst);
-void					free_env(t_list *lst);
-
-/*
-**	errors.c
-*/
-void					print_error(char *error);
-void					run_redirection_with_errors(char *error, t_token *node, int std[2]);
 
 /*
 **	free.c
@@ -145,10 +115,6 @@ void					free_exec_cmd(char *error, char *full_path,
 		char **head_path);
 void					free_elem_env(t_list *elem);
 
-/*
-**	ft_env.c
-*/
-char					*get_env_value(char *name, t_list *lst);
 
 /*
 **	builtins commands.
@@ -258,7 +224,7 @@ int						init_terms(void);
 
 int						execute_cmd(t_node *node, t_list *blt, t_line *line, t_job_kind kind, t_list_process *p);
 char					**node_to_char(t_list_simple_command *command);
-char					*working_path(t_list *env, char *cmd);
+char					*working_path(char *cmd);
 t_job_list				*start_exec(t_node *node, t_list *env);
 int						execute_redirection(t_redirection *list);
 
