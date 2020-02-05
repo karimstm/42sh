@@ -119,9 +119,9 @@ void			job_forwarding(t_job_list *job_list, t_job *job)
 
 void			set_fds(int tmp_stds[3])
 {
-	tmp_stds[0] = dup3(0);
-	tmp_stds[1] = dup3(1);
-	tmp_stds[2] = dup3(2);
+	tmp_stds[0] = dup(0);
+	tmp_stds[1] = dup(1);
+	tmp_stds[2] = dup(2);
 }
 
 void			check_pipe_and_dup(t_process *process,
@@ -215,7 +215,7 @@ void			execute_simple_command(t_job_list *job_list,
 	job = job_list->tail;
 	process = (job) ? job->proc_list->head : NULL;
 	set_fds(tmp);
-	infile = dup3(0);
+	infile = dup(0);
 	while (process)
 	{
 		check_pipe_and_dup(process, &infile, tmp, pip);

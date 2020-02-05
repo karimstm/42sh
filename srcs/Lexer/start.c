@@ -6,13 +6,11 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:32:53 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/03 18:49:15 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 13:24:10 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lex.h"
-#include "parse.h"
-#include "libft.h"
+#include "shell.h"
 
 int				*error_num(void)
 {
@@ -31,7 +29,7 @@ void			syntax_error(const char *fmt, ...)
 	va_end(args);
 	g_token.kind = TOKEN_EOF;
 	g_line = NULL;
-	ERRNO = 1;
+	ERRNO = SYNTAXE;
 }
 
 int				is_ifs(char c)

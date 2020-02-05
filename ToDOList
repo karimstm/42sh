@@ -97,3 +97,5 @@ ls && ||
 
 
 ((ls -la && echo karim) && (ls -la || echo ahmed)) > file
+
+bash-5.0$ eval "$BASH_COMMAND"

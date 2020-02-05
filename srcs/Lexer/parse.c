@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/03 17:26:48 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 14:52:45 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ int							is_valid_token(t_token_kind kind)
 void						unexpected_error(void)
 {
 	if (!ERRNO)
-		syntax_error("syntax error near unexpected token");
+		syntax_error("syntax error near unexpected token \
+			`%*s`", g_line - g_token.start, g_token.start);
 }
 
 void						eol_continuation()

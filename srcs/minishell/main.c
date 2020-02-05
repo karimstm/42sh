@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/03 18:48:17 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 18:52:00 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,6 @@ static t_node	*start_parsing_command(const char *line)
 		unexpected_error();
 	if (ERRNO)
 		free_tree(&node);
-	ERRNO = 0;
 	return (node);
 }
 
@@ -128,6 +127,7 @@ void		run_shell2(t_list *blt, t_line *line)
 	get_job_list(jobs);
 	while ((new_line = readline(MSG)))
 	{
+		ERRNO = 0;
 		job_notification(jobs);
 		node = NULL;
 		init_shell();
