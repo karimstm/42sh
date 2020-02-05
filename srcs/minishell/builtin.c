@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/05 10:31:01 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 12:46:30 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ void		init_builtin(t_list **lst)
 	add_builtin(lst, "fg", &ft_fg);
 	add_builtin(lst, "bg", &ft_bg);
 	add_builtin(lst, "export", &ft_export);
+	add_builtin(lst, "alias", &ft_alias);
+	add_builtin(lst, "unalias", &ft_unalias);
+	add_builtin(lst, "type", &ft_type);
 }
 
 /*

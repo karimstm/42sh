@@ -1,4 +1,4 @@
-/* ************************************************************************** */
+               /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
@@ -32,6 +32,7 @@
 # include <sys/wait.h>
 # include <sys/random.h>
 # include "jobs.h"
+# include "alias.h"
 
 # define BUF_S 1000
 
@@ -279,6 +280,11 @@ char					*quote_stripping(char *str);
 int						dup3(int oldfd);
 
 /*
+**	fds.c
+*/
+int						ft_type(char **args);
+
+/*
 ** env_list.c
 */
 void					ft_init_env(char **ev);
@@ -286,4 +292,6 @@ t_variables 			*get_var(char *target);
 void					variable_push(char *key, char *value, int export);
 void					delete_var(char *target);
 char					**get_tab_env();
+
+
 #endif

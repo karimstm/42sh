@@ -8,13 +8,15 @@ type steps
     path
     not found
 */
-char    *working_path_type(t_list *env, char *cmd)
+char    *working_path_type(char *cmd)
 {
-	char	**all_paths;
-	char	**tmp;
-	char	*full_path;
+	char        **all_paths;
+	char        **tmp;
+	char        *full_path;
+    t_variables *var;
 
-	all_paths = get_path(env);
+	var = get_var("PATH");
+	all_paths = var ? ft_strsplit(var->value, ':') : NULL;
 	tmp = all_paths;
 	full_path = NULL;
 	while (*tmp)
@@ -29,21 +31,21 @@ char    *working_path_type(t_list *env, char *cmd)
 	return (full_path);
 }
 
-// char    *is_aliased(char *arg)
-// {
-//     t_alias_list *aliases;
-//     t_alias *cur;
+char    *is_aliased(char *arg)
+{
+    t_alias_list    *aliases;
+    t_alias         *cur;
 
-//     aliases = get_set_alias(NULL);
-//     cur = aliases->head;
-//     while (cur)
-//     {
-//         if (ft_strequ(arg, cur->alias))
-//             return (cur->value);
-//         cur = cur->next;
-//     }
-//     return (NULL);
-// }
+    aliases = get_alias_list(NULL);
+    cur = aliases->head;
+    while (cur)
+    {
+        if (ft_strequ(arg, cur->alias))
+            return (cur->value);
+        cur = cur->next;
+    }
+    return (NULL);
+}
 
 // char    *is_hashed(char *arg)
 // {
@@ -61,12 +63,12 @@ char    *working_path_type(t_list *env, char *cmd)
 //     return (NULL);
 // }
 
-int    ft_type(char **args, t_list **env)
+int    ft_type(char **args)
 {
-    t_list *blt;
-    char *value;
-    int i;
-    int ret;
+    t_list  *blt;
+    char    *value;
+    int     i;
+    int     ret;
 
     blt = get_set_blt(NULL);
     i = 0;
@@ -76,11 +78,11 @@ int    ft_type(char **args, t_list **env)
         ret = 0;
         if (ft_lstsearch(blt, args[i], &check_builtin))
             ft_printf("%s is a shell builtin\n", args[i]);
-        // else if ((value = is_aliased(args[i])))
-        //     ft_printf("%s is aliased to %s\n", args[i], value);
+        else if ((value = is_aliased(args[i])))
+            ft_printf("%s is aliased to `%s'\n", args[i], value);
         // else if ((value = is_hashed(args[i])))
         //     ft_printf("%s is hashed (%s)\n", args[i], value);
-        else if ((value = working_path_type(*env, args[i])))
+        else if ((value = working_path_type(args[i])))
             ft_printf("%s is %s\n", args[i], value);
         else
             ret = ft_printf("42sh: type: %s: not found\n", args[i]);

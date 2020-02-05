@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   alias.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 16:18:40 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/03 16:18:41 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 12:33:02 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,11 @@ typedef struct			s_alias_list
 /*
 **	alias.c
 */
-void					ft_alias(char **args, t_alias_list *list);
+int						ft_alias(char **args);
 void					init_alias(t_alias_list *list);
-void					ft_unalias(char **args, t_alias_list *list);
+int						ft_unalias(char **args);
 char					*get_alias_value(t_alias_list *list,
 									char *alias, char *start_alias);
+t_alias_list			*get_alias_list(t_alias_list *aliases);
 
 #endif

@@ -8,7 +8,6 @@ void	init_job_list(t_job_list *jobs)
 	jobs->status = 0;
 }
 
-
 void		job_push(t_job_list *jobs, t_list_process *p, pid_t pgid)
 {
 	t_job	*job;

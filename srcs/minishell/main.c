@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 10:45:29 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 12:46:30 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,15 @@ void		run_shell2(t_list *blt, t_line *line)
 	t_node			*node;
 	char			*new_line;
 	t_job_list		*jobs;
+	t_alias_list	*aliases;
 	t_stack			sp;
 
 	jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
+	aliases = (t_alias_list *)xmalloc(sizeof(t_alias_list));
 	init_stack(&sp, INIT_STACK_SIZE);
 	init_job_list(jobs);
+	init_alias(aliases);
+	get_alias_list(aliases);
 	get_job_list(jobs);
 	while ((new_line = readline(MSG)))
 	{

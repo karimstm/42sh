@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   alias.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 16:16:54 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/28 17:33:05 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 12:41:38 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "alias.h"
 #include "shell.h"
+
+t_alias_list		*get_alias_list(t_alias_list *aliases)
+{
+	static t_alias_list	*list = NULL;
+
+	if (aliases != NULL)
+		list = aliases;
+	return (list);
+}
 
 void			init_alias(t_alias_list *list)
 {
@@ -85,8 +93,7 @@ void			alias_insert(t_alias_list *list, char *args)
 		{
 			tmp = current->value;
 			current->value = alias[1];
-			free(tmp);
-			tmp = NULL;
+			ft_strdel(&tmp);
 			free(alias[0]);
 			free(alias);
 			return ;
@@ -220,12 +227,14 @@ void			print_aliases(t_alias_list *list)
 	}
 }
 
-void			ft_alias(char **args, t_alias_list *alias_list)
+int			ft_alias(char **args)
 {
 	int				i;
+	t_alias_list	*alias_list;
 
+	alias_list = get_alias_list(NULL);
 	i = 0;
-	if (args == NULL)
+	if (args == NULL || !*args)
 		print_aliases(alias_list);
 	else
 	{
@@ -238,6 +247,7 @@ void			ft_alias(char **args, t_alias_list *alias_list)
 			i++;
 		}
 	}
+	return (0);
 }
 
 int				print_usage(void)
@@ -279,13 +289,16 @@ int				check_option(char **args)
 	return (found);
 }
 
-void			ft_unalias(char **args, t_alias_list *list)
+int			ft_unalias(char **args)
 {
-	int			i;
+	int				i;
+	t_alias_list	*list;
 
+	ft_putendl("TEST");
+	list = get_alias_list(NULL);
 	i = 0;
-	if (args == NULL)
-		print_usage();
+	if (args == NULL || *args == NULL)
+		return (print_usage());
 	else if (list)
 	{
 		if (!check_option(args))
@@ -299,4 +312,5 @@ void			ft_unalias(char **args, t_alias_list *list)
 			}
 		}
 	}
+	return (0);
 }
