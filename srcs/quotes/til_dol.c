@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   til_dol.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/02 12:42:14 by amoutik           #+#    #+#             */
-/*   Updated: 2019/05/09 11:52:03 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 18:33:59 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		handle_dollar(char **ptr, t_string *str)
 	while (*head && ft_isalnum(*head))
 		head++;
 	tmp = ft_strndup(*ptr, head - *ptr);
-	if ((env = get_env_value((tmp + 1), env_list)) == NULL)
+	if ((env = "something") == NULL)
 		env = "";
 	free(tmp);
 	while (*env)
@@ -49,7 +49,7 @@ int		handle_tilda(char **ptr, t_string *str)
 	env_list = get_t_line()->env;
 	if ((ft_isprint(*(head + 1)) && *(head + 1) != '/') || str->len > 0)
 		return (0);
-	if ((home = get_env_value("HOME", env_list)) == NULL)
+	if ((home = "something") == NULL)
 		home = "";
 	while (home[j])
 		push(str, home[j++]);

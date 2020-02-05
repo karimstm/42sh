@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/03 17:20:25 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 19:43:03 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,25 @@ typedef	struct			s_blt_line
 	t_line				*line;
 }						t_blt_line;
 
+/* Structure for environement and set variables */
+
+typedef struct			s_variables
+{
+    char                *key;
+    char                *value;
+    int               	is_exported;
+    struct s_variables  *next;
+}						t_variables;
+
+typedef struct			s_variables_list
+{
+    t_variables         *head;
+    t_variables         *tail;
+    int                 node_count;
+}						t_variables_list;
+
+t_variables_list	*env2;
+
 /*
 **	=============================== MINISHELL ==================================
 */
@@ -134,12 +153,13 @@ char					*get_env_value(char *name, t_list *lst);
 /*
 **	builtins commands.
 */
-int						ft_cd(char **args, t_list **env);
-int						ft_echo(char **args, t_list **env);
-int						ft_env(char **args, t_list **env);
-int						ft_setenv(char **args, t_list **env);
-int						ft_unsetenv(char **args, t_list **env);
-int						ft_pwd(char **args, t_list **env);
+int						ft_cd(char **args);
+int						ft_echo(char **args);
+int						ft_env(char **args);
+int						ft_set(char **args);
+int						ft_unset(char **args);
+int						ft_export(char **args);
+int						ft_pwd(char **args);
 
 /*
 **	=============================== READLINE ==================================
@@ -265,12 +285,12 @@ void					execute(t_job_list *job_list, t_node *node, t_line *line, t_list *blt);
 /*
 ** ft_jobs.c
 */
-int						ft_jobs(char **args, t_list **env);
+int						ft_jobs(char **args);
 
 /*
 ** ft_exit.c
 */
-int						ft_exit(char **cmds, t_list **env);
+int						ft_exit(char **cmds);
 
 /*
 **	execute.c
@@ -289,5 +309,15 @@ char					*quote_stripping(char *str);
 /*
 **	fds.c
 */
+
 int						dup3(int oldfd);
+
+/*
+** env_list.c
+*/
+void					ft_init_env(char **ev);
+t_variables 			*get_var(char *target);
+void					variable_push(char *key, char *value, int export);
+void					delete_var(char *target);
+char					**get_tab_env();
 #endif

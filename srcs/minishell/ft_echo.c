@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:48:01 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/30 12:03:23 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 15:02:02 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,11 @@
 **        we should print the new line or not
 */
 
-int		ft_echo(char **args, t_list **env)
+int		ft_echo(char **args)
 {
 	int flag;
 
 	flag = 0;
-	(void)env;
 	if (*args && (*args)[0] == '-' && (*args)[1] == 'n')
 	{
 		flag = 1;

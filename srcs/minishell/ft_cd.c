@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:50:18 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/01/30 12:15:46 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/04 15:38:25 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-/*
-**	called from ft_cd,
-**	it get the environment variable called $HOME
-**	from the t_list *lst that contains all t_env elements.
-*/
-
-static char	*get_home(t_list *lst)
-{
-	t_env	*env;
-
-	while (lst)
-	{
-		env = (t_env*)lst->content;
-		if (ft_strcmp(env->name, "HOME") == 0)
-			return (env->value);
-		lst = lst->next;
-	}
-	return (NULL);
-}
 
 /*
 **	this function called by ft_cd function,
@@ -39,27 +19,20 @@ static char	*get_home(t_list *lst)
 **	if this variable not found it creates a new one.
 */
 
-static void	change_pwd(char *pwd, t_list **lst)
+static void	change_pwd(char *pwd)
 {
-	t_list	*cpy;
-	t_env	*env;
+	t_variables	*cpy;
 	char	*new_home;
-
-	cpy = *lst;
-	while (cpy)
+	
+	cpy = get_var(pwd);
+	if (cpy)
 	{
-		env = (t_env*)cpy->content;
-		if (ft_strcmp(env->name, pwd) == 0)
-		{
-			free(env->value);
-			env->value = NULL;
-			env->value = getcwd(env->value, 0);
-			return ;
-		}
-		cpy = cpy->next;
+		ft_strdel(&cpy->value);
+		cpy->value = getcwd(cpy->value, 0);
+		return ;
 	}
 	new_home = NULL;
-	add_env(lst, pwd, getcwd(new_home, 0), 1);
+	variable_push(pwd, getcwd(new_home, 0), 1);
 	free(new_home);
 }
 
@@ -98,29 +71,34 @@ static int	check_dir(char *home)
 **	before it makes any change.
 */
 
-int			ft_cd(char **args, t_list **env)
+int			ft_cd(char **args)
 {
 	char		*home;
 	char		*new;
 	char		*oldpwd;
+	t_variables	*env;
 
 	new = NULL;
 	if (*args == NULL)
-		home = get_home(*env);
+	{
+		env = get_var("HOME");
+		home = env ? env->value : NULL;
+	}
 	else
 		home = *args;
 	if (home != NULL && ft_strcmp(home, "-") == 0)
 	{
-		oldpwd = get_env_value("OLDPWD", *env);
+		env = get_var("OLDPWD");
+		oldpwd = env ? env->value : NULL;
 		new = oldpwd ? ft_strdup(oldpwd) : ft_strdup(".");
 	}
 	if (new != NULL)
 		home = new;
 	if (check_dir(home) == 1)
 	{
-		change_pwd("OLDPWD", env);
+		change_pwd("OLDPWD");
 		chdir(home);
-		change_pwd("PWD", env);
+		change_pwd("PWD");
 	}
 	else
 		return (1);

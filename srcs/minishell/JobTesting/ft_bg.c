@@ -48,13 +48,12 @@ int			bg_get_job_number(char **args)
 }
 
 
-int		ft_bg(char **args, t_list **env)
+int		ft_bg(char **args)
 {
 	t_job		*current;
 	t_job_list	*list;
 	int			job_number;
 
-	(void)env;
 	list = get_job_list(NULL);
 	if ((job_number = bg_get_job_number(args)) == -1)
 		return(1);
