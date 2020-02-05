@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 18:32:53 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/04 13:24:10 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 15:42:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,10 +113,13 @@ int				get_new_line(void)
 	ft_strdel((char **)&g_token.line);
 	tmp2 = new_line;
 	new_line = ft_strjoin(tmp, new_line);
-	ft_strdel(&tmp2);
 	g_token.line = new_line;
 	g_token.start = new_line + startlen;
 	g_line = new_line + len;
+	tmp = tmp2;
+	tmp2 = ft_strjoin("\n", tmp2);
+	ft_strdel(&tmp);
+	g_token.current = ft_strjoin(g_token.current, tmp2);
 	return (1);
 }
 
@@ -458,5 +461,6 @@ void			init_stream(const char *str)
 {
 	g_line = str;
 	g_token.line = str;
+	g_token.current = strdup(str);
 	escape_space();
 }

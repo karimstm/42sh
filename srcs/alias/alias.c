@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   alias.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 16:16:54 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 12:41:38 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/05 14:21:16 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char			**split_eq(char *str)
 }
 
 /*
-** remember to replace these two line with ft_strdel(&tmp) 75 & 76
+** Function responsible for inserting a new alias to list
 */
 
 void			alias_insert(t_alias_list *list, char *args)
@@ -121,7 +121,7 @@ t_alias			*alias_find(t_alias_list *list, char *alias)
 		}
 		current = current->next;
 	}
-	dprintf(2, "42sh: alias: %s: not found\n", alias);
+	ft_printf_fd(2, "42sh: alias: %s: not found\n", alias);
 	return (NULL);
 }
 
@@ -181,6 +181,16 @@ char			*get_alias_value(t_alias_list *list,
 		current = current->next;
 	}
 	aliase_prune(tmp_list);
+	return (value);
+}
+
+char			*get_alias(char *key)
+{
+	t_alias_list *list;
+	char		 *value;
+
+	list = get_alias_list(NULL);
+	value = get_alias_value(list, key, key);
 	return (value);
 }
 

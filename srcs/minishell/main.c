@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 12:46:30 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/05 15:43:01 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,14 @@ void		free_stacked_node(t_stack *sp, t_job_list *jobs)
 	}
 }
 
+//For debug only
+// Should be removed later on
+void		fake_alias()
+{
+	char *name[] = {"ec=echo \"", NULL};
+	ft_alias(name);
+}
+
 void		run_shell2(t_list *blt, t_line *line)
 {
 	t_node			*node;
@@ -65,6 +73,7 @@ void		run_shell2(t_list *blt, t_line *line)
 	init_job_list(jobs);
 	init_alias(aliases);
 	get_alias_list(aliases);
+	fake_alias(); ////
 	get_job_list(jobs);
 	while ((new_line = readline(MSG)))
 	{

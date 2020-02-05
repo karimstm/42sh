@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:13:30 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/03 18:49:20 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 15:44:27 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,16 @@ typedef union		u_spec
 	char		*name;
 }					t_spec;
 
+/*
+** variabel current is used here to peserve the real
+** value that will be put in the history
+*/
+
 typedef struct		s_tokens
 {
 	t_token_kind	kind;
 	const char		*line;
+	char			*current;
 	const char		*start;
 	const char		*end;
 	t_spec			spec;

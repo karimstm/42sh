@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   alias.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 16:18:40 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 12:33:02 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/05 13:56:14 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,6 @@ int						ft_unalias(char **args);
 char					*get_alias_value(t_alias_list *list,
 									char *alias, char *start_alias);
 t_alias_list			*get_alias_list(t_alias_list *aliases);
+char					*get_alias(char *key);
 
 #endif

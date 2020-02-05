@@ -6,14 +6,11 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/04 14:52:45 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 15:43:13 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ast.h"
-#include "lex.h"
-#include "parse.h"
-#include "libft.h"
+# include "shell.h"
 
 int							is_valid_token(t_token_kind kind)
 {
@@ -26,8 +23,7 @@ int							is_valid_token(t_token_kind kind)
 void						unexpected_error(void)
 {
 	if (!ERRNO)
-		syntax_error("syntax error near unexpected token \
-			`%*s`", g_line - g_token.start, g_token.start);
+		syntax_error("syntax error near an unexpected token.");
 }
 
 void						eol_continuation()
@@ -82,23 +78,42 @@ int							grouping_kind(int kind)
 	return (grouping_kind[kind]);
 }
 
+
+void							check_alias()
+{
+	char				*key;
+	size_t				len;
+	char				*tmp;
+	const char			*line;
+	
+	if ((key = get_alias(g_token.spec.word)))
+	{
+		line = g_token.line;
+		len = g_token.start - g_token.line;
+		tmp = strndup(g_token.line, len);
+		g_line = ft_strjoin(key, g_line);
+		g_token.line = ft_strjoin(tmp, g_line);
+		g_line = g_token.line + len;
+		escape_space();
+	}
+}
+
 t_list_simple_command		*parse_word_cmd(void)
 {
 	t_list_simple_command *list;
 
 	if (ERRNO)
 		return (NULL);
-	list = NULL;
-	if (g_token.kind == TOKEN_WORD || g_token.kind == TOKEN_ASSIGNMENT_WORD)
+	list = malloc_list_simple_command();
+	init_list_simple_command(list);
+	while (is_token(TOKEN_WORD) || is_token(TOKEN_ASSIGNMENT_WORD))
 	{
-		list = malloc_list_simple_command();
-		init_list_simple_command(list);
-		while (is_token(TOKEN_WORD) || is_token(TOKEN_ASSIGNMENT_WORD))
-		{
-			token_push(list, (char *)g_token.spec.word, g_token.kind);
-			escape_space();
-		}
+		check_alias();
+		token_push(list, (char *)g_token.spec.word, g_token.kind);
+		escape_space();
 	}
+	if (!list->node_count)
+		free(list);
 	return (list);
 }
 
