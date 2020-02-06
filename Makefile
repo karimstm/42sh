@@ -10,7 +10,7 @@ LEXINC = srcs/Lexer/
 SRC_MIN = $(patsubst %.c, $(SRC)/Minishell/%.c, ft_type.c env_list.c fds.c builtin.c free.c ft_cd.c ft_echo.c ft_env_new.c ft_pwd.c main.c shell.c exec.c redir.c job.c jobs_list.c exec2.c JobTesting/execute.c JobTesting/job2.c JobTesting/ft_jobs.c JobTesting/ft_fg.c JobTesting/ft_bg.c)
 SRC_QUO = $(patsubst %.c, $(SRC)/Strings/%.c, free_string.c is_number.c string.c)
 SRC_REA = $(patsubst %.c, $(SRC)/readline/%.c, copy.c cursor.c cursor2.c cursor3.c cursor4.c edit_line.c handlers.c history.c line.c paste.c read_line.c terms.c)
-SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c quote_stripping.c)
+SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, input_redir.c ast_rest.c ast_redir.c ast_utils.c stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c quote_stripping.c common.c meta.c subs_parse.c)
 SRC_BLT = $(patsubst %.c, $(SRC)/Builtins/%.c, ft_exit.c)
 SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c)
 

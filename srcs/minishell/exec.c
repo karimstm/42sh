@@ -17,6 +17,8 @@ char			**node_to_char(t_list_simple_command *command)
 		return (NULL);
 	cmds = (char **)malloc(sizeof(char *) * (command->node_count + 1));
 	i = 0;
+	while (current && current->kind != TOKEN_WORD)
+		current = current->next;
 	while (current)
 	{
 		cmds[i++] = quote_stripping(current->name);

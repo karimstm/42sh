@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 15:43:13 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 17:04:07 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,12 +78,11 @@ int							grouping_kind(int kind)
 	return (grouping_kind[kind]);
 }
 
-
-void							check_alias()
+void							alias_tracking()
 {
-	char				*key;
 	size_t				len;
 	char				*tmp;
+	char				*key;
 	const char			*line;
 	
 	if ((key = get_alias(g_token.spec.word)))
@@ -93,9 +92,25 @@ void							check_alias()
 		tmp = strndup(g_token.line, len);
 		g_line = ft_strjoin(key, g_line);
 		g_token.line = ft_strjoin(tmp, g_line);
+		ft_strdel(&tmp);
+		ft_strdel((char **)&line);
 		g_line = g_token.line + len;
 		escape_space();
 	}
+}
+
+void							check_alias(t_list_simple_command *list)
+{
+	t_simple_command	*current;
+	
+	current = list->node_count ? list->head : NULL;
+	while (current)
+	{
+		if(current->kind == TOKEN_WORD)
+			return ;
+		current = current->next;
+	}
+	alias_tracking();
 }
 
 t_list_simple_command		*parse_word_cmd(void)
@@ -108,7 +123,7 @@ t_list_simple_command		*parse_word_cmd(void)
 	init_list_simple_command(list);
 	while (is_token(TOKEN_WORD) || is_token(TOKEN_ASSIGNMENT_WORD))
 	{
-		check_alias();
+		is_token(TOKEN_WORD) ? check_alias(list) : 0;
 		token_push(list, (char *)g_token.spec.word, g_token.kind);
 		escape_space();
 	}

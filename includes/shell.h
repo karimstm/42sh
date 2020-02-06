@@ -283,6 +283,7 @@ int						dup3(int oldfd);
 **	fds.c
 */
 int						ft_type(char **args);
+char    				*is_aliased(char *arg);
 
 /*
 ** env_list.c

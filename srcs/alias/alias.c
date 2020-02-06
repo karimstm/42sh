@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 16:16:54 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 14:21:16 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/05 17:05:48 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,9 @@ t_alias			*alias_find(t_alias_list *list, char *alias)
 	while (current)
 	{
 		if (len == current->alias_len && strcmp(alias, current->alias) == 0)
-		{
-			dprintf(2, "alias: %s='%s'\n", current->alias, current->value);
 			return (current);
-		}
 		current = current->next;
 	}
-	ft_printf_fd(2, "42sh: alias: %s: not found\n", alias);
 	return (NULL);
 }
 
@@ -241,9 +237,12 @@ int			ft_alias(char **args)
 {
 	int				i;
 	t_alias_list	*alias_list;
+	t_alias			*alias;
+	int				error;
 
 	alias_list = get_alias_list(NULL);
 	i = 0;
+	error = 0;
 	if (args == NULL || !*args)
 		print_aliases(alias_list);
 	else
@@ -253,11 +252,19 @@ int			ft_alias(char **args)
 			if (is_alias_pattern(args[i]))
 				alias_insert(alias_list, args[i]);
 			else
-				alias_find(alias_list, args[i]);
+			{
+				if (!(alias = alias_find(alias_list, args[i])))
+				{
+					ft_printf_fd(2, "42sh: alias: %s: not found\n", args[i]);
+					error = 1;
+				}
+				else
+					ft_printf_fd(2, "alias: %s='%s'\n", alias->alias, alias->value);
+			}
 			i++;
 		}
 	}
-	return (0);
+	return (error);
 }
 
 int				print_usage(void)

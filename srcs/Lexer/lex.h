@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:13:30 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 15:44:27 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/06 12:46:49 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,5 +52,22 @@ void				escape_space();
 void				syntax_error(const char *fmt, ...);
 int					*error_num(void);
 int					get_new_line(void);
+
+void				scan_squotes(void);
+void				scan_dquotes(void);
+void				scan_meta_condition(char k1, t_token_kind k2);
+void				scan_redirection_input(void);
+void				scan_redirection_output(void);
+void				scan_meta_semi(void);
+void				scan_meta(void);
+void				scan_curly(void);
+void				check_assignment(void);
+void				scan_dollar(void);
+void				scan_string(void);
+void				scan_int(void);
+int					is_token_eof(void);
+int					is_metacharacter(int ch);
+int					is_ifs(char c);
+uint8_t				get_digit(uint8_t index);
 
 #endif

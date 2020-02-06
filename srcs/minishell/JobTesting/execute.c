@@ -78,32 +78,32 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 	return (1);
 }
 
-char			*get_command_name(t_process *p)
+t_simple_command	*get_command_name(t_process *p)
 {
-	char				*name;
 	t_simple_command	*current;
 
-	name = NULL;
 	current = NULL;
 	if (p->node && p->node->spec.simple_command)
 		current = p->node->spec.simple_command->head;
 	while (current)
 	{
 		if (current->kind == TOKEN_WORD)
-			return (current->name);
+			return (current);
 		current = current->next;
 	}
-	return (name);
+	return (NULL);
 }
 
 int				cmd_type(t_process *p, t_list *blt)
 {
-	char	*path;
-	char	*name;
+	char				*path;
+	char				*name;
+	t_simple_command	*cmd;
 
 	if (p->node->kind != NODE_SIMPLE_COMMAND)
 		return (0);
-	name = get_command_name(p);
+	cmd = get_command_name(p);
+	name = cmd && cmd->name ? cmd->name : NULL;
 	if (name == NULL)
 		return (1);
 	if (ft_strchr(name, '/'))
@@ -117,8 +117,8 @@ int				cmd_type(t_process *p, t_list *blt)
 	}
 	else
 	{
-		ft_strdel(&p->node->spec.simple_command->head->name);
-		p->node->spec.simple_command->head->name = path;
+		ft_strdel(&cmd->name);
+		cmd->name = path;
 		return (1);
 	}
 }
