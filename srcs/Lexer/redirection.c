@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:50:32 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/06 13:00:32 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/06 13:10:28 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "lex.h"
 #include "libft.h"
 
-static char				ft_isnumber(char *str, int len)
+char				is_n_number(char *str, int len)
 {
 	int i;
 
@@ -92,7 +92,7 @@ t_redirection			*output_aggregate(t_token_kind kind)
 		len = ft_strlen(g_token.spec.word);
 		if (g_token.spec.word[len - 1] == '-')
 			len -= 1;
-		if (ft_isnumber(g_token.spec.word, len))
+		if (is_n_number(g_token.spec.word, len))
 			aggregate_number(&fd2, &fd1, &list, kind);
 		else
 			aggregate_word(&fd2, &fd1, &list, kind);

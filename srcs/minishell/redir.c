@@ -1,6 +1,6 @@
 #include "shell.h"
 
-int fd_is_valid(int fd)
+int		fd_is_valid(int fd)
 {
     return (fcntl(fd, F_GETFD) != -1);
 }
@@ -51,7 +51,7 @@ int		output(t_redirection *redir)
 	return (1);
 }
 
-int	output_append(t_redirection *redir)
+int		output_append(t_redirection *redir)
 {
 	if (check_file_permission(redir->word, W_OK))
 	{
@@ -64,7 +64,7 @@ int	output_append(t_redirection *redir)
 	return (1);
 }
 
-int	output_with_aggregate(t_redirection *redir, int is_append)
+int		output_with_aggregate(t_redirection *redir, int is_append)
 {
 	if (redir->fd2 < 0)
 	{
@@ -108,7 +108,7 @@ int	output_with_aggregate(t_redirection *redir, int is_append)
 		return (bad_fd(redir->fd2));
 }
 
-int	output_with_aggregate_append(t_redirection *redir)
+int		output_with_aggregate_append(t_redirection *redir)
 {
 	(void)redir;
 	syntax_error("To be handled later on");
@@ -119,7 +119,7 @@ int	output_with_aggregate_append(t_redirection *redir)
 ** Input redirection part
 */
 
-int			input(t_redirection *redir)
+int		input(t_redirection *redir)
 {
 	if (check_file_status(redir->word) == 0)
 	{
@@ -134,7 +134,7 @@ int			input(t_redirection *redir)
 	return (1);
 }
 
-int			input_here_doc(t_redirection *redir)
+int		input_here_doc(t_redirection *redir)
 {
 	char	*path;
 

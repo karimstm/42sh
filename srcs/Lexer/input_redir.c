@@ -102,7 +102,7 @@ t_redirection			*input_aggregate(t_token_kind kind)
 		len = ft_strlen(g_token.spec.word);
 		if (g_token.spec.word[len - 1] == '-')
 			len -= 1;
-		if (ft_isnumber(g_token.spec.word, len))
+		if (is_n_number(g_token.spec.word, len))
 			aggregate_number(&fd2, &fd1, &list, kind);
 		else
 		{

@@ -211,7 +211,6 @@ void			xfork(t_process *process, int pip[2],
 	}
 	else
 	{
-		//initial_process(job->pgid, job->kind);
 		process->pid = child;
 		if (job->kind != J_NON_INTERACTIVE)
 			setup_pgid(child, job);
