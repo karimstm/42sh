@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_pipe.c                                        :+:      :+:    :+:   */
+/*   substitution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 02:26:22 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/29 07:13:06 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/01/29 07:17:13 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,14 +84,13 @@ char *cmd_substitution(const char *cmd)
             close(fd[1]);
             exit(0);
         }
+        close(fd[1]);
         if (pid > 0)
         {
-            close(fd[1]);
             ret = get_fd_content(fd[0]);
             close(fd[0]);
             return (ret);
         }
-        close(fd[1]);
         close(fd[0]);
     }
     return (NULL);

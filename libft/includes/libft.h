@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2019/05/04 08:59:27 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/06 20:12:48 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ typedef struct		s_list
 	size_t			content_size;
 	struct s_list	*previous;
 	struct s_list	*next;
+	struct s_list	*tail;
 }					t_list;
 
 /*
@@ -201,5 +202,20 @@ char				**get_static_str(void);
 */
 t_fdlist			**get_static_list(void);
 void				init_fdlist(t_fdlist **elem, int fd);
+
+/*
+** add by aait-ihi
+*/
+int					ft_isinstr(char c, const char *s);
+t_list				*ft_lstenqueue(t_list **list, t_list *new);
+void				ft_lstdequeue(t_list **list, void (*del)(void **));
+char				*ft_skip_chars(const char *str, const char *compare,
+																int (*f)(int));
+char				*ft_rskip_chars(const char *str, const char *cmp,
+														int (*f)(int), int i);
+char				*ft_rskip_unitl_char(const char *str, const char *compare,
+														int (*f)(int), int i);
+char				*ft_skip_unitl_char(const char *str, const char *compare,
+																int (*f)(int));
 
 #endif
