@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 16:40:28 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/06 14:51:15 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void		run_shell2(t_list *blt, t_line *line)
 		ft_strdel((char **)&g_token.line);
 	}
 	deallocate(&sp);
-	ft_printf(WRONG_READ);
+	ft_printf("%s", WRONG_READ);
 }
 
 void    ft_printenv()

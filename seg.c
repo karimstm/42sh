@@ -3,9 +3,12 @@
 #include <stdio.h>
 # include <stdlib.h>
 # include <signal.h>
+#include <string.h>
+#include <unistd.h>
+#define name(some) some##test
 
-int main()
+int main(int ac, char **argv)
 {
-	kill(getpid(), SIGSEGV);
-	return (0);
+	
+	write(1, "karim", 5);
 }
