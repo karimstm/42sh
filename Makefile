@@ -13,6 +13,7 @@ SRC_REA = $(patsubst %.c, $(SRC)/readline/%.c, copy.c cursor.c cursor2.c cursor3
 SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, input_redir.c ast_rest.c ast_redir.c ast_utils.c stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c quote_stripping.c common.c meta.c subs_parse.c)
 SRC_BLT = $(patsubst %.c, $(SRC)/Builtins/%.c, ft_exit.c)
 SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c)
+SRC_HSH= $(patsubst %.c, $(SRC)/HashTable/%.c, hash_handle.c hash.c prime.c)
 
 OBJ_MIN = $(patsubst %.c, %.o, $(SRC_MIN))
 OBJ_QUO = $(patsubst %.c, %.o, $(SRC_QUO))
@@ -20,8 +21,9 @@ OBJ_REA = $(patsubst %.c, %.o, $(SRC_REA))
 OBJ_LEXER = $(patsubst %.c, %.o, $(SRC_LEXER))
 OBJ_BLT = $(patsubst %.c, %.o, $(SRC_BLT))
 OBJ_AL = $(patsubst %.c, %.o, $(SRC_AL))
+OBJ_HSH = $(patsubst %.c, %.o, $(SRC_HSH))
 
-OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_REA) $(OBJ_RED) $(OBJ_LEXER) $(OBJ_BLT) $(OBJ_AL)
+OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_REA) $(OBJ_RED) $(OBJ_LEXER) $(OBJ_BLT) $(OBJ_AL) $(OBJ_HSH)
 REAL_OBJECT = $(patsubst %, $(BIN)/%, /$(notdir $(OBJECT)))
 
 CC = gcc

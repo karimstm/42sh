@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/05 12:46:30 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/07 11:57:46 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void		init_builtin(t_list **lst)
 	add_builtin(lst, "alias", &ft_alias);
 	add_builtin(lst, "unalias", &ft_unalias);
 	add_builtin(lst, "type", &ft_type);
+	add_builtin(lst, "hash", &ft_handle_hash_table);
 }
 
 /*

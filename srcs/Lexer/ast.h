@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:52:19 by amoutik           #+#    #+#             */
-/*   Updated: 2020/01/24 15:52:31 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/07 15:31:09 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,18 @@ typedef enum				e_cmd_kind {
 	CMD_UNTIL,
 }							t_cmd_kind;
 
+typedef enum				e_cmd_type {
+	IS_NONE,
+	IS_BUILTIN,
+	IS_PATH_CMD,
+	IS_FOUND,
+	IS_NOTFOUND,
+}							t_cmd_type;
+
 typedef struct				s_simple_command {
 	t_token_kind			kind;
 	char					*name;
+	t_cmd_type				type;	
 	struct s_simple_command	*next;
 }							t_simple_command;
 

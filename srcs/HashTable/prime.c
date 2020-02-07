@@ -1,5 +1,4 @@
-#include "prime.h"
-#include "math.h"
+#include "shell.h"
 
 int     is_prime(const int x)
 {

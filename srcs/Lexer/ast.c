@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:53:09 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/06 12:54:47 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/07 15:22:15 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ void					token_push(t_list_simple_command *list,
 	token = (t_simple_command *)xmalloc(sizeof(t_simple_command));
 	token->name = token_str;
 	token->kind = kind;
+	token->type = IS_NONE;
 	token->next = NULL;
 	if (list->node_count == 0 || list->head == NULL)
 		list->head = token;
