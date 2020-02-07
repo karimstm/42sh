@@ -47,22 +47,6 @@ char    *is_aliased(char *arg)
     return (NULL);
 }
 
-// char    *is_hashed(char *arg)
-// {
-//     t_hash_table *hashes;
-//     s_hash *cur;
-
-//     hashes= get_set_hash(NULL);
-//     cur = aliases->head;
-//     while (cur)
-//     {
-//         if (ft_strequ(arg, cur->alias))
-//             return (cur->value);
-//         cur = cur->next;
-//     }
-//     return (NULL);
-// }
-
 int    ft_type(char **args)
 {
     t_list  *blt;
@@ -80,8 +64,8 @@ int    ft_type(char **args)
             ft_printf("%s is a shell builtin\n", args[i]);
         else if ((value = is_aliased(args[i])))
             ft_printf("%s is aliased to `%s'\n", args[i], value);
-        // else if ((value = is_hashed(args[i])))
-        //     ft_printf("%s is hashed (%s)\n", args[i], value);
+        else if ((value = ht_search(get_hash_table(0), args[i])))
+            ft_printf("%s is hashed (%s)\n", args[i], value);
         else if ((value = working_path_type(args[i])))
             ft_printf("%s is %s\n", args[i], value);
         else

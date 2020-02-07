@@ -1,9 +1,8 @@
-#include "hash.h"
-#include "prime.h"
+#include "shell.h"
 
 static t_hash_table *ht_new_sized(const int base_size)
 {
-    t_hash_table *ht = malloc(sizeof(t_hash_table));
+    t_hash_table *ht = (t_hash_table *)malloc(sizeof(t_hash_table));
     ht->base_size = base_size;
     ht->size = next_prime(ht->base_size);
     ht->count = 0;
@@ -124,6 +123,7 @@ void    ht_insert(t_hash_table *ht, const char *key, const char *value)
     int          i;
     t_hash_item *current_item;
     const int load = ht->count * 100 / ht->size;
+    
     if (load > 70)
         ht_resize_up(ht);
     item = ht_new_item(key, value);

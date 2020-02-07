@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 16:40:28 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/07 11:54:06 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,12 @@ void		run_shell2(t_list *blt, t_line *line)
 	char			*new_line;
 	t_job_list		*jobs;
 	t_alias_list	*aliases;
+	t_hash_table	*ht;
 	t_stack			sp;
 
 	jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
 	aliases = (t_alias_list *)xmalloc(sizeof(t_alias_list));
+	ht = get_hash_table(ht_new());
 	init_stack(&sp, INIT_STACK_SIZE);
 	init_job_list(jobs);
 	init_alias(aliases);

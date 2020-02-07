@@ -78,13 +78,11 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 	return (1);
 }
 
-t_simple_command	*get_command_name(t_process *p)
+t_simple_command	*get_command_name(t_list_simple_command *list)
 {
 	t_simple_command	*current;
 
-	current = NULL;
-	if (p->node && p->node->spec.simple_command)
-		current = p->node->spec.simple_command->head;
+	current = list->node_count ? list->head : NULL;
 	while (current)
 	{
 		if (current->kind == TOKEN_WORD)
@@ -94,32 +92,34 @@ t_simple_command	*get_command_name(t_process *p)
 	return (NULL);
 }
 
-int				cmd_type(t_process *p, t_list *blt)
+t_cmd_type				cmd_type(t_process *p, t_list *blt)
 {
 	char				*path;
 	char				*name;
 	t_simple_command	*cmd;
 
+	cmd = NULL;
 	if (p->node->kind != NODE_SIMPLE_COMMAND)
 		return (0);
-	cmd = get_command_name(p);
+	if (SIMPLE_CMD(p->node))
+		cmd = get_command_name(SIMPLE_CMD(p->node));
 	name = cmd && cmd->name ? cmd->name : NULL;
 	if (name == NULL)
 		return (1);
 	if (ft_strchr(name, '/'))
-		return (PATH_COMMAND);
+		return (cmd->type = IS_PATH_CMD);
 	else if (ft_lstsearch(blt, name, &check_builtin))
-		return (BUILT_IN);
+		return (cmd->type = IS_BUILTIN);
 	else if ((path = working_path(name)) == NULL)
 	{
 		p->status = 127;
-		return (0);
+		return (cmd->type = IS_NOTFOUND);
 	}
 	else
 	{
 		ft_strdel(&cmd->name);
 		cmd->name = path;
-		return (1);
+		return (cmd->type = IS_FOUND);
 	}
 }
 
@@ -234,7 +234,7 @@ void			execute_simple_command(t_job_list *job_list,
 	while (process)
 	{
 		check_pipe_and_dup(process, &infile, tmp, pip);
-		if (cmd_type(process, blt_line->blt) == BUILT_IN
+		if (cmd_type(process, blt_line->blt) == IS_BUILTIN
 			&& job->proc_list->node_count == 1 && job->kind == J_FOREGROUND)
 		{
 			if(setup_redirection(process, 0))
@@ -353,7 +353,10 @@ void			pipe_entry(t_job_list *job_list,
 void			execute_entry(t_job_list *job_list, t_node *node,
 							t_blt_line *blt_line, t_job_kind kind)
 {
-	int		tmp[3];
+	int				tmp[3];
+	char			*name;
+	t_simple_command *cmd;
+
 	if (node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 	{
 		set_fds(tmp);
@@ -368,7 +371,13 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 		else if (node->kind == NODE_PIPE)
 			pipe_entry(job_list, node, blt_line, kind);
 		else if (node->kind == NODE_SIMPLE_COMMAND)
+		{
+			cmd = get_command_name(node->spec.simple_command);
+			name = cmd && cmd->name ? cmd->name : NULL;
 			simple_command(job_list, node, blt_line, kind);
+			if (name && cmd && cmd->type == IS_FOUND)
+				ht_insert(get_hash_table(NULL), name, cmd->name);
+		}
 	}
 	if (node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 		restore_std(tmp);

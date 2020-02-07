@@ -5,6 +5,8 @@
         "alias.h": "c",
         "const.h": "c",
         "parse.h": "c",
-        "iterator": "c"
+        "iterator": "c",
+        "math.h": "c",
+        "hash.h": "c"
     }
 }

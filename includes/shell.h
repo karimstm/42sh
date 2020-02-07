@@ -33,6 +33,7 @@
 # include <sys/random.h>
 # include "jobs.h"
 # include "alias.h"
+# include "hash.h"
 
 # define BUF_S 1000
 
