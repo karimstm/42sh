@@ -91,6 +91,6 @@ void			init_stream(const char *str)
 {
 	g_line = str;
 	g_token.line = str;
-	g_token.current = strdup(str);
+	g_token.current = ft_strdup(str);
 	escape_space();
 }

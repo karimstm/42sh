@@ -9,6 +9,5 @@
 
 int main(int ac, char **argv)
 {
-	
 	write(1, "karim", 5);
 }

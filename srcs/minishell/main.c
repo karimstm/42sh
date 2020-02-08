@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/07 17:30:13 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/08 11:52:53 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,8 @@ void		run_shell2(t_list *blt, t_line *line)
 		ft_strdel((char **)&g_token.line);
 	}
 	deallocate(&sp);
-	ft_printf("%s", WRONG_READ);
+	ft_printf("%s", WRONG_READ); // Need to do some checkup here, 
+								//so it won't show up on something like this echo 'ls -la' | ./42sh
 }
 
 void    ft_printenv()

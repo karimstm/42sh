@@ -81,7 +81,7 @@ t_redirection			*here_string(void)
 	escape_space();
 	fd2 = 1;
 	list = new_redir(fd1, fd2, TOKEN_HERESTRING);
-	list->herdoc = ft_strndup(g_token.start, g_token.end - g_token.start);
+	list->herdoc = ft_strsub(g_token.start, 0, g_token.end - g_token.start);
 	if (g_token.kind == TOKEN_WORD)
 		ft_strdel(&g_token.spec.word);
 	return (list);

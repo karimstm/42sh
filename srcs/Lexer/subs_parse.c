@@ -76,7 +76,7 @@ void			scan_string(void)
 				g_line++;
 		}
 	}
-	g_token.spec.word = ft_strndup(g_token.start, g_line - g_token.start);
+	g_token.spec.word = ft_strsub(g_token.start, 0, g_line - g_token.start);
 }
 
 void			scan_int(void)

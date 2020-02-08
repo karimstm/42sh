@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 17:04:07 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/08 12:18:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void							alias_tracking()
 	{
 		line = g_token.line;
 		len = g_token.start - g_token.line;
-		tmp = strndup(g_token.line, len);
+		tmp = ft_strsub(g_token.line,0, len);
 		g_line = ft_strjoin(key, g_line);
 		g_token.line = ft_strjoin(tmp, g_line);
 		ft_strdel(&tmp);
