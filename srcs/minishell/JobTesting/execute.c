@@ -68,7 +68,8 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 
 	cmds = NULL;
 	if (blt_line->blt
-		&& (*(cmds = node_to_char(process->node->spec.simple_command)) != NULL))
+		&& ((cmds = node_to_char(process->node->spec.simple_command)) != NULL)
+		&& *cmds)
 	{
 		bltin = ft_lstsearch(blt_line->blt, cmds[0], &check_builtin);
 		process->status = ((t_builtin*)bltin->content)->f(cmds + 1);
@@ -82,7 +83,7 @@ t_simple_command	*get_command_name(t_list_simple_command *list)
 {
 	t_simple_command	*current;
 
-	current = list->node_count ? list->head : NULL;
+	current = list && list->node_count ? list->head : NULL;
 	while (current)
 	{
 		if (current->kind == TOKEN_WORD)
@@ -357,7 +358,7 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 	char			*name;
 	t_simple_command *cmd;
 
-	if (node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
+	if (node && node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 	{
 		set_fds(tmp);
 		execute_redirection(reverse_redirection(node->redir));
@@ -380,7 +381,7 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 			ft_strdel(&name);
 		}
 	}
-	if (node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
+	if (node && node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 		restore_std(tmp);
 }
 

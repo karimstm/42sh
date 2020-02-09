@@ -4,7 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-<<<<<<< HEAD
        {
            "name": "(lldb) Launch",
            "type": "cppdbg",
@@ -17,19 +16,5 @@
            "externalConsole": true,
            "MIMode": "lldb"
        },
-=======
-        {
-            "name": "gcc build and debug active file",
-            "type": "cppdbg",
-            "request": "launch",
-            "program": "${workspaceFolder}/42sh",
-            "args": [],
-            "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
-            "environment": [],
-            "externalConsole": true,
-            "MIMode": "lldb",
-        }
->>>>>>> 11bafb74bd9db407795680f4aa0319ae2315fb29
     ]
 }

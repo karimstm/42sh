@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/08 12:18:20 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/09 16:45:16 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,10 @@ t_list_simple_command		*parse_word_cmd(void)
 		escape_space();
 	}
 	if (!list->node_count)
+	{
 		free(list);
+		list = NULL;
+	}
 	return (list);
 }
 

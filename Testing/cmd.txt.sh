@@ -1,26 +1,24 @@
-cat << EOF -e ; echo "
-hello" ; cat -e << ok
-ls
-this
-is
-a
-test
-EOF
-salam
-labas
-ok
+# trap 'increment' 2 3 6 9 14 15 11
 
-# page 744
+# increment()
+# {
+#   echo "Caught SIGNAL ..."
+#   cp file "$X"
+# }
 
-find / 2>/dev/null | wc -l &  		# Creates 2 processes in background group */
-sort < longlist | uniq -c			# Creates 2 processes in foreground group */
-
-
- stty tostop # STOP BACKGROUND JOB OUTPUTING TO THE TERMINAL
-
-
-
-
-
-
-
+# ### main script
+# X=0
+# while :
+# do
+#   echo "X=$X"
+#   cat /dev/random | head -c 1000 > file && cat file | ./42sh
+#   cat file | bash
+#   cat file | zsh
+#   X=`expr ${X} + 1`
+#   echo $X
+#   if [ "${X}" -gt "2000" ]
+#     then
+#         exit 1
+#     fi
+#     sleep 1
+# done

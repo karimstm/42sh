@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:53:09 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/07 15:22:15 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/09 16:37:36 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_list_simple_command	*malloc_list_simple_command(void)
 	t_list_simple_command *list;
 
 	list = (t_list_simple_command *)xmalloc(sizeof(t_list_simple_command));
+	init_list_simple_command(list);
 	return (list);
 }
 

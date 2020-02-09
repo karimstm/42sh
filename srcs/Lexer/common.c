@@ -29,6 +29,8 @@ int				get_new_line(void)
 	tmp = ft_strjoin(g_token.line, "\n");
 	ft_strdel((char **)&g_token.line);
 	tmp2 = new_line;
+	if (new_line == NULL)
+		return (1);
 	new_line = ft_strjoin(tmp, new_line);
 	g_token.line = new_line;
 	g_token.start = new_line + startlen;
