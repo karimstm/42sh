@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:55:19 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/10 14:30:44 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/10 19:32:45 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,26 +34,22 @@ int		ft_var_isvalid(char *str)
 	return (1);
 }
 
-int    edit_add_var(char *arg, char *index, int is_exported)
+int    edit_add_var(char *key, char *value, int is_exported)
 {
     t_variables *new_var;
-    char *key;
 
-    key = ft_strsub(arg, 0, index - arg);
     if (!ft_var_isvalid(key))
     {
-        ft_printf_fd(2, "42sh: export: %s: not a valid identifier\n", key);
-        ft_strdel(&key);
+        ft_printf_fd(2, "42sh: `export': %s: not a valid identifier\n", key);
         return (1);
     }
     if ((new_var = get_var(key)))
     {
         ft_strdel(&new_var->value);
-        ft_strdel(&key);
-        new_var->value = ft_strdup(index + 1);
+        new_var->value = ft_strdup(value);
     }
     else
-        variable_push(key, ft_strdup(index + 1), is_exported);
+        variable_push(ft_strdup(key), ft_strdup(value), is_exported);
     return (0);
 }
 
@@ -61,13 +57,15 @@ int     ft_export(char **args)
 {
     t_variables *new_var;
     char        *index;
+    char        *key;
+    char        *value;
     int i;
 
     i = -1;
     while (args[++i])
     {
-        if ((index = ft_strchr(args[i], '=')))
-            edit_add_var(args[i], index, 1); 
+        if (ft_strchr(args[i], '=') && (index = ft_strrepace(args[i], '=')))
+            edit_add_var(args[i], index , 1);
         else if ((new_var = get_var(args[i])) && !new_var->is_exported)
             new_var->is_exported = 1; 
     }
@@ -84,7 +82,7 @@ int     ft_unset(char **args)
     while (args[++i])
     {
         if (!ft_var_isvalid(args[i]))
-            ft_printf_fd(2, "42sh: export: %s: not a valid identifier\n", args[i]);
+            ft_printf_fd(2, "42sh: export: `%s': not a valid identifier\n", args[i]);
         else
             delete_var(args[i]);
     }
@@ -101,8 +99,8 @@ int     ft_set(char **args)
     {
         i = -1;
         while (args[++i])
-            if ((index = ft_strchr(args[i], '=')))
-                edit_add_var(args[i], index, 0);
+            if (ft_strchr(args[i], '=') && (index = ft_strrepace(args[i], '=')))
+                    edit_add_var(args[i], index , 0);
     }
     else
     { 
