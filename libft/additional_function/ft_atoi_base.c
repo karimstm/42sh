@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdequeue.c                                    :+:      :+:    :+:   */
+/*   ft_atoi_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/19 00:49:40 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/06 20:21:17 by aait-ihi         ###   ########.fr       */
+/*   Created: 2019/08/08 23:13:08 by aait-ihi          #+#    #+#             */
+/*   Updated: 2020/02/10 16:31:18 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdequeue(t_list **list, void (*del)(void **))
+long long	ft_atoi_base(const char *s, const char *s_base, int base)
 {
-	t_list	*tmp;
+	long long	n;
+	int			m;
+	int			i;
 
-	if (list && *list)
-	{
-		tmp = (*list)->next;
-		if (tmp)
-			tmp->tail = (*list)->tail;
-		del((void **)&(*list)->content);
-		ft_memdel((void **)list);
-		*list = tmp;
-	}
+	n = 0;
+	i = 0;
+	m = 1;
+	s = ft_skip_chars((char *)s, " \n\t\r\v", NULL);
+	if ((*s == 45 || *s == 43) && ft_isinstr(s[1], s_base))
+		m *= (*s++ == '-' ? -1 : 1);
+	while (ft_isinstr(*s, s_base))
+		n = (n * base) + (ft_strindexof(s_base, *s++) - 1);
+	return (n * m);
 }

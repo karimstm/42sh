@@ -1,32 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstenqueue.c                                    :+:      :+:    :+:   */
+/*   ft_strindexof.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/19 00:44:52 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/07 14:14:47 by aait-ihi         ###   ########.fr       */
+/*   Created: 2019/03/28 19:47:58 by aait-ihi          #+#    #+#             */
+/*   Updated: 2019/09/03 00:23:26 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
-t_list	*ft_lstenqueue(t_list **list, t_list *new)
+int	ft_strindexof(const char *s, char c)
 {
-	if (new && list && *list)
-	{
-		if ((*list)->tail)
-			(*list)->tail->next = new;
-		else
-			(*list)->next = new;
-		(*list)->tail = new->tail ? new->tail : new;
-		return ((*list));
-	}
-	else if (new && list)
-	{
-		*list = new;
-		return ((*list));
-	}
-	return (NULL);
+	int	i;
+
+	i = 0;
+	while (s && s[i] && s[i] != c)
+		i++;
+	return (s[i] == c ? i + 1 : 0);
 }

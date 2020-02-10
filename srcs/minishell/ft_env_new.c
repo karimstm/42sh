@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env_new.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:55:19 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/10 19:32:45 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/10 19:37:54 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,14 +57,12 @@ int     ft_export(char **args)
 {
     t_variables *new_var;
     char        *index;
-    char        *key;
-    char        *value;
     int i;
 
     i = -1;
     while (args[++i])
     {
-        if (ft_strchr(args[i], '=') && (index = ft_strrepace(args[i], '=')))
+        if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
             edit_add_var(args[i], index , 1);
         else if ((new_var = get_var(args[i])) && !new_var->is_exported)
             new_var->is_exported = 1; 
@@ -99,7 +97,7 @@ int     ft_set(char **args)
     {
         i = -1;
         while (args[++i])
-            if (ft_strchr(args[i], '=') && (index = ft_strrepace(args[i], '=')))
+            if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
                     edit_add_var(args[i], index , 0);
     }
     else

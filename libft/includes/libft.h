@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/06 20:12:48 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/10 19:35:12 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -206,9 +206,13 @@ void				init_fdlist(t_fdlist **elem, int fd);
 /*
 ** add by aait-ihi
 */
+char				*ft_strreplace(char *str, char find, char replace);
 int					ft_isinstr(char c, const char *s);
 t_list				*ft_lstenqueue(t_list **list, t_list *new);
 void				ft_lstdequeue(t_list **list, void (*del)(void **));
+long long			ft_atoi_base(const char *s, const char *s_base, int base);
+int					ft_strsequ(char *str, char **cmps);
+int					ft_strindexof(const char *s, char c);
 char				*ft_skip_chars(const char *str, const char *compare,
 																int (*f)(int));
 char				*ft_rskip_chars(const char *str, const char *cmp,

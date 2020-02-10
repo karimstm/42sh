@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdequeue.c                                    :+:      :+:    :+:   */
+/*   ft_strreplace.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/19 00:49:40 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/06 20:21:17 by aait-ihi         ###   ########.fr       */
+/*   Created: 2019/06/03 02:08:30 by aait-ihi          #+#    #+#             */
+/*   Updated: 2020/02/10 19:34:35 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdequeue(t_list **list, void (*del)(void **))
+char	*ft_strreplace(char *str, char find, char replace)
 {
-	t_list	*tmp;
-
-	if (list && *list)
-	{
-		tmp = (*list)->next;
-		if (tmp)
-			tmp->tail = (*list)->tail;
-		del((void **)&(*list)->content);
-		ft_memdel((void **)list);
-		*list = tmp;
-	}
+	if (str && (str = ft_strchr(str, find)))
+		*str++ = replace;
+	return (str);
 }

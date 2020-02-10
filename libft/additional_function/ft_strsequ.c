@@ -1,32 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstenqueue.c                                    :+:      :+:    :+:   */
+/*   ft_strsequ.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/19 00:44:52 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/07 14:14:47 by aait-ihi         ###   ########.fr       */
+/*   Created: 2020/02/10 02:40:04 by aait-ihi          #+#    #+#             */
+/*   Updated: 2020/02/10 03:30:20 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/libft.h"
+#include "libft.h"
 
-t_list	*ft_lstenqueue(t_list **list, t_list *new)
+int ft_strsequ(char *str, char **cmps)
 {
-	if (new && list && *list)
-	{
-		if ((*list)->tail)
-			(*list)->tail->next = new;
-		else
-			(*list)->next = new;
-		(*list)->tail = new->tail ? new->tail : new;
-		return ((*list));
-	}
-	else if (new && list)
-	{
-		*list = new;
-		return ((*list));
-	}
-	return (NULL);
+    while (*cmps)
+    {
+        if (ft_strequ(str, *cmps))
+            return(1);
+        cmps++;
+    }
+    return(0);
 }
