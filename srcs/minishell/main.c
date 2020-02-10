@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/09 16:58:54 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/11 00:05:32 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void		run_shell2(t_list *blt, t_line *line)
 	get_alias_list(aliases);
 	fake_alias();// for debuging purposes only
 	get_job_list(jobs);
-	while ((new_line = readline(MSG)))
+	while ((new_line = ft_readline(MSG)))
 	{
 		ERRNO = 0;
 		job_notification(jobs);

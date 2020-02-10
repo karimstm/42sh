@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handlers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 13:10:15 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/02 12:59:26 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/11 00:41:50 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	sig_handler(int sig)
 {
+	char c = 0;
 	ft_printf("\n"); // Move to a new line
     (void)sig;
+	ioctl(0, TIOCSTI , &c);
 	// We need to clear the readline buffer here
 	// nad redisplay a new prompt
 }

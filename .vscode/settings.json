@@ -7,6 +7,8 @@
         "parse.h": "c",
         "iterator": "c",
         "math.h": "c",
-        "hash.h": "c"
+        "hash.h": "c",
+        "ft_readline.h": "c",
+        "fcntl.h": "c"
     }
 }

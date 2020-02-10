@@ -13,6 +13,8 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 # include "const.h"
+# include <term.h>
+# include "../readline/ft_readline.h"
 # include "libft.h"
 # include "quote.h"
 # include "ast.h"
@@ -20,7 +22,6 @@
 # include "parse.h"
 # include "lex.h"
 # include <dirent.h>
-# include <term.h>
 # include <termios.h>
 # include <fcntl.h>
 # include <sys/stat.h>
@@ -35,6 +36,7 @@
 # include "alias.h"
 # include "hash.h"
 
+# undef tab
 # define BUF_S 1000
 
 typedef struct			s_builtin

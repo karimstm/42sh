@@ -37,11 +37,14 @@ BLUE = \033[1;34m
 YELLOW = \033[1;33m
 NC = \033[1;0m
 
-all: $(NAME)
+all: realine $(NAME)
+
+realine : 
+	make -C readline
 
 $(NAME): $(LIBFT) $(OBJECT)
 	@echo "$(RED)Linking...$(NC)"
-	@$(CC) $(FLAGS) $(REAL_OBJECT) -ltermcap -lreadline $(LIBFT) -o $(NAME)
+	@$(CC) $(FLAGS) $(REAL_OBJECT) -ltermcap readline/readline.a $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)Finished...$(NC)"
 
 $(LIBFT):

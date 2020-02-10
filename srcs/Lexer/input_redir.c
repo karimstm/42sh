@@ -51,7 +51,7 @@ t_redirection			*here_doc(t_token_kind kind)
 		fd2 = open_tmp(pathname);
 		while (1)
 		{
-			buf = readline("> ");
+			buf = ft_readline("> ");
 			if (ft_strcmp(buf, g_token.spec.word) == 0)
 			{
 				ft_strdel(&buf);

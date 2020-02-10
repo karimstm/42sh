@@ -25,7 +25,7 @@ int				get_new_line(void)
 
 	len = g_line - g_token.line;
 	startlen = g_token.start - g_token.line;
-	new_line = readline("> ");
+	new_line = ft_readline("> ");
 	tmp = ft_strjoin(g_token.line, "\n");
 	ft_strdel((char **)&g_token.line);
 	tmp2 = new_line;
