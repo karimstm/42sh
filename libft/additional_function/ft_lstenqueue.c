@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstenqueue.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/19 00:44:52 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/07 14:14:47 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/06 20:08:48 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_list	*ft_lstenqueue(t_list **list, t_list *new)
 			(*list)->tail->next = new;
 		else
 			(*list)->next = new;
-		(*list)->tail = new->tail ? new->tail : new;
+		(*list)->tail = new;
 		return ((*list));
 	}
 	else if (new && list)

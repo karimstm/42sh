@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_skip_until_char.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/16 21:19:58 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/24 17:54:02 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/10 20:04:49 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,3 +39,5 @@ char		*ft_rskip_unitl_char(const char *str, const char *compare,
 		i = 0;
 	return ((char *)(str + i));
 }
+
+#include "libft.h"
