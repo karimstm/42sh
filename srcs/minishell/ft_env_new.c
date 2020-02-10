@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:55:19 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/04 21:31:01 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/10 14:30:44 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,6 @@ int    edit_add_var(char *arg, char *index, int is_exported)
     return (0);
 }
 
-int     ft_set_var(char **args)
-{
-    char *index;
-    int i;
-
-    i = -1;
-    while (args[++i])
-    {
-        if ((index = ft_strchr(args[i], '=')))
-            edit_add_var(args[i], index, 0);
-    }
-    return (0);
-}
-
 int     ft_export(char **args)
 {
     t_variables *new_var;
@@ -93,21 +79,39 @@ int     ft_unset(char **args)
     int i;
 
     i = -1;
+    if (!args)
+        return (1);
     while (args[++i])
-        delete_var(args[i]);
+    {
+        if (!ft_var_isvalid(args[i]))
+            ft_printf_fd(2, "42sh: export: %s: not a valid identifier\n", args[i]);
+        else
+            delete_var(args[i]);
+    }
     return (0);
 }
 
 int     ft_set(char **args)
 {
     t_variables *cur;
+    char *index;
+    int i;
 
-    (void)args;
-    cur = env2->head;
-    while (cur)
+    if (args && *args)
     {
-        ft_printf("%s=%s\n", cur->key, cur->value);
-        cur = cur->next;
+        i = -1;
+        while (args[++i])
+            if ((index = ft_strchr(args[i], '=')))
+                edit_add_var(args[i], index, 0);
+    }
+    else
+    { 
+        cur = env2->head;
+        while (cur)
+        {
+            ft_printf("%s=%s\n", cur->key, cur->value);
+            cur = cur->next;
+        }
     }
     return (0);
 }
