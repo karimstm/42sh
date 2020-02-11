@@ -94,7 +94,7 @@ int			get_min_pos(t_job_list *job_list)
 	int		max;
 
 	max = 0;
-	current = job_list->head;
+	current = (job_list && job_list->node_count)? job_list->head : NULL;
 	while (current)
 	{
 		if (current->pos > max)

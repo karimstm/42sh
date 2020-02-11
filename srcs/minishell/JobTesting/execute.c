@@ -74,6 +74,7 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 		bltin = ft_lstsearch(blt_line->blt, cmds[0], &check_builtin);
 		process->status = ((t_builtin*)bltin->content)->f(cmds + 1);
 		ft_free_strtab(cmds);
+		process->completed = 1;
 		return (process->status);
 	}
 	return (1);

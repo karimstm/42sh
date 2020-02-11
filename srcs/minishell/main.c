@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/09 16:58:54 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/10 14:39:53 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,6 @@ void		free_stacked_node(t_stack *sp, t_job_list *jobs)
 	}
 }
 
-//For debug only
-// Should be removed later on
-void		fake_alias()
-{
-	char *name[] = {"ec=echo \"", NULL};
-	ft_alias(name);
-}
-
-char		*readfile()
-{
-	char *buf = (char *)malloc(200);
-	
-	int fd = open("file", O_RDONLY);
-	int size = read(fd, buf, 200);
-	buf[size] = 0;
-	return buf;
-}
 
 void		run_shell2(t_list *blt, t_line *line)
 {
@@ -88,7 +71,6 @@ void		run_shell2(t_list *blt, t_line *line)
 	init_job_list(jobs);
 	init_alias(aliases);
 	get_alias_list(aliases);
-	fake_alias();// for debuging purposes only
 	get_job_list(jobs);
 	while ((new_line = readline(MSG)))
 	{
@@ -99,12 +81,9 @@ void		run_shell2(t_list *blt, t_line *line)
 		if (ft_str_isnull(new_line) ||
 			(node = start_parsing_command(new_line)) == NULL)
 		{
-		ft_printf_fd(2, "|%s - %s|\n", g_token.current, new_line);
-
 			ft_strdel((char **)&g_token.line);
 			continue;
 		}
-		ft_printf_fd(2, "|%s - %s|\n", g_token.current, new_line);
 		push_to_stack(&sp, node);
 		execute(jobs, node, line, blt);
 		job_notification(jobs);
@@ -118,14 +97,14 @@ void		run_shell2(t_list *blt, t_line *line)
 
 void    ft_printenv()
 {
-    t_variables *cur;
+	t_variables *cur;
 
-    cur = env2->head;
-    while (cur)
-    {
-        ft_printf("%d /// %s=%s\n",cur->is_exported, cur->key, cur->value);
-        cur = cur->next;
-    }
+	cur = env2->head;
+	while (cur)
+	{
+		ft_printf("%d /// %s=%s\n",cur->is_exported, cur->key, cur->value);
+		cur = cur->next;
+	}
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/09 16:45:16 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/10 13:11:00 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -343,12 +343,17 @@ t_node						*parse_and_or(void)
 
 t_node						*parse_commands(void)
 {
-	t_node *node;
-
+	t_node 			*node;
+	t_token_kind	kind;
+	
 	node = parse_and_or();
 	if (ERRNO || node == NULL)
 		return (node);
-	if (node && !ERRNO && (g_token.kind == ';' || g_token.kind == '&'))
-		return (parse_sep_cmd(g_token.kind, node));
+	kind = g_token.kind;
+	if (node && !ERRNO && (kind == ';' || kind == '&' || kind == TOKEN_EOF))
+	{
+		kind = (kind != '&') ? ';' : '&';
+		return (parse_sep_cmd(kind, node));
+	}
 	return (node);
 }
