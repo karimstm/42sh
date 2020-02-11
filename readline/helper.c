@@ -44,24 +44,29 @@ void	update_o_cursor(t_readline *env)
 
 void	get_cursor_position(t_readline *readline)
 {
-	char	*buff;
-	int		col;
+	char	buf;
+	int		column;
 	int		row;
+	char	begin;
 
-	buff = (char[31]){0};
-	while (1)
+	begin = 0;
+	column = 0;
+	row = 0;
+	tputs("\E[6n", 1, ft_putchar);
+	while (read(0, &buf, 1) > 0)
 	{
-		tputs("\e\e\e\e\e\e\e[6n", 0, put_char);
-		col = read(1, buff, 30);
-		buff[col] = 0;
-		if (ft_strchr(buff, '['))
+		if (begin == 3 && buf == 'R')
 			break ;
+		else if (begin == 2 && buf == ';')
+			begin = 3;
+		else if (begin == 0 && buf == 91)
+			begin = 2;
+		else if (begin == 2)
+			row = (row * 10) + (buf - '0');
+		else if (begin == 3)
+			column = (column * 10) + (buf - '0');
 	}
-	buff = ft_skip_unitl_char(buff, "[", NULL);
-	row = ft_atoi(buff + 1);
-	buff = ft_skip_unitl_char(buff, ";", NULL);
-	col = ft_atoi(buff + 1);
-	readline->o_cursor = (t_point){col - 1, row - 1};
+	readline->o_cursor = (t_point){column - 1, row - 1};
 	readline->ov_cursor = readline->o_cursor;
 }
 
