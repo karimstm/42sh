@@ -147,4 +147,9 @@ char			*ft_readline(const char *g_prompt);
 int				g_read_interrput;
 t_readline		*g_readline;
 
+/*
+**	ft_debug.c
+*/
+void					ft_debug(char *tty, const char *format, ...);
+
 #endif

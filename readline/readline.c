@@ -13,6 +13,18 @@
 #include "ft_readline.h"
 #include <readline/readline.h>
 
+void					ft_debug(char *tty, const char *format, ...)
+{
+	int		fd;
+
+	fd = open(tty, O_RDWR);
+	va_list		ap;
+	va_start(ap, format);
+	ft_vprintf(fd, format, &ap);
+	va_end(ap);
+	close(fd);
+}
+
 static int	key_handel(t_readline *env, int b, int r)
 {
 	if (b == BUTTON_UP && !(r = 0))

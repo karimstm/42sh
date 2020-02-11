@@ -45,28 +45,9 @@ typedef struct			s_builtin
 	int					(*f)();
 }						t_builtin;
 
-typedef struct			s_line
-{
-	char				*command;
-	char				*copy;
-	int					buf_size;
-	int					col;
-	int					top;
-	int					index;
-	int					current_index;
-	t_list				*new_lines;
-	t_list				*head_newlines;
-	char				print_msg;
-	t_list				**tail_history;
-	t_list				*index_history;
-	char				*tmp_history;
-	t_list				*env;
-}						t_line;
-
 typedef	struct			s_blt_line
 {
 	t_list				*blt;
-	t_line				*line;
 }						t_blt_line;
 
 /* Structure for environement and set variables */
@@ -131,59 +112,11 @@ int						ft_unset(char **args);
 int						ft_export(char **args);
 int						ft_pwd(char **args);
 
-/*
-**	=============================== READLINE ==================================
-*/
-
-/*
-**	copy.c
-*/
-void					handle_copy(t_line *line, int key);
-
-/*
-**	cursor.c
-*/
-void					go_left(t_line *line);
-void					go_right(t_line *line);
-void					move_cursor(int direction, t_line *line);
-
-/*
-**	cursor2.c
-*/
-int						get_current_row(int height);
-void					go_home(t_line *line);
-void					go_home_line(t_line *line);
-void					go_end(t_line *line);
-void					go_end_line(t_line *line);
-
-/*
-**	cursor3.c
-*/
-void					go_down(t_line *line);
-void					go_up(t_line *line);
-void					next_word(t_line *line, int direction);
-void					update_line(t_line *line, char *tmp, char buf);
-
-/*
-**	cursor4.c
-*/
-void					update_index(t_line *line, char step);
-int						decision_up_down(t_line *line);
-int						get_current_rows(t_line *line);
-int						decision_top_down_left(t_line *line, int current_rows);
-void					set_new_current_index(t_line *line);
-
-/*
-**	edit_line.c
-*/
-void					print_newchar(t_line *line, int buf);
-t_list					*free_next_newlines(t_line *line);
-void					print_char_inline(t_line *line, int buf);
-void					go_down_left(void);
 
 /*
 **	handlers.c
 */
+struct termios			*get_termios(void);
 void					sig_handler(int sig);
 void					child_handler(int sig);
 void					signals(void);
@@ -192,41 +125,12 @@ void					exit_shell(char *format, ...);
 /*
 **	history.c
 */
-void					handle_history(int buf, t_line *line);
-void					m_add_history(t_line *line);
-
-/*
-**	line.c
-*/
-t_line					*get_t_line(void);
-void					free_line(void);
-t_line					*init_line(void);
-void					handle_eot(t_line *line);
-
-/*
-**	paste.c
-*/
-void					print_pasted_chars(int *buf, t_line *line);
-void					internal_paste(t_line *line);
-
-/*
-**	read_line.c
-*/
-void					clr_screen(int sig);
-int						read_line(t_line *line);
-
-/*
-**	terms.c
-*/
-struct termios			*get_termios(void);
-int						init_termios(struct termios term);
-int						init_terms(void);
+void					restore_history(void);
 
 /*
 **	exec.c
 */
 
-int						execute_cmd(t_node *node, t_list *blt, t_line *line, t_job_kind kind, t_list_process *p);
 char					**node_to_char(t_list_simple_command *command);
 char					*working_path(char *cmd);
 t_job_list				*start_exec(t_node *node, t_list *env);
@@ -250,7 +154,7 @@ int						check_file_status(char *filename);
 **	JobTesting execute.c
 */
 
-void					execute(t_job_list *job_list, t_node *node, t_line *line, t_list *blt);
+void					execute(t_job_list *job_list, t_node *node, t_list *blt);
 
 /*
 ** ft_jobs.c
@@ -296,6 +200,5 @@ t_variables 			*get_var(char *target);
 void					variable_push(char *key, char *value, int export);
 void					delete_var(char *target);
 char					**get_tab_env();
-
 
 #endif

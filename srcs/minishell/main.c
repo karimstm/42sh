@@ -72,7 +72,7 @@ char		*readfile()
 	return buf;
 }
 
-void		run_shell2(t_list *blt, t_line *line)
+void		run_shell2(t_list *blt)
 {
 	t_node			*node;
 	char			*new_line;
@@ -99,14 +99,15 @@ void		run_shell2(t_list *blt, t_line *line)
 		if (ft_str_isnull(new_line) ||
 			(node = start_parsing_command(new_line)) == NULL)
 		{
-		ft_printf_fd(2, "|%s - %s|\n", g_token.current, new_line);
+			ft_printf_fd(2, "|%s - %s|\n", g_token.current, new_line);
 
 			ft_strdel((char **)&g_token.line);
 			continue;
 		}
 		ft_printf_fd(2, "|%s - %s|\n", g_token.current, new_line);
 		push_to_stack(&sp, node);
-		execute(jobs, node, line, blt);
+		execute(jobs, node, blt);
+		add_to_history(g_token.current, ft_strlen(g_token.current));
 		job_notification(jobs);
 		free_stacked_node(&sp, jobs);
 		ft_strdel((char **)&g_token.line);
@@ -140,7 +141,6 @@ int				main(int ac, char **av, char **ev)
 	t_list		*env;
 	t_list		*blt;
 	t_list		*history;
-	t_line		*new_line;
 
 	(void)ac;
 	(void)av;
@@ -151,13 +151,8 @@ int				main(int ac, char **av, char **ev)
 	ft_init_env(ev);
 	init_builtin(&blt);
 	init_shell();
-	new_line = init_line();
-	new_line->tail_history = &history;
-	new_line->env = env;
-	new_line->copy = NULL;
-	run_shell2(blt, new_line);
-	free(new_line->copy);
-	free_gnl(0);
+	restore_history();
+	run_shell2(blt);
 	free_builtin(blt);
 	return (0);
 }

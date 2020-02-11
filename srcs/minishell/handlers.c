@@ -12,6 +12,13 @@
 
 #include "shell.h"
 
+struct termios	*get_termios(void)
+{
+	static struct termios	term;
+
+	return (&term);
+}
+
 void	sig_handler(int sig)
 {
 	char c = 0;
@@ -31,19 +38,5 @@ void		child_handler(int sig)
 void		signals(void)
 {
 	signal(SIGINT, sig_handler);
-	signal(SIGWINCH, clr_screen);
-}
-
-void		exit_shell(char *format, ...)
-{
-	va_list			args;
-	struct termios	*term;
-
-	tputs(tgetstr("ve", NULL), 1, ft_putchar);
-	term = get_termios();
-	tcsetattr(0, TCSANOW, term);
-	va_start(args, format);
-	ft_vprintf(2, format, &args);
-	va_end(args);
-	exit(-1);
+	// signal(SIGWINCH, clr_screen); we need to verify if the new readline works well when the window size changes
 }

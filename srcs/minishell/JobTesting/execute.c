@@ -385,15 +385,13 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 		restore_std(tmp);
 }
 
-void			execute(t_job_list *job_list, t_node *node,
-						t_line *line, t_list *blt)
+void			execute(t_job_list *job_list, t_node *node, t_list *blt)
 {
 	t_job_kind	kind;
 	t_blt_line	*blt_line;
 
 	kind = J_FOREGROUND;
 	blt_line = (t_blt_line *)xmalloc(sizeof(t_blt_line));
-	blt_line->line = line;
 	blt_line->blt = blt;
 	execute_entry(job_list, node, blt_line, kind);
 	free(blt_line);
