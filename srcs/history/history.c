@@ -14,5 +14,16 @@
 
 void    restore_history(void)
 {
- //   ft_printf("Lol");
+    // int count;
+    // int fd;
+    // char *buf;
+
+    // count = 0;
+    // fd = open("/Users/zoulhafi/.bash_history", O_RDONLY);
+    // while (get_next_line(fd, &buf) == 1)
+    // {
+    //     count++;
+    //     ft_printf("%d\t%s\n", count, buf);
+    // }
+    // close(fd);
 }

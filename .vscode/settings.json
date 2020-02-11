@@ -65,6 +65,7 @@
         "tuple": "c",
         "type_traits": "c",
         "unordered_map": "c",
-        "typeinfo": "c"
+        "typeinfo": "c",
+        "chrono": "c"
     }
 }
