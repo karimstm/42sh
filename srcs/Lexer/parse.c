@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:14:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/10 13:11:00 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/11 15:14:40 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ const char					*redirect_name(t_token_kind kind)
 		[TOKEN_DGREATAND] = ">>&",
 		[TOKEN_GREATAND] = ">&",
 		[TOKEN_CLOBBER] = ">|",
+		[TOKEN_ANDGREAT] = "&>",
+		[TOKEN_AND_DEGREATE] = "&>>",
 	};
 
 	return (redirection_name[kind]);
@@ -84,7 +86,7 @@ void							alias_tracking()
 	char				*tmp;
 	char				*key;
 	const char			*line;
-	
+
 	if ((key = get_alias(g_token.spec.word)))
 	{
 		line = g_token.line;
@@ -102,7 +104,7 @@ void							alias_tracking()
 void							check_alias(t_list_simple_command *list)
 {
 	t_simple_command	*current;
-	
+
 	current = list->node_count ? list->head : NULL;
 	while (current)
 	{
@@ -144,10 +146,14 @@ t_redirection				*output_redir(void)
 		tmp = output_redirection(g_token.kind);
 	else if (g_token.kind == TOKEN_DGREAT)
 		tmp = output_redirection(TOKEN_DGREAT);
+	else if (g_token.kind == TOKEN_ANDGREAT)
+		tmp = output_aggregate(g_token.kind, 1);
+	else if (g_token.kind == TOKEN_AND_DEGREATE)
+		tmp = output_aggregate(g_token.kind, 1);
 	else if (g_token.kind == TOKEN_GREATAND)
-		tmp = output_aggregate(g_token.kind);
+		tmp = output_aggregate(g_token.kind, 0);
 	else if (g_token.kind == TOKEN_DGREATAND)
-		tmp = output_aggregate(g_token.kind);
+		tmp = output_aggregate(g_token.kind, 0);
 	return (tmp);
 }
 
@@ -345,7 +351,7 @@ t_node						*parse_commands(void)
 {
 	t_node 			*node;
 	t_token_kind	kind;
-	
+
 	node = parse_and_or();
 	if (ERRNO || node == NULL)
 		return (node);

@@ -26,7 +26,6 @@ int		check_file_status(char *filename)
 	int error;
 
 	error = 1;
-
 	if (is_directory(filename))
 		syntax_error("42sh: %s: Is a Directory.", filename);
 	else if (access(filename, F_OK) == -1)

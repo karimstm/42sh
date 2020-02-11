@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:50:32 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/06 13:10:28 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/11 14:56:53 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void					aggregate_word(int *fd2, int *fd1, t_redirection **list, t_token_kind k
 	}
 }
 
-t_redirection			*output_aggregate(t_token_kind kind)
+t_redirection			*output_aggregate(t_token_kind kind, int skip_number)
 {
 	int				fd1;
 	int				fd2;
@@ -92,7 +92,7 @@ t_redirection			*output_aggregate(t_token_kind kind)
 		len = ft_strlen(g_token.spec.word);
 		if (g_token.spec.word[len - 1] == '-')
 			len -= 1;
-		if (is_n_number(g_token.spec.word, len))
+		if (!skip_number && is_n_number(g_token.spec.word, len))
 			aggregate_number(&fd2, &fd1, &list, kind);
 		else
 			aggregate_word(&fd2, &fd1, &list, kind);

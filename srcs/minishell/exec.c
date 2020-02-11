@@ -83,9 +83,9 @@ int		execute_redirection(t_redirection *list)
 			error = output(current);
 		else if (current->kind == TOKEN_DGREAT)
 			error = output_append(current);
-		else if (current->kind == TOKEN_GREATAND)
+		else if (current->kind == TOKEN_GREATAND || current->kind == TOKEN_ANDGREAT)
 			error = output_with_aggregate(current, 0);
-		else if (current->kind == TOKEN_DGREATAND)
+		else if (current->kind == TOKEN_DGREATAND || current->kind == TOKEN_AND_DEGREATE)
 			error = output_with_aggregate(current, 1);
 		else if (current->kind == '<')
 			error = input(current);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:52:19 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/10 23:39:45 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/11 14:47:35 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef enum				e_token_kind {
 	TOKEN_DLESS,
 	TOKEN_DGREAT,
 	TOKEN_LESSAND,
+	TOKEN_ANDGREAT,
+	TOKEN_AND_DEGREATE,
 	TOKEN_GREATAND,
 	TOKEN_DGREATAND,
 	TOKEN_LESSGREAT,
@@ -105,7 +107,7 @@ typedef enum				e_cmd_type {
 typedef struct				s_simple_command {
 	t_token_kind			kind;
 	char					*name;
-	t_cmd_type				type;	
+	t_cmd_type				type;
 	struct s_simple_command	*next;
 }							t_simple_command;
 
