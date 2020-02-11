@@ -62,7 +62,7 @@ void            lookup_and_insert(t_hash_table *ht, char **args)
         if ((str = working_path_hash(args[i], &type)))
             ht_insert(ht, args[i], str);
         else if (type == IS_NOTFOUND)
-            printf("42sh: hash: %s: not found\n", args[i]);
+            ft_printf("42sh: hash: %s: not found\n", args[i]);
         i++;
     }
 }

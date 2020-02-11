@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/06 20:12:48 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/10 23:59:05 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # define LEN 10
 # define LEN_BUF 1000
 # define BUFF_SIZE 1000
+# define BETWEEN(v,v1,v2) ((v) >= (v1) && (v) <= (v2))
+# define ABS(v) (v < 0 ? -(v) : (v))
 
 typedef struct		s_fdlist
 {
@@ -206,9 +208,19 @@ void				init_fdlist(t_fdlist **elem, int fd);
 /*
 ** add by aait-ihi
 */
+int					ft_max(int a, int b);
+int					ft_min(int a, int b);
+int					ft_isnalnum(int c);
+_Bool				ft_swap(int *a, int *b);
+int					ft_str_occurence(char *str, char c);
+void				ft_die(const char *message, int error_nb);
+char				*ft_strreplace(char *str, char find, char replace);
 int					ft_isinstr(char c, const char *s);
 t_list				*ft_lstenqueue(t_list **list, t_list *new);
 void				ft_lstdequeue(t_list **list, void (*del)(void **));
+long long			ft_atoi_base(const char *s, const char *s_base, int base);
+int					ft_strsequ(char *str, char **cmps);
+int					ft_strindexof(const char *s, char c);
 char				*ft_skip_chars(const char *str, const char *compare,
 																int (*f)(int));
 char				*ft_rskip_chars(const char *str, const char *cmp,

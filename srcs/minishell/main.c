@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/10 14:39:53 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/11 11:20:01 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void		free_stacked_node(t_stack *sp, t_job_list *jobs)
 }
 
 
-void		run_shell2(t_list *blt, t_line *line)
+void		run_shell2(t_list *blt)
 {
 	t_node			*node;
 	char			*new_line;
@@ -72,7 +72,7 @@ void		run_shell2(t_list *blt, t_line *line)
 	init_alias(aliases);
 	get_alias_list(aliases);
 	get_job_list(jobs);
-	while ((new_line = readline(MSG)))
+	while ((new_line = ft_readline(MSG)))
 	{
 		ERRNO = 0;
 		job_notification(jobs);
@@ -85,13 +85,14 @@ void		run_shell2(t_list *blt, t_line *line)
 			continue;
 		}
 		push_to_stack(&sp, node);
-		execute(jobs, node, line, blt);
+		execute(jobs, node, blt);
+		add_to_history(g_token.current, ft_strlen(g_token.current));
 		job_notification(jobs);
 		free_stacked_node(&sp, jobs);
 		ft_strdel((char **)&g_token.line);
 	}
 	deallocate(&sp);
-	ft_printf("%s", WRONG_READ); // Need to do some checkup here, 
+	ft_printf("%s", WRONG_READ); // Need to do some checkup here,
 								//so it won't show up on something like this echo 'ls -la' | ./42sh
 }
 
@@ -119,7 +120,6 @@ int				main(int ac, char **av, char **ev)
 	t_list		*env;
 	t_list		*blt;
 	t_list		*history;
-	t_line		*new_line;
 
 	(void)ac;
 	(void)av;
@@ -130,13 +130,8 @@ int				main(int ac, char **av, char **ev)
 	ft_init_env(ev);
 	init_builtin(&blt);
 	init_shell();
-	new_line = init_line();
-	new_line->tail_history = &history;
-	new_line->env = env;
-	new_line->copy = NULL;
-	run_shell2(blt, new_line);
-	free(new_line->copy);
-	free_gnl(0);
+	restore_history();
+	run_shell2(blt);
 	free_builtin(blt);
 	return (0);
 }
