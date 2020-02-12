@@ -29,6 +29,7 @@ void			add_to_history(const char *str, int len)
 	{
 		if (g_history_list)
 			g_history_list->prev = tmp;
+		tmp->index = g_history_list ? g_history_list->index + 1 : 1;
 		tmp->next = g_history_list;
 		tmp->line = ft_strdup(str);
 		tmp->tmp_line = ft_strdup(str);

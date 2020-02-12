@@ -31,7 +31,6 @@ char	*manage_ctlr_c(t_readline *readline)
 	ft_memdel((void **)&readline->cmd->tmp_line);
 	free(readline->line_props.details);
 	clean_hsitory();
-	g_read_interrput = 0;
 	unconfigure_terminal(readline);
 	return (ft_strdup(""));
 }

@@ -38,6 +38,11 @@
 
 # undef tab
 # define BUF_S 1000
+# define L_FLAG 0x00000001
+# define N_FLAG 0x00000002
+# define R_FLAG 0x00000004
+# define S_FLAG 0x00000008
+# define BREAK_FLAG 0x00000010
 
 typedef struct			s_builtin
 {
@@ -126,6 +131,12 @@ void					exit_shell(char *format, ...);
 **	history.c
 */
 void					restore_history(void);
+void                    save_history(void);
+int                     ft_history(char **args);
+int                     ft_fc(char **args);
+void                    fc_l(int flags, char *first, char *last);
+void                    fc_s(int flags, char *first, char *last);
+void                    fc_edit(int flags, char *editor, char *first, char *last);
 
 /*
 **	exec.c

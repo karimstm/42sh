@@ -62,6 +62,8 @@ void		init_builtin(t_list **lst)
 	add_builtin(lst, "unalias", &ft_unalias);
 	add_builtin(lst, "type", &ft_type);
 	add_builtin(lst, "hash", &ft_handle_hash_table);
+	add_builtin(lst, "history", &ft_history);
+	add_builtin(lst, "fc", &ft_fc);
 }
 
 /*

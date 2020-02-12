@@ -12,18 +12,69 @@
 
 #include "shell.h"
 
-void    restore_history(void)
-{
-    // int count;
-    // int fd;
-    // char *buf;
+/*
+** bash-3.2 when a mutiline resotred it split it into multiple command like our
+** shell, i need to check if bash latest version do the same
+** i need also to make a limit of the numbers of lines the log_file can handle
+** like bash
+*/
 
-    // count = 0;
-    // fd = open("/Users/zoulhafi/.bash_history", O_RDONLY);
-    // while (get_next_line(fd, &buf) == 1)
-    // {
-    //     count++;
-    //     ft_printf("%d\t%s\n", count, buf);
-    // }
-    // close(fd);
+void	restore_history(void)
+{
+	int		fd;
+	char	*buf;
+	char	*log_file;
+	int		first;
+
+	log_file = ft_strjoin(getenv("HOME"), "/.bash_history");
+	fd = open(log_file, O_RDONLY);
+	free(log_file);
+	if (fd == -1)
+		return ;
+	first = 1;
+	while (get_next_line(fd, &buf) == 1)
+	{
+		add_to_history(buf, ft_strlen(buf));
+		if (first)
+		{
+			first = 0;
+			history_begining = get_cmd_history_head();
+		}
+		free(buf);
+	}
+	new_history_begining = get_cmd_history_head();
+	close(fd);
+}
+
+void	save_history(void)
+{
+	int		fd;
+	char	*log_file;
+
+	log_file = ft_strjoin(getenv("HOME"), "/.bash_history");
+	fd = open(log_file, O_APPEND | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR);
+	free(log_file);
+	if (fd == -1)
+		return ;
+	new_history_begining = new_history_begining->prev;
+	while (new_history_begining)
+	{
+		ft_printf_fd(fd, "%s\n", new_history_begining->line);
+		new_history_begining = new_history_begining->prev;
+	}
+	close(fd);
+}
+
+int		ft_history(char **args)
+{
+	t_cmd_history	*history;
+
+	(void)args;
+	history = history_begining;
+	while (history)
+	{
+		ft_printf("%d\t%s\n", history->index, history->line);
+		history = history->prev;
+	}
+	return (0);
 }
