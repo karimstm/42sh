@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:55:19 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/10 20:00:13 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/12 18:40:31 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int		ft_var_isvalid(char *str)
 	return (1);
 }
 
-int    edit_add_var(char *key, char *value, int is_exported)
+int    edit_add_var(char *key, char *value, int is_exported, int mod)
 {
     t_variables *new_var;
 
@@ -47,9 +47,12 @@ int    edit_add_var(char *key, char *value, int is_exported)
     {
         ft_strdel(&new_var->value);
         new_var->value = ft_strdup(value);
+        new_var->is_modified = mod ? ENV_MODIFIED : ENV_DEFAULT;
     }
+    else if (mod)
+        variable_push(ft_strdup(key), ft_strdup(value), is_exported, ENV_ADDED);
     else
-        variable_push(ft_strdup(key), ft_strdup(value), is_exported);
+        variable_push(ft_strdup(key), ft_strdup(value), is_exported, ENV_DEFAULT);
     return (0);
 }
 
@@ -63,11 +66,23 @@ int     ft_export(char **args)
     while (args[++i])
     {
         if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
-            edit_add_var(args[i], index , 1);
+            edit_add_var(args[i], index , 1, ENV_MODIFIED);
         else if ((new_var = get_var(args[i])) && !new_var->is_exported)
             new_var->is_exported = 1; 
     }
     return (0);
+}
+
+int     ft_set_var(char **args)
+{
+    char *index;
+    int i;
+    
+    i = -1;
+    while (args[++i])
+        if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
+            edit_add_var(args[i], index , 0, ENV_DEFAULT);
+    return (0); 
 }
 
 int     ft_unset(char **args)
@@ -90,24 +105,13 @@ int     ft_unset(char **args)
 int     ft_set(char **args)
 {
     t_variables *cur;
-    char *index;
-    int i;
 
-    if (args && *args)
-    {
-        i = -1;
-        while (args[++i])
-            if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
-                    edit_add_var(args[i], index , 0);
-    }
-    else
-    { 
-        cur = env2->head;
-        while (cur)
-        {
-            ft_printf("%s=%s\n", cur->key, cur->value);
-            cur = cur->next;
-        }
+    (void)args;
+    cur = env2->head;
+    while (cur)
+    {            
+        ft_printf("%s=%s\n", cur->key, cur->value);
+        cur = cur->next;
     }
     return (0);
 }

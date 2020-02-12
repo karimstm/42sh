@@ -80,7 +80,7 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 	return (1);
 }
 
-t_simple_command	*get_command_name(t_list_simple_command *list)
+t_simple_command		*get_command_name(t_list_simple_command *list)
 {
 	t_simple_command	*current;
 
@@ -92,6 +92,35 @@ t_simple_command	*get_command_name(t_list_simple_command *list)
 		current = current->next;
 	}
 	return (NULL);
+}
+
+char					**get_assignements(t_list_simple_command *list)
+{
+	char				**assigns;
+	int					assign_count;
+	t_simple_command	*current;
+	int					i;
+
+	assigns = NULL;
+	assign_count = 0;
+	current = list && list->node_count ? list->head : NULL;
+	while (current && current->kind == TOKEN_ASSIGNMENT_WORD)
+	{
+		assign_count++;
+		current = current->next;
+	}
+	if (assign_count)
+	{
+		current = list && list->node_count ? list->head : NULL;
+		assigns = (char **)ft_memalloc(sizeof(char*) * (assign_count + 1));
+		i = 0;
+		while (current && current->kind == TOKEN_ASSIGNMENT_WORD)
+		{
+			assigns[i++] = ft_strdup(current->name);
+			current = current->next;
+		}
+	}
+	return (assigns);
 }
 
 t_cmd_type				cmd_type(t_process *p, t_list *blt)
@@ -319,8 +348,30 @@ void			and_or_handling(t_job_list *job_list, t_node *node,
 void			simple_command(t_job_list *job_list,
 							t_node *node, t_blt_line *blt_line, t_job_kind kind)
 {
+	char				**assign;
+	char				*name;
+	t_simple_command	*cmd;
+	t_variables_list	*tmp;
+
+	tmp = NULL;
+	cmd = get_command_name(node->spec.simple_command);
+	name = cmd && cmd->name ? ft_strdup(cmd->name) : NULL;
+	assign = get_assignements(node->spec.simple_command);
 	dummy_process(job_list, node, kind);
+	if (assign)
+	{
+		if (cmd)
+		{
+			tmp = env2;
+			env2 = dup_env();
+		}
+		ft_set_var(assign);
+	}
 	execute_simple_command(job_list, blt_line);
+	if (name && cmd && cmd->type == IS_FOUND)
+		ht_insert(get_hash_table(NULL), name, cmd->name);
+	reset_env(tmp, assign);
+	ft_strdel(&name);
 }
 
 void			consume_pipe(t_list_process *pro_list, t_node *node)
@@ -355,9 +406,7 @@ void			pipe_entry(t_job_list *job_list,
 void			execute_entry(t_job_list *job_list, t_node *node,
 							t_blt_line *blt_line, t_job_kind kind)
 {
-	int				tmp[3];
-	char			*name;
-	t_simple_command *cmd;
+	int					tmp[3];
 
 	if (node && node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 	{
@@ -373,20 +422,13 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 		else if (node->kind == NODE_PIPE)
 			pipe_entry(job_list, node, blt_line, kind);
 		else if (node->kind == NODE_SIMPLE_COMMAND)
-		{
-			cmd = get_command_name(node->spec.simple_command);
-			name = cmd && cmd->name ? ft_strdup(cmd->name) : NULL;
 			simple_command(job_list, node, blt_line, kind);
-			if (name && cmd && cmd->type == IS_FOUND)
-				ht_insert(get_hash_table(NULL), name, cmd->name);
-			ft_strdel(&name);
-		}
 	}
 	if (node && node->redir && kind == J_FOREGROUND && node->kind != NODE_SIMPLE_COMMAND)
 		restore_std(tmp);
 }
 
-void			execute(t_job_list *job_list, t_node *node, t_list *blt)
+void			 execute(t_job_list *job_list, t_node *node, t_list *blt)
 {
 	t_job_kind	kind;
 	t_blt_line	*blt_line;

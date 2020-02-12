@@ -66,6 +66,9 @@
         "type_traits": "c",
         "unordered_map": "c",
         "typeinfo": "c",
-        "chrono": "c"
+        "chrono": "c",
+        "system_error": "c",
+        "__memory": "c",
+        "ratio": "c"
     }
 }
