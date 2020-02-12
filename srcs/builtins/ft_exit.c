@@ -12,5 +12,8 @@ int	ft_exit(char **cmds)
 	}
 	if (cmds[0])
 		status = ft_atoi(cmds[1]) & 255;
+	// i need maybe to save and free history in every exit in the shell
+	save_history();
+	free_history();
 	exit(0);
 }

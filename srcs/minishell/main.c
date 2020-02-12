@@ -85,8 +85,8 @@ void		run_shell2(t_list *blt)
 			continue;
 		}
 		push_to_stack(&sp, node);
-		execute(jobs, node, blt);
 		add_to_history(g_token.current, ft_strlen(g_token.current));
+		execute(jobs, node, blt);
 		job_notification(jobs);
 		free_stacked_node(&sp, jobs);
 		ft_strdel((char **)&g_token.line);

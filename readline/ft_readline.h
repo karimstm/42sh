@@ -59,6 +59,7 @@ typedef struct	s_cmd_history
 	struct s_cmd_history	*prev;
 	int						len;
 	int						tmp_len;
+	int						index;
 }				t_cmd_history;
 
 typedef struct	s__line
@@ -144,8 +145,9 @@ void			sig_dispatch(int a);
 void			selection(t_readline *readline);
 char			*ft_readline(const char *g_prompt);
 
-int				g_read_interrput;
 t_readline		*g_readline;
+t_cmd_history	*history_begining;
+t_cmd_history	*new_history_begining;
 
 /*
 **	ft_debug.c
