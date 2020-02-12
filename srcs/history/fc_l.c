@@ -14,10 +14,12 @@
 
 static t_cmd_history	*get_specific_history(int index)
 {
+	int				total;
 	char			from_begin;
 	t_cmd_history	*history;
 
-	if (500 - index > 250)
+	total = get_cmd_history_head()->index;
+	if (total - index > total / 2)
 		from_begin = 1;
 	else
 		from_begin = 0;
@@ -34,8 +36,7 @@ static t_cmd_history	*get_specific_history(int index)
 		else
 			history = history->next;
 	}
-	ft_printf("fc: history specification out of range\n");
-	return (NULL);
+	return (get_cmd_history_head());
 }
 
 static t_cmd_history	*get_specific_history_by_str(char *first)
@@ -114,8 +115,10 @@ void					fc_l(int flags, char *first, char *last)
 	t_cmd_history	*last_h;
 	t_cmd_history	*history;
 
-	first_h = get_first(first);
-	last_h = get_last(last);
+	if ((first_h = get_first(first)) == NULL)
+		return ;
+	if ((last_h = get_last(last)) == NULL)
+		return ;
 	if (first_h && last_h && last_h->index - first_h->index < 0 &&
 			(flags |= R_FLAG) >= 0)
 		ft_swap_pt((void *)&first_h, (void *)&last_h);

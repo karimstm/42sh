@@ -32,17 +32,19 @@ static int	get_fc_flags(int flags, char *arg)
 			flags |= R_FLAG;
 		else if (*arg == 's')
 			flags |= S_FLAG;
-		else
+		else if (!ft_isdigit(*arg))
 		{
 			print_fc_usage();
 			return (-1);
 		}
+		else
+			return ((flags |= BREAK_FLAG));
 		arg++;
 	}
 	return (flags);
 }
 
-static void	fc_exec(int flags, char *editor, char **args)
+static int	fc_exec(int flags, char *editor, char **args)
 {
 	char	*first;
 	char	*last;
@@ -58,6 +60,8 @@ static void	fc_exec(int flags, char *editor, char **args)
 		fc_l(flags, first, last);
 	else
 		fc_edit(flags, editor, first, last);
+	
+	return (0);
 }
 
 int			ft_fc(char **args)
@@ -82,8 +86,9 @@ int			ft_fc(char **args)
 			break ;
 		else if (*args[0] == '-' && (flags = get_fc_flags(flags, *args)) == -1)
 			return (0);
+		else if (*args[0] == '-' && ((flags = get_fc_flags(flags, *args)) & BREAK_FLAG) > 0)
+			break ;
 		args++;
 	}
-	fc_exec(flags, editor == NULL ? "vim" : editor, args);
-	return (0);
+	return (fc_exec(flags, editor == NULL ? "vim" : editor, args));
 }

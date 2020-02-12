@@ -42,6 +42,7 @@
 # define N_FLAG 0x00000002
 # define R_FLAG 0x00000004
 # define S_FLAG 0x00000008
+# define BREAK_FLAG 0x00000010
 
 typedef struct			s_builtin
 {
