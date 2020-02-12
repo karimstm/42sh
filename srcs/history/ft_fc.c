@@ -33,7 +33,10 @@ static int	get_fc_flags(int flags, char *arg)
 		else if (*arg == 's')
 			flags |= S_FLAG;
 		else
-			return ((flags |= BREAK_FLAG));
+		{
+			print_fc_usage();
+			return (-1);
+		}
 		arg++;
 	}
 	return (flags);
@@ -75,9 +78,10 @@ int			ft_fc(char **args)
 				return (1);
 			}
 		}
-		else if (*args[0] != '-' || (*args[0] == '-' &&
-				((flags = get_fc_flags(flags, *args)) & BREAK_FLAG) > 0))
+		else if (*args[0] != '-')
 			break ;
+		else if (*args[0] == '-' && (flags = get_fc_flags(flags, *args)) == -1)
+			return (0);
 		args++;
 	}
 	fc_exec(flags, editor == NULL ? "vim" : editor, args);

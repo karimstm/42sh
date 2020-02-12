@@ -45,7 +45,7 @@ static t_cmd_history	*get_specific_history_by_str(char *first)
 	history = get_cmd_history_head();
 	while (history)
 	{
-		if (ft_strncmp(history->line, first, ft_strlen(first)))
+		if (ft_strncmp(history->line, first, ft_strlen(first)) == 0)
 			return (history);
 		history = history->next;
 	}
@@ -116,7 +116,8 @@ void					fc_l(int flags, char *first, char *last)
 
 	first_h = get_first(first);
 	last_h = get_last(last);
-	if (first_h && last_h && last_h->index - first_h->index < 0)
+	if (first_h && last_h && last_h->index - first_h->index < 0 &&
+			(flags |= R_FLAG) >= 0)
 		ft_swap_pt((void *)&first_h, (void *)&last_h);
 	history = first_h;
 	if ((flags & R_FLAG) > 0)
@@ -130,9 +131,6 @@ void					fc_l(int flags, char *first, char *last)
 		if (((flags & R_FLAG) > 0 && history == first_h) ||
 			((flags & R_FLAG) <= 0 && history == last_h))
 			break ;
-		if ((flags & R_FLAG) > 0)
-			history = history->next;
-		else
-			history = history->prev;
+		history = (flags & R_FLAG) > 0 ? history->next : history->prev;
 	}
 }
