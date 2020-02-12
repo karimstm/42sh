@@ -6,29 +6,20 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 09:20:33 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/12 16:56:58 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-const char		*ft_strsignal(int sig)
+const char			*ft_strsignal(int sig)
 {
 	static const char *signal_str[] = {
-		[SIGHUP] = "Hangup",
-		[SIGINT] = "Interrupt",
-		[SIGQUIT] = "Quit",
-		[SIGILL] = "Illegal instruction",
-		[SIGTRAP] = "Trace/breakpoint trap",
-		[SIGABRT] = "Aborted",
-		[SIGEMT] = "Emulation trap",
-		[SIGFPE] = "Arithmetic exception",
-		[SIGBUS] = "Bus error",
-		[SIGSEGV] = "Segmentation fault",
-		[SIGSYS] = "Bad system call",
-		[SIGPIPE] = "Broken pipe",
-		[SIGALRM] = "Alarm clock",
-		[SIGTERM] = "Terminated",
+		[SIGHUP] = "Hangup", "Interrupt", "Quit",
+		"Illegal instruction", "Trace/breakpoint trap", "Aborted",
+		"Emulation trap", "Arithmetic exception",
+		"Killed", "Bus error", "Segmentation fault",
+		"Bad system call", "Broken pipe", "Alarm clock", "Terminated",
 		[SIGUSR1] = "User defined signal 1",
 		[SIGUSR2] = "User defined signal 2",
 		[SIGCHLD] = "Child status changed",
@@ -50,7 +41,7 @@ const char		*ft_strsignal(int sig)
 	return (signal_str[sig]);
 }
 
-void	print_semi_and(t_node *node)
+void				print_semi_and(t_node *node)
 {
 	if (node->spec.sep_op_command->left)
 		ft_print_node(node->spec.sep_op_command->left);
@@ -59,7 +50,7 @@ void	print_semi_and(t_node *node)
 		ft_print_node(node->spec.sep_op_command->right);
 }
 
-void	print_and_or_pipe(t_node *node)
+void				print_and_or_pipe(t_node *node)
 {
 	if (node->spec.and_or_command->left)
 		ft_print_node(node->spec.and_or_command->left);
@@ -68,7 +59,7 @@ void	print_and_or_pipe(t_node *node)
 		ft_print_node(node->spec.and_or_command->right);
 }
 
-void	ft_print_node(t_node *node)
+void				ft_print_node(t_node *node)
 {
 	if (node)
 	{
@@ -85,7 +76,7 @@ void	ft_print_node(t_node *node)
 	}
 }
 
-char		current_to_char(t_job_current current)
+char				current_to_char(t_job_current current)
 {
 	if (current == CURRENT_PREV)
 		return ('-');
@@ -95,7 +86,18 @@ char		current_to_char(t_job_current current)
 		return (' ');
 }
 
-void		ft_process(t_job *job, char flag)
+void				print_pipes(t_process *process, char flag)
+{
+	while (process->next && flag == 'l')
+	{
+		process = process->next;
+		ft_printf("%10d %-22s | ", process->pid, " ");
+		ft_print_node(process->node);
+		ft_printf("\n");
+	}
+}
+
+void				ft_process(t_job *job, char flag)
 {
 	t_process	*process;
 	char		*sig;
@@ -119,34 +121,24 @@ void		ft_process(t_job *job, char flag)
 				ft_print_node(process->node);
 			}
 			ft_printf("\n");
-			while(process->next && flag == 'l')
-			{
-				process = process->next;
-				ft_printf("%10d %-22s | ", process->pid, " ");
-				ft_print_node(process->node);
-				ft_printf("\n");
-			}
+			print_pipes(process, flag);
 		}
 	}
 }
 
-int			jobs_usage(void)
+int					jobs_usage(void)
 {
 	ft_printf_fd(2, "jobs [-l|-p] [job_id...]\n");
 	return (1);
 }
 
-int			parse_args(char **args)
+int					parse_args(char **args)
 {
-	int			i;
 	const char	*options = "lp";
 	char		*tmp;
-	int			flag;
 
-	i = 0;
-	flag = 0;
+	DECLARE(int, _(flag, 0), _(i, 0));
 	if (args != NULL)
-	{
 		while (args[i])
 		{
 			if (args[i][0] == '-')
@@ -166,18 +158,23 @@ int			parse_args(char **args)
 			}
 			i++;
 		}
-	}
 	return (flag);
 }
 
-int			ft_job_pgid(t_job *job)
+int					ft_job_pgid(t_job *job)
 {
 	if (job->pgid != 0)
 		ft_printf("%d", job->pgid);
 	return (0);
 }
 
-int		ft_jobs(char **args)
+int					ft_jobs_not_found(char *args)
+{
+	ft_printf_fd(2, "42sh: jobs: %s: no such job\n", args);
+	return (1);
+}
+
+int					ft_jobs(char **args)
 {
 	t_job		*current;
 	t_job_list	*list;
@@ -186,7 +183,7 @@ int		ft_jobs(char **args)
 	list = get_job_list(NULL);
 	flag = 0;
 	if ((flag = parse_args(args)) == 1)
-		return(1) ;
+		return (1);
 	current = (list && list->head) ? list->head : NULL;
 	while (current)
 	{

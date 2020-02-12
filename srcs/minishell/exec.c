@@ -15,7 +15,7 @@ char			**node_to_char(t_list_simple_command *command)
 	current = (command && command->head) ? command->head : NULL;
 	if (current == NULL)
 		return (NULL);
-	cmds = (char **)malloc(sizeof(char *) * (command->node_count + 1));
+	cmds = (char **)xmalloc(sizeof(char *) * (command->node_count + 1));
 	i = 0;
 	while (current && current->kind != TOKEN_WORD)
 		current = current->next;

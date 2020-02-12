@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/08 11:53:38 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/12 16:24:54 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,9 @@
 # define RIGHT_A(node) node->spec.and_or_command->right
 # define SIMPLE_CMD(node) node->spec.simple_command
 # define CTR_C_ERROR 100
+# define HASH_TABLE (get_hash_table(NULL))
+# define _(a, b) a = b
+# define DECLARE(type, ...) type __VA_ARGS__
 
 /*
 **  Error constant

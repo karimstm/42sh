@@ -327,6 +327,11 @@ void	job_notification(t_job_list *jobs)
 	{
 		if (is_job_completed(current))
 		{
+			if(current->kind == J_FOREGROUND || current->kind == J_NON_INTERACTIVE)
+			{
+				if (current->proc_list && current->proc_list->tail)
+					jobs->status = current->proc_list->tail->status;
+			}
 			format_job_info(current);
 			delete_job(jobs, current);
 			current = jobs->head;

@@ -66,6 +66,9 @@
         "type_traits": "c",
         "unordered_map": "c",
         "typeinfo": "c",
-        "chrono": "c"
+        "chrono": "c",
+        "syscall.h": "c",
+        "appleapiopts.h": "c",
+        "unistd.h": "c"
     }
 }

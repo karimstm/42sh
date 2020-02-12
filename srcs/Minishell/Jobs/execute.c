@@ -112,16 +112,16 @@ t_cmd_type				cmd_type(t_process *p, t_list *blt)
 		return (cmd->type = IS_PATH_CMD);
 	else if (ft_lstsearch(blt, name, &check_builtin))
 		return (cmd->type = IS_BUILTIN);
-	else if ((path = working_path(name)) == NULL)
-	{
-		p->status = 127;
-		return (cmd->type = IS_NOTFOUND);
-	}
-	else
+	else if ((path = ht_search(HASH_TABLE, name)) || (path = working_path(name)))
 	{
 		ft_strdel(&cmd->name);
 		cmd->name = path;
 		return (cmd->type = IS_FOUND);
+	}
+	else
+	{
+		p->status = 127;
+		return (cmd->type = IS_NOTFOUND);
 	}
 }
 
@@ -255,10 +255,10 @@ void			execute_simple_command(t_job_list *job_list,
 }
 
 /*
-** I changed J_NON_INTERACTIVE TO J_FOREGROUND
-** STILL I DON'T KNOW WHY I USED NON INTERACTIVE MODE HERE
+** I DON'T KNOW WHY I USED NON INTERACTIVE MODE HERE
 ** thus I used kind = getpid() != shell_pgid ? J_NON_INTERACTIVE : J_FOREGROUND
 */
+
 void			seperator_handling(t_job_list *job_list,
 								t_node *node, t_blt_line *blt_line)
 {

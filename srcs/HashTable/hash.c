@@ -2,7 +2,7 @@
 
 static t_hash_table *ht_new_sized(const int base_size)
 {
-	t_hash_table *ht = (t_hash_table *)malloc(sizeof(t_hash_table));
+	t_hash_table *ht = (t_hash_table *)xmalloc(sizeof(t_hash_table));
 	ht->base_size = base_size;
 	ht->size = next_prime(ht->base_size);
 	ht->count = 0;
@@ -62,7 +62,7 @@ static t_hash_item *ht_new_item(const char *k, const char *v)
 {
 	t_hash_item *item;
 
-	item = (t_hash_item *)malloc(sizeof(t_hash_item));
+	item = (t_hash_item *)xmalloc(sizeof(t_hash_item));
 	item->key = strdup(k);
 	item->value = strdup(v);
 	return (item);
@@ -163,8 +163,8 @@ char    *ht_search(t_hash_table *ht, const char *key)
 		if (item != &HT_DELETED_ITEM)
 		{
 			if (strcmp(item->key, key) == 0)
-				return item->value;
-		}
+				return(ft_strdup(item->value)); // We will strdup tomporarly here untile we do something
+		}										// about it in the execution process to avoid double free
 		index = ht_get_hash(key, ht->size, i);
 		item = ht->items[index];
 		i++;

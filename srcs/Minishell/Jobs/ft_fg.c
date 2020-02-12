@@ -12,7 +12,7 @@ int			fg_usage(char c)
 
 int			fg_error(char *job)
 {
-	ft_printf_fd(2, "bash: fg: %s: no such job\n", job);
+	ft_printf_fd(2, "42sh: fg: %s: no such job\n", job);
 	return (-1);
 }
 
@@ -21,7 +21,7 @@ int			get_job_number(char **args)
 	int		job_number;
 	char	*tmp;
 
-	job_number = 0;
+	job_number = -1;
 	if (args != NULL)
 	{
 		if (args[0])
@@ -73,11 +73,20 @@ int		ft_fg(char **args)
 	t_job		*current;
 	t_job_list	*list;
 	int			job_number;
+	int			error;
 
+	error = 0;
 	list = get_job_list(NULL);
 	if ((job_number = get_job_number(args)) == -1)
-		return(1);
-	if ((current = get_job(list, job_number)))
-		continue_job(list, current, 1);
-	return (0);
+		error = fg_error("current");
+	else if ((current = get_job(list, job_number)))
+	{
+		if (current->pgid == 0)
+			error = fg_error(args[0]);
+		else
+			continue_job(list, current, 1);
+	}
+	else
+		error = fg_error(args[0]);
+	return (error ? 1 : 0);
 }
