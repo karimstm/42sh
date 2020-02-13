@@ -44,6 +44,7 @@
 # define BUTTON_R 114
 # define BUTTON_CTL_D 4
 # define BUTTON_CTL_L 12
+# define BUTTON_CTL_R 18
 
 typedef struct	s_point
 {
@@ -145,13 +146,10 @@ void			sig_dispatch(int a);
 void			selection(t_readline *readline);
 char			*ft_readline(const char *g_prompt);
 
+void			handle_ctrl_r(t_readline *line);
+
 t_readline		*g_readline;
 t_cmd_history	*history_begining;
 t_cmd_history	*new_history_begining;
-
-/*
-**	ft_debug.c
-*/
-void					ft_debug(char *tty, const char *format, ...);
 
 #endif

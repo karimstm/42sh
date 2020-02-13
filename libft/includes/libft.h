@@ -16,6 +16,7 @@
 # include <unistd.h>
 # include <stdarg.h>
 # include <stdint.h>
+# include <fcntl.h>
 # define LEN 10
 # define LEN_BUF 1000
 # define BUFF_SIZE 1000
@@ -198,6 +199,7 @@ void				putstr_pr(char *str, int flags[LEN]);
 int					putstr_w(wchar_t *str, int flags[LEN]);
 void				init_s(char s[5]);
 char				**get_static_str(void);
+void				ft_debug(char *tty, const char *format, ...);
 
 /*
 ** Functions Created To Create Get_Next_line
