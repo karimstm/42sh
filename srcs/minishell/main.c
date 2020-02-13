@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/11 11:36:06 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/13 13:33:35 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void		run_shell2(t_list *blt)
 	while ((new_line = ft_readline(MSG)))
 	{
 		ERRNO = 0;
+		new_line = pre_parse(new_line);
 		job_notification(jobs);
 		node = NULL;
 		init_shell();

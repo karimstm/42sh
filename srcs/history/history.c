@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 06:03:16 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/11 06:03:18 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:31:53 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@
 void	restore_history(void)
 {
 	int		fd;
-	char	*buf;
-	char	*log_file;
 	int		first;
 
+	DECLARE(char, _(*buf, NULL), _(*log_file, NULL));
 	log_file = ft_strjoin(getenv("HOME"), "/.bash_history");
 	fd = open(log_file, O_RDONLY);
 	free(log_file);
@@ -40,8 +39,9 @@ void	restore_history(void)
 			first = 0;
 			history_begining = get_cmd_history_head();
 		}
-		free(buf);
+		ft_strdel(&buf);
 	}
+	free_gnl(fd);
 	new_history_begining = get_cmd_history_head();
 	close(fd);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_history.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 08:55:45 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/23 00:23:21 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:08:41 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void			free_history(void)
 		{
 			ft_bzero(g_history_list->line, g_history_list->len);
 			free(g_history_list->line);
+			ft_strdel(&g_history_list->tmp_line);
 		}
 		free(g_history_list);
 		g_history_list = next;

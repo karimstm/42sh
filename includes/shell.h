@@ -1,4 +1,4 @@
-               /* ************************************************************************** */
+			   /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
@@ -52,7 +52,7 @@ typedef struct			s_builtin
 
 typedef	struct			s_blt_line
 {
-    char                **env;
+	char                **env;
 	t_list				*blt;
 }						t_blt_line;
 
@@ -60,18 +60,18 @@ typedef	struct			s_blt_line
 
 typedef struct			s_variables
 {
-    char                *key;
-    char                *value;
-    int               	is_exported;
-    int                 is_modified;
-    struct s_variables  *next;
+	char                *key;
+	char                *value;
+	int               	is_exported;
+	int                 is_modified;
+	struct s_variables  *next;
 }						t_variables;
 
 typedef struct			s_variables_list
 {
-    t_variables         *head;
-    t_variables         *tail;
-    int                 node_count;
+	t_variables         *head;
+	t_variables         *tail;
+	int                 node_count;
 }						t_variables_list;
 
 t_variables_list	*env2;
@@ -216,5 +216,12 @@ void					variable_push(char *key, char *value, int export, int is_modified);
 void					delete_var(char *target);
 char					**get_tab_env();
 t_variables_list        *dup_env(void);
-void                    reset_env(t_variables_list *tmp, char **assign);
+void					reset_env(t_variables_list *tmp, char **assign);
+
+/*
+**	pre_parse.c
+*/
+
+char					*pre_parse(const char *line);
+
 #endif

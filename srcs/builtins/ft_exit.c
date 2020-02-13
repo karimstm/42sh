@@ -15,6 +15,5 @@ int	ft_exit(char **cmds)
 	// i need maybe to save and free history in every exit in the shell
 	save_history();
 	free_history();
-	clean_hsitory();
-	exit(0);
+	exit(status);
 }

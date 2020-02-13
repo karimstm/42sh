@@ -8,7 +8,7 @@ BUILT = builtin
 LEXINC = srcs/Lexer/
 REALINE = realine
 
-SRC_MIN = $(patsubst %.c, $(SRC)/Minishell/%.c, handlers.c ft_type.c env_list.c fds.c builtin.c free.c ft_cd.c ft_echo.c ft_env_new.c ft_pwd.c main.c shell.c exec.c redir.c exec2.c jobs/jobs_list.c Jobs/job.c Jobs/execute.c Jobs/job2.c Jobs/ft_jobs.c Jobs/ft_fg.c Jobs/ft_bg.c)
+SRC_MIN = $(patsubst %.c, $(SRC)/Minishell/%.c, pre_parse.c handlers.c ft_type.c env_list.c fds.c builtin.c free.c ft_cd.c ft_echo.c ft_env_new.c ft_pwd.c main.c shell.c exec.c redir.c exec2.c jobs/jobs_list.c Jobs/job.c Jobs/execute.c Jobs/job2.c Jobs/ft_jobs.c Jobs/ft_fg.c Jobs/ft_bg.c)
 SRC_QUO = $(patsubst %.c, $(SRC)/Strings/%.c, free_string.c is_number.c string.c)
 SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, input_redir.c ast_rest.c ast_redir.c ast_utils.c stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c quote_stripping.c common.c meta.c subs_parse.c)
 SRC_BLT = $(patsubst %.c, $(SRC)/Builtins/%.c, ft_exit.c)
