@@ -45,6 +45,8 @@
 # define BUTTON_CTL_D 4
 # define BUTTON_CTL_L 12
 # define BUTTON_CTL_R 18
+# define FOUND_MSG "\033[32;1mFound\033[0m '%s_' %s"
+# define NOT_FOUND_MSG "\033[31;1mNot Found\033[0m '%s_' %s"
 
 typedef struct	s_point
 {
