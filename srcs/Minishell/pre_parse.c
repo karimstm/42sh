@@ -6,21 +6,14 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:49:43 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/13 13:54:11 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/13 18:20:57 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 #include "shell.h"
 
-char			*fake_word(const char *name)
-{
-	(void)name;
-	return (strdup("fake name"));
-}
-
-
-void			command_line_n(const char **str)
+void			command_line_n(const char **str, char c)
 {
 	const char *new;
 
@@ -31,7 +24,8 @@ void			command_line_n(const char **str)
 			while(*new && ft_isdigit(*new))
 				new++;
 		else
-			while (*new)
+			while (*new && !ft_isspace(*new) &&
+					!is_metacharacter(*new) && *new != c)
 				new++;
 	}
 	*str = new;
@@ -44,7 +38,7 @@ void			command_line_n(const char **str)
 **	in case history resolver function return a new allocated string
 */
 
-const char		*consume_word(const char **line)
+char		*consume_word(const char **line, char c)
 {
 	size_t		len;
 	const char	*str;
@@ -60,7 +54,7 @@ const char		*consume_word(const char **line)
 		{
 			if (*str == '-')
 				str++;
-			command_line_n(&str);
+			command_line_n(&str, c);
 		}
 	}
 	len = str - *line;
@@ -74,34 +68,97 @@ const char		*consume_word(const char **line)
 **	=> finds single quote or a null termintor
 */
 
-void			consume_single_quote(const char **line)
+void			consume_single_quote(const char **line, t_string *tstring)
 {
 	const char		*str;
-
-	str = *(++line);
-	while (*str && *str != '\'')
+	char			c;
+	str = *line;
+	push(tstring, *str++);
+	while ((c = *str))
+	{
+		push(tstring, c);
 		str++;
-	*line = *str ? (++str) : str;
+		if (c == '\'')
+			break ;
+	}
+	*line = str;
 }
 
+/*
+**	event not found function
+*/
+void	not_found_event(const char *name)
+{
+	ft_printf_fd(2, "42sh: %s: event not found\n", name);
+	ERRNO = EVENTE;
+}
 
-void			feed_t_string(const char *event, t_string *str)
+/*
+**	Now that we get our events form the history
+**  We have to swallow up all the chars in that events
+*/
+
+void			feed_t_string(char *event, t_string *str)
 {
 	char		*new_line;
 
 	if (event == NULL || *event == '\0')
 		return (push(str, '!'));
-	new_line = fake_word(event);
+	new_line = search_history(event);
 	if (new_line == NULL || *new_line == '\0')
-	{
-		ft_printf_fd(2, "42sh: %s: event not found\n", event);
-		ERRNO = EVENTE;
-		return ;
-	}
+		return (not_found_event(event));
 	while (*new_line)
 	{
 		push(str, *new_line);
 		new_line++;
+	}
+}
+
+/*
+**	This will call consume_word function
+** to gulp all the charachters up the '\0' || '"' || metacharacter
+*/
+
+int			get_event(const char **new, t_string *str, char c)
+{
+	char		*new_string;
+
+	if (is_metacharacter(**new))
+	{
+		not_found_event("!");
+		return (0);
+	}
+	new_string = consume_word(new, c);
+	feed_t_string(new_string, str);
+	ft_strdel(&new_string);
+	return (1);
+}
+
+/*
+**	 There some special cases with event inside
+**	 double quote, therefore we had to implemented on it's own
+*/
+
+void			consume_double_quote(const char **line , t_string *str)
+{
+	const char		*new;
+
+	new = ++(*line);
+	while (*new && *new != '"')
+	{
+		if (*new == '\\')
+		{
+			push(str, *new++);
+			if (*new)
+				push(str, *new);
+		}
+		else if (*new != '!')
+			push(str, *new);
+		else if (!get_event(&new, str, '"'))
+				break ;
+		if (*new)
+			new++;
+		*line = new;
 	}
 }
 
@@ -117,20 +174,30 @@ int				consume_history(const char **pure_line, t_string *str)
 	line = *pure_line;
 	while (*line)
 	{
-		if (*line != '!')
-			push(str, *line);
-		else
-			feed_t_string(consume_word(&line), str);
 		if (*line == '\'')
-			consume_single_quote(&line);
-		if (*line == '\\')
-			line++;
+			consume_single_quote(&line, str);
+		else if (*line == '"')
+			consume_double_quote(&line, str);
+		else if (*line == '\\')
+		{
+			push(str, *line++);
+			if (*line)
+				push(str, *line);
+		}
+		else if (*line != '!')
+			push(str, *line);
+		else if (!get_event(&line, str, '\0'))
+				break ;
 		if (*line)
 			line++;
 		*pure_line = line;
 	}
 	return (0);
 }
+
+/*
+**	Initial parser for history expansion
+*/
 
 char			*pre_parse(const char *line)
 {

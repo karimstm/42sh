@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/13 13:33:35 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/13 19:23:49 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void			restore_std(int std[3])
 	close(std[2]);
 }
 
-static t_node	*start_parsing_command(const char *line)
+t_node	*start_parsing_command(const char *line)
 {
 	t_node *node;
 
@@ -59,40 +59,26 @@ void		run_shell2(t_list *blt)
 {
 	t_node			*node;
 	char			*new_line;
-	t_job_list		*jobs;
-	t_alias_list	*aliases;
-	t_hash_table	*ht;
-	t_stack			sp;
+	char			*tmp;
 
-	jobs = (t_job_list *)xmalloc(sizeof(t_job_list));
-	aliases = (t_alias_list *)xmalloc(sizeof(t_alias_list));
-	ht = get_hash_table(ht_new());
-	init_stack(&sp, INIT_STACK_SIZE);
-	init_job_list(jobs);
-	init_alias(aliases);
-	get_alias_list(aliases);
-	get_job_list(jobs);
-	while ((new_line = ft_readline(MSG)))
+	(void)blt;
+	init_shell_variables();
+	while ((tmp = ft_readline(MSG)))
 	{
 		ERRNO = 0;
-		new_line = pre_parse(new_line);
-		job_notification(jobs);
+		new_line = pre_parse(tmp);
+		ft_strdel(&tmp);
+		job_notification(JOB_LIST);
 		node = NULL;
 		init_shell();
-		if (ft_str_isnull(new_line) ||
-			(node = start_parsing_command(new_line)) == NULL)
+		if (sh_system(new_line))
 		{
 			ft_strdel((char **)&g_token.line);
 			continue;
 		}
-		push_to_stack(&sp, node);
-		add_to_history(g_token.current, ft_strlen(g_token.current));
-		execute(jobs, node, blt);
-		job_notification(jobs);
-		free_stacked_node(&sp, jobs);
 		ft_strdel((char **)&g_token.line);
 	}
-	deallocate(&sp);
+	deallocate(STACK_LIST);
 	ft_printf("%s", WRONG_READ); // Need to do some checkup here,
 								//so it won't show up on something like this echo 'ls -la' | ./42sh
 }

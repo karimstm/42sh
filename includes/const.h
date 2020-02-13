@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/13 12:35:27 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/13 19:14:00 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,6 @@
 # define RIGHT_A(node) node->spec.and_or_command->right
 # define SIMPLE_CMD(node) node->spec.simple_command
 # define CTR_C_ERROR 100
-# define HASH_TABLE (get_hash_table(NULL))
 # define _(a, b) a = b
 # define DECLARE(type, ...) type __VA_ARGS__
 
@@ -112,5 +111,15 @@
 # define ENV_MODIFIED 1
 # define ENV_ADDED 2
 # define ENV_NOTDELETED 3
+
+/*
+**	Global variable mimicking
+*/
+
+#define JOB_LIST	get_job_list(NULL)
+#define STACK_LIST	get_stack(NULL)
+#define ALIAS_LIST	get_alias_list(NULL)
+#define HASH_TABLE	get_hash_table(NULL)
+#define BUILT_LIST	get_set_blt(NULL)
 
 #endif

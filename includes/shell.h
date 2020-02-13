@@ -84,6 +84,11 @@ t_variables_list	*env2;
 **	main.c
 */
 void					restore_std(int std[3]);
+t_node					*start_parsing_command(const char *line);
+void					free_stacked_node(t_stack *sp, t_job_list *jobs);
+t_alias_list			*get_alias_list(t_alias_list *list);
+t_job_list				*get_job_list(t_job_list *jobs);
+t_stack					*get_stack(t_stack *sp);
 
 /*
 **	shell.c
@@ -227,5 +232,12 @@ void					reset_env(t_variables_list *tmp, char **assign);
 */
 
 char					*pre_parse(const char *line);
+
+/*
+** system.c
+*/
+
+void					init_shell_variables();
+int						sh_system(char *name);
 
 #endif

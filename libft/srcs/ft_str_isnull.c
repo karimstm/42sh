@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_str_isnull.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/20 17:45:19 by zoulhafi          #+#    #+#             */
-/*   Updated: 2019/03/20 17:49:04 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/02/13 18:34:37 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,7 @@
 
 int		ft_str_isnull(char *str)
 {
-	if (str == NULL)
-		return (1);
-	if (!*str)
+	if (str == NULL || !*str)
 		return (1);
 	while (*str)
 	{

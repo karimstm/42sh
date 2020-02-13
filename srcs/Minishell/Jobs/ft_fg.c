@@ -21,6 +21,8 @@ int			get_job_number(char **args)
 	int		job_number;
 	char	*tmp;
 
+	if (args == NULL || *args == NULL)
+		return (0);
 	job_number = -1;
 	if (args != NULL)
 	{
