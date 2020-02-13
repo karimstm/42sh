@@ -13,24 +13,21 @@
 #include "ft_readline.h"
 #include <readline/readline.h>
 
-void					ft_debug(char *tty, const char *format, ...)
-{
-	int		fd;
-
-	fd = open(tty, O_RDWR);
-	va_list		ap;
-	va_start(ap, format);
-	ft_vprintf(fd, format, &ap);
-	va_end(ap);
-	close(fd);
-}
-
-static int	key_handel(t_readline *env, int b, int r)
+static int	key_handel2(t_readline *env, int b, int r)
 {
 	if (b == BUTTON_UP && !(r = 0))
 		set_cur_history(env, env->cmd->next);
 	else if (b == BUTTON_DOWN && !(r = 0))
 		set_cur_history(env, env->cmd->prev);
+	else if (b == BUTTON_CTL_R && !(r = 0))
+		handle_ctrl_r(env);
+	return (r);
+}
+
+static int	key_handel(t_readline *env, int b, int r)
+{
+	if (!(r = key_handel2(env, b, r)))
+		return (r);
 	else if (b == BUTTON_RIGHT && !(r = 0))
 		cur_right(env);
 	else if (b == BUTTON_LEFT && !(r = 0))
