@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/12 16:56:58 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/12 21:00:59 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 const char			*ft_strsignal(int sig)
 {
 	static const char *signal_str[] = {
-		[SIGHUP] = "Hangup", "Interrupt", "Quit",
+		[SIGHUP] = "Hangup",
+		[SIGQUIT] = "Quit",
 		"Illegal instruction", "Trace/breakpoint trap", "Aborted",
 		"Emulation trap", "Arithmetic exception",
 		"Killed", "Bus error", "Segmentation fault",
