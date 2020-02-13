@@ -52,6 +52,7 @@ typedef struct			s_builtin
 
 typedef	struct			s_blt_line
 {
+    char                **env;
 	t_list				*blt;
 }						t_blt_line;
 
@@ -62,6 +63,7 @@ typedef struct			s_variables
     char                *key;
     char                *value;
     int               	is_exported;
+    int                 is_modified;
     struct s_variables  *next;
 }						t_variables;
 
@@ -112,6 +114,7 @@ void					free_elem_env(t_list *elem);
 int						ft_cd(char **args);
 int						ft_echo(char **args);
 int						ft_env(char **args);
+int                     ft_set_var(char **args);
 int						ft_set(char **args);
 int						ft_unset(char **args);
 int						ft_export(char **args);
@@ -184,6 +187,7 @@ int						ft_exit(char **cmds);
 t_job_list				*get_job_list(t_job_list *jobs);
 void					execute_entry(t_job_list *job_list, t_node *node, t_blt_line *blt_line, t_job_kind kind);
 int						run_built_in(t_blt_line *blt_line, t_process *process);
+t_simple_command        *get_assignement_name(t_list_simple_command *list);
 
 /*
 **	quote_stripping.c
@@ -208,8 +212,9 @@ char    				*is_aliased(char *arg);
 */
 void					ft_init_env(char **ev);
 t_variables 			*get_var(char *target);
-void					variable_push(char *key, char *value, int export);
+void					variable_push(char *key, char *value, int export, int is_modified);
 void					delete_var(char *target);
 char					**get_tab_env();
-
+t_variables_list        *dup_env(void);
+void                    reset_env(t_variables_list *tmp, char **assign);
 #endif

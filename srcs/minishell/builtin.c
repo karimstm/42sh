@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/07 11:57:46 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/10 20:46:53 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,11 @@ t_list		*get_set_blt(t_list	*blt)
 
 static void	add_builtin(t_list **lst, char *cmd, int (*f)())
 {
-	t_builtin	*elem;
+	t_builtin	elem;
 
-	elem = (t_builtin*)malloc(sizeof(t_builtin));
-	elem->cmd = (char*)malloc(sizeof(char) * (ft_strlen(cmd) + 1));
-	ft_strcpy(elem->cmd, cmd);
-	elem->f = f;
-	ft_lstadd(lst, ft_lstnew(elem, 0));
+	elem.cmd = ft_strdup(cmd);;
+	elem.f = f;
+	ft_lstadd(lst, ft_lstnew(&elem, sizeof(t_builtin)));
 	get_set_blt(*lst);
 }
 

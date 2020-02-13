@@ -69,6 +69,9 @@
         "chrono": "c",
         "syscall.h": "c",
         "appleapiopts.h": "c",
-        "unistd.h": "c"
+        "unistd.h": "c",
+        "system_error": "c",
+        "__memory": "c",
+        "ratio": "c"
     }
 }

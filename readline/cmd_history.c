@@ -35,6 +35,12 @@ void			add_to_history(const char *str, int len)
 		tmp->tmp_line = ft_strdup(str);
 		tmp->len = len;
 		tmp->tmp_len = len;
+		if (len > 0 && ft_strcmp(str, "") != 0) {
+			if (!history_begining)
+				history_begining = tmp;
+			if (!new_history_begining)
+				new_history_begining = tmp;
+		}
 		g_history_list = tmp;
 	}
 }
