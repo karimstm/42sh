@@ -14,7 +14,7 @@ SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, input_redir.c ast_rest.c ast_redir
 SRC_BLT = $(patsubst %.c, $(SRC)/Builtins/%.c, ft_exit.c)
 SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c)
 SRC_HSH= $(patsubst %.c, $(SRC)/HashTable/%.c, hash_handle.c hash.c prime.c)
-SRC_HISTORY= $(patsubst %.c, $(SRC)/history/%.c, history.c ft_fc.c fc_l.c fc_s.c fc_edit.c)
+SRC_HISTORY= $(patsubst %.c, $(SRC)/history/%.c, history.c history_helper.c ft_fc.c fc_l.c fc_s.c fc_edit.c)
 
 OBJ_MIN = $(patsubst %.c, %.o, $(SRC_MIN))
 OBJ_QUO = $(patsubst %.c, %.o, $(SRC_QUO))
