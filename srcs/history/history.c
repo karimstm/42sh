@@ -85,7 +85,7 @@ char	*search_history(char *format)
 
 	history = NULL;
 	if (ft_strcmp(format, "!!") == 0)
-		history = get_cmd_history_head()->next;
+		history = get_cmd_history_head();
 	else if (format[1] != '-' && !ft_isdigit(format[1]))
 		history =  get_specific_history_by_str(format + 1, "");
 	else if (format[1] == '-' && ft_isdigit(format[2]))

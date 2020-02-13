@@ -208,6 +208,9 @@ char			*pre_parse(const char *line)
 	new_string(&string);
 	consume_history(&line, &string);
 	if (!ERRNO)
+	{
+		ft_printf("%s\n", string.string);
 		return (string.string);
+	}
 	return (NULL);
 }
