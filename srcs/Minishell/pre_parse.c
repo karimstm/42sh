@@ -142,7 +142,8 @@ void consume_double_quote(const char **line, t_string *str)
 {
 	const char *new;
 
-	new = ++(*line);
+	new = *line;
+	push(str, *new++);
 	while (*new &&*new != '"')
 	{
 		if (*new == '\\')
@@ -202,6 +203,7 @@ char *pre_parse(const char *line)
 {
 	t_string string;
 	const char *start;
+
 	ERRNO = 0;
 	start = line;
 	string.string = NULL;

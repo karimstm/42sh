@@ -147,7 +147,7 @@ t_cmd_history			*get_specific_history_by_str(char *first, char *error_msg);
 char					*search_history(char *format);
 int                     ft_fc(char **args);
 void                    fc_l(int flags, char *first, char *last);
-void                    fc_s(int flags, char *first, char *last);
+void                    fc_s(char *first, char *last);
 void                    fc_edit(int flags, char *editor, char *first, char *last);
 
 /*

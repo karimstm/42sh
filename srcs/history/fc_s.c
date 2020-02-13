@@ -12,10 +12,25 @@
 
 #include "shell.h"
 
-void	fc_s(int flags, char *first, char *last)
+static void	fc_exec(char *rep, char *cmd)
 {
-	(void)flags;
-	(void)first;
-	(void)last;
-	ft_printf("ft_s was here\n");
+	(void)rep;
+	(void)cmd;
+}
+
+void		fc_s(char *first, char *last)
+{
+	char	*rep;
+	char	*cmd;
+
+	rep = NULL;
+	cmd = NULL;
+	if (ft_strchr(first, '=') != NULL)
+	{
+		rep = first;
+		cmd = last;
+	}
+	else
+		cmd = first;
+	fc_exec(rep, cmd);
 }
