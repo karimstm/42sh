@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/13 19:23:49 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/14 14:39:10 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,15 +71,13 @@ void		run_shell2(t_list *blt)
 		job_notification(JOB_LIST);
 		node = NULL;
 		init_shell();
-		//why continue if (1) ?? nothing will happen after this if // the same thing inside if is happening outside if
-		if (sh_system(new_line))
-		{
-			ft_strdel((char **)&g_token.line);
-			continue;
-		}
+		sh_system(new_line);
+		ft_strdel(&new_line);
 		ft_strdel((char **)&g_token.line);
+		ft_strdel(&g_token.current);
 	}
 	deallocate(STACK_LIST);
+	free(STACK_LIST);
 	ft_printf("%s", WRONG_READ); // Need to do some checkup here,
 								//so it won't show up on something like this echo 'ls -la' | ./42sh
 }

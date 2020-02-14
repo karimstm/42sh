@@ -125,4 +125,9 @@ int				is_job_stopped(t_job *j);
 int				is_job_completed(t_job *j);
 void			set_active_job2(t_job_list *jobs, t_job *target);
 void			free_job_list(t_job_list *jobs);
+
+/*
+** JOB buil-in command
+*/
+int				ft_job(char **args);
 #endif

@@ -23,3 +23,8 @@ mul_expr = unary_expr (mul_op unary_expr)*
 add_op = [+-|^]
 add_expr = mul_expr (add_op mul_expr)*
 expr = add_expr
+
+
+ls -la
+fc -s | cat -e
+fc -s | cat -e &

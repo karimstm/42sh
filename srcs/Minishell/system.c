@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 18:24:07 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/13 19:21:22 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/14 10:35:41 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int			sh_system(char *name)
 		push_to_stack(STACK_LIST, node);
 		execute(JOB_LIST, node, get_set_blt(NULL));
 		add_to_history(g_token.current, ft_strlen(g_token.current), 0);
-		job_notification(get_job_list(NULL));
+		job_notification(JOB_LIST);
 		free_stacked_node(STACK_LIST, JOB_LIST);
 	}
 	else

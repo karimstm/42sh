@@ -72,6 +72,7 @@
         "unistd.h": "c",
         "system_error": "c",
         "__memory": "c",
-        "ratio": "c"
+        "ratio": "c",
+        "jobs.h": "c"
     }
 }
