@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/14 15:15:36 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/14 15:30:27 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,68 +97,10 @@ void				print_pipes(t_process *process)
 	}
 }
 
-void				ft_process(t_job *job, char flag)
-{
-	t_process	*process;
-	char		*sig;
-
-	sig = NULL;
-	process = (job->proc_list && job->proc_list->head)
-				? job->proc_list->head : NULL;
-	if (job->pgid != 0)
-		ft_printf("[%d]%c", job->pos, current_to_char(job->current));
-	if (process)
-	{
-		if (process->stopped && WIFSTOPPED(process->status))
-			sig = (char *)ft_strsignal(WSTOPSIG(process->status));
-		if (process->pid != 0)
-		{
-			ft_printf("%6d  %-22s", process->pid, sig ? sig : "Running");
-			ft_print_node(process->node);
-			while (process->next && flag == 0)
-			{
-				process = process->next;
-				ft_print_node(process->node);
-			}
-			ft_printf("\n");
-			//print_pipes(process, flag);
-		}
-	}
-}
-
 int					jobs_usage(void)
 {
 	ft_printf_fd(2, "jobs [-l|-p] [job_id...]\n");
 	return (1);
-}
-
-int					parse_args(char **args)
-{
-	const char	*options = "lp";
-	char		*tmp;
-
-	DECLARE(int, _(flag, 0), _(i, 0));
-	if (args != NULL)
-		while (args[i])
-		{
-			if (args[i][0] == '-')
-			{
-				tmp = args[i] + 1;
-				while (*tmp)
-				{
-					if (ft_strchr(options, *tmp) == NULL)
-					{
-						ft_printf_fd(2, "jobs: -%c: invalid option\n", *tmp);
-						return (jobs_usage());
-					}
-					else
-						flag = *tmp;
-					tmp++;
-				}
-			}
-			i++;
-		}
-	return (flag);
 }
 
 int					ft_job_pgid(t_job *job)
@@ -172,28 +114,6 @@ int					ft_jobs_not_found(char *args)
 {
 	ft_printf_fd(2, "42sh: jobs: %s: no such job\n", args);
 	return (1);
-}
-
-int					ft_jobs(char **args)
-{
-	t_job		*current;
-	t_job_list	*list;
-	int			flag;
-
-	list = get_job_list(NULL);
-	flag = 0;
-	if ((flag = parse_args(args)) == 1)
-		return (1);
-	current = (list && list->head) ? list->head : NULL;
-	while (current)
-	{
-		if (flag == 'l' || flag == 0)
-			ft_process(current, (char)flag);
-		else if (flag == 'p')
-			ft_job_pgid(current);
-		current = current->next;
-	}
-	return (0);
 }
 
 /*
