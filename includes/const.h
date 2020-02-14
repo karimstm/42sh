@@ -50,6 +50,7 @@
 # define MSG_QUOTE "> "
 # define GET_MSG(x) x == 1 ? MSG_PURE : MSG_QUOTE
 # define MSG "\033[32;1m" MSG_PURE "\033[0m"
+# define MSG_HISTORY_FAIL "fc: history specification out of range\n"
 # define SINGLE_QUOTE 39
 # define DOUBLE_QUOTE 34
 # define DOLLAR_SIGN '$'

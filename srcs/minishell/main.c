@@ -71,6 +71,7 @@ void		run_shell2(t_list *blt)
 		job_notification(JOB_LIST);
 		node = NULL;
 		init_shell();
+		//why continue if (1) ?? nothing will happen after this if // the same thing inside if is happening outside if
 		if (sh_system(new_line))
 		{
 			ft_strdel((char **)&g_token.line);

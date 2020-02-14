@@ -84,14 +84,14 @@ char	*search_history(char *format)
 	t_cmd_history	*history;
 
 	history = NULL;
-	if (ft_strcmp(format, "!!") == 0)
+	if (format[0] == '!')
 		history = get_cmd_history_head();
-	else if (format[1] != '-' && !ft_isdigit(format[1]))
-		history =  get_specific_history_by_str(format + 1, "");
-	else if (format[1] == '-' && ft_isdigit(format[2]))
-		history = get_history_by_reverse(ft_atoi(format + 2));
-	else if (ft_isdigit(format[1]))
-		history = get_specific_history(ft_atoi(format + 1), 0);
+	else if (format[0] != '-' && !ft_isdigit(format[0]))
+		history =  get_specific_history_by_str(format, "");
+	else if (format[0] == '-' && ft_isdigit(format[1]))
+		history = get_history_by_reverse(ft_atoi(format + 1));
+	else if (ft_isdigit(format[0]))
+		history = get_specific_history(ft_atoi(format), 0);
 
 	return (history ? history->line : NULL);
 }

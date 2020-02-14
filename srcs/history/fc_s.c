@@ -12,13 +12,60 @@
 
 #include "shell.h"
 
-static void	fc_exec(char *rep, char *cmd)
+static int	replace_it(char **command, char *found, char *rep, char *to_rep)
 {
-	(void)rep;
-	(void)cmd;
+	int		len_command;
+	int		len_to_rep;
+
+	*found = '\0';
+	len_command = ft_strlen(*command);
+	len_to_rep = ft_strlen(to_rep);
+	*command = ft_strjoin_pre_free(*command, to_rep, found + ft_strlen(rep));
+	return (len_command + len_to_rep);
 }
 
-void		fc_s(char *first, char *last)
+static char	*fc_s_replace(char *full_command, char *rep)
+{
+	char	*found;
+	char	*to_rep;
+	int		index;
+
+	found = NULL;
+	index = 0;
+	if (rep[0] == '=' || (to_rep = ft_strchr(rep, '=')) == NULL)
+		return (full_command);
+	*to_rep = '\0';
+	to_rep++;
+	while ((found = ft_strstr(full_command + index, rep)) != NULL)
+		index = replace_it(&full_command, found, rep, to_rep);
+	to_rep--;
+	*to_rep = '=';
+	return (full_command);
+}
+
+static int	fc_exec(char *rep, char *cmd)
+{
+	char	*full_command;
+	int		status;
+
+	status = 1;
+	full_command = ft_strdup(search_history(cmd));
+	if (rep != NULL)
+		full_command = fc_s_replace(full_command, rep);
+	if (full_command != NULL && ft_strstr(full_command, "fc "))
+		ft_printf_fd(2, "fc: forbidden re-execution\n");
+	else if (full_command != NULL)
+	{
+		ft_printf_fd(2, "%s\n", full_command);
+		status = sh_system(full_command);
+	}
+	else
+		ft_printf_fd(2, "fc: no command found\n");
+	ft_strdel(&full_command);
+	return (status);
+}
+
+int			fc_s(char *first, char *last)
 {
 	char	*rep;
 	char	*cmd;
@@ -32,5 +79,7 @@ void		fc_s(char *first, char *last)
 	}
 	else
 		cmd = first;
-	fc_exec(rep, cmd);
+	if (cmd == NULL)
+		cmd = search_history("!");
+	return (fc_exec(rep, cmd));
 }

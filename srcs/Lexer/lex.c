@@ -89,8 +89,14 @@ int				match_token_test(t_token_kind kind)
 
 void			init_stream(const char *str)
 {
-	g_line = str;
-	g_token.line = str;
-	g_token.current = ft_strdup(str);
+	char	*new_str;
+
+	new_str = ft_strdup(str);
+	// g_line = str;
+	// g_token.line = str;
+	// g_token.current = ft_strdup(str);
+	g_line = new_str;
+	g_token.line = new_str;
+	g_token.current = new_str;
 	escape_space();
 }

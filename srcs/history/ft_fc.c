@@ -55,13 +55,11 @@ static int	fc_exec(int flags, char *editor, char **args)
 	else
 		last = NULL;
 	if ((flags & S_FLAG) > 0)
-		fc_s(first, last);
+		return (fc_s(first, last));
 	else if ((flags & L_FLAG) > 0)
-		fc_l(flags, first, last);
+		return (fc_l(flags, first, last));
 	else
-		fc_edit(flags, editor, first, last);
-	
-	return (0);
+		return (fc_edit(flags, editor, first, last));
 }
 
 int			ft_fc(char **args)

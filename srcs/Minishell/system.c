@@ -50,8 +50,8 @@ int			sh_system(char *name)
 	if ((node = start_parsing_command(name)))
 	{
 		push_to_stack(STACK_LIST, node);
-		add_to_history(g_token.current, ft_strlen(g_token.current));
 		execute(JOB_LIST, node, get_set_blt(NULL));
+		add_to_history(g_token.current, ft_strlen(g_token.current));
 		job_notification(get_job_list(NULL));
 		free_stacked_node(STACK_LIST, JOB_LIST);
 	}

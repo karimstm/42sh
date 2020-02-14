@@ -12,11 +12,12 @@
 
 #include "shell.h"
 
-void	fc_edit(int flags, char *editor, char *first, char *last)
+int	fc_edit(int flags, char *editor, char *first, char *last)
 {
 	(void)flags;
 	(void)editor;
 	(void)first;
 	(void)last;
 	ft_printf("ft_edit was here\n");
+	return (0);
 }

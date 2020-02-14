@@ -25,7 +25,7 @@ static t_cmd_history	*get_first(char *first)
 	if (first != NULL && first_is_number && first[0] != '-')
 		return (get_specific_history(ft_atoi(first), 1));
 	else if (first != NULL && !first_is_number)
-		return (get_specific_history_by_str(first, "fc: history specification out of range\n"));
+		return (get_specific_history_by_str(first, MSG_HISTORY_FAIL));
 	history = get_cmd_history_head();
 	max = 16;
 	if (first != NULL && first_is_number && first[0] == '-')
@@ -52,7 +52,7 @@ static t_cmd_history	*get_last(char *last)
 	if (last != NULL && last_is_number && last[0] != '-')
 		return (get_specific_history(ft_atoi(last), 1));
 	else if (last != NULL && !last_is_number)
-		return (get_specific_history_by_str(last, "fc: history specification out of range\n"));
+		return (get_specific_history_by_str(last, MSG_HISTORY_FAIL));
 	history = get_cmd_history_head();
 	if (last != NULL && last_is_number && last[0] == '-')
 	{
@@ -67,16 +67,14 @@ static t_cmd_history	*get_last(char *last)
 	return (history == NULL ? history_begining : history);
 }
 
-void					fc_l(int flags, char *first, char *last)
+int						fc_l(int flags, char *first, char *last)
 {
 	t_cmd_history	*first_h;
 	t_cmd_history	*last_h;
 	t_cmd_history	*history;
 
-	if ((first_h = get_first(first)) == NULL)
-		return ;
-	if ((last_h = get_last(last)) == NULL)
-		return ;
+	if (!(first_h = get_first(first)) || !(last_h = get_last(last)))
+		return (1);
 	if (first_h && last_h && last_h->index - first_h->index < 0 &&
 			(flags |= R_FLAG) >= 0)
 		ft_swap_pt((void *)&first_h, (void *)&last_h);
@@ -94,4 +92,5 @@ void					fc_l(int flags, char *first, char *last)
 			break ;
 		history = (flags & R_FLAG) > 0 ? history->next : history->prev;
 	}
+	return (0);
 }

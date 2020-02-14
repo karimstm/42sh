@@ -103,7 +103,7 @@ void feed_t_string(char *event, t_string *str)
 
 	if (event == NULL || *event == '\0')
 		return (push(str, '!'));
-	new_line = search_history(event);
+	new_line = search_history(event + 1);
 	if (new_line == NULL || *new_line == '\0')
 		return (not_found_event(event));
 	while (*new_line)
