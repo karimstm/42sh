@@ -63,6 +63,7 @@ int		mark_process_status(t_job_list *jobs, pid_t pid, int status)
 				if (p->pid == pid)
 				{
 					p->status = status;
+					// jobs->status = status;
 					if (WIFSTOPPED(status))
 						p->stopped = 1;
 					else

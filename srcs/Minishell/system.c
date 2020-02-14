@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 18:24:07 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/14 10:35:41 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/14 16:20:13 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,5 @@ int			sh_system(char *name)
 	}
 	else
 		return (1);
-	return (0);
+	return (JOB_LIST->status);
 }
