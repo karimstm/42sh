@@ -12,7 +12,7 @@
 
 #include "shell.h"
 
-static t_cmd_history	*get_first(char *first)
+t_cmd_history	*get_first(char *first)
 {
 	char			first_is_number;
 	int				count;
@@ -40,7 +40,7 @@ static t_cmd_history	*get_first(char *first)
 	return (history == NULL ? history_begining : history);
 }
 
-static t_cmd_history	*get_last(char *last)
+t_cmd_history	*get_last(char *last)
 {
 	char			last_is_number;
 	int				count;
@@ -69,7 +69,7 @@ static t_cmd_history	*get_last(char *last)
 	return (history == NULL ? history_begining : history);
 }
 
-int						fc_l(int flags, char *first, char *last)
+int				fc_l(int flags, char *first, char *last)
 {
 	t_cmd_history	*first_h;
 	t_cmd_history	*last_h;
