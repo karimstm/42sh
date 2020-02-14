@@ -149,8 +149,6 @@ int                     ft_fc(char **args);
 int	                    fc_l(int flags, char *first, char *last);
 int	                    fc_s(char *first, char *last);
 int	                    fc_edit(int flags, char *editor, char *first, char *last);
-t_cmd_history			*get_first(char *first);
-t_cmd_history			*get_last(char *last);
 
 /*
 **	exec.c
@@ -240,6 +238,6 @@ char					*pre_parse(const char *line);
 */
 
 void					init_shell_variables();
-int						sh_system(char *name);
+int						sh_system(char *name, char save_history);
 
 #endif

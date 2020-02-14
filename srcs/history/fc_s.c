@@ -56,12 +56,10 @@ static int	fc_exec(char *rep, char *cmd)
 		full_command = ft_strdup(search_history(cmd));
 	if (rep != NULL)
 		full_command = fc_s_replace(full_command, rep);
-	if (full_command != NULL && ft_strstr(full_command, "fc "))
-		ft_printf_fd(2, "fc: forbidden re-execution\n");
-	else if (full_command != NULL)
+	if (full_command != NULL)
 	{
 		ft_printf_fd(2, "%s\n", full_command);
-		status = sh_system(full_command);
+		status = sh_system(full_command, 0);
 	}
 	else
 		ft_printf_fd(2, "fc: no command found\n");

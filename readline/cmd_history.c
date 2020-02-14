@@ -74,7 +74,8 @@ void			clean_hsitory(void)
 		free(g_history_list->tmp_line);
 		free(g_history_list);
 		g_history_list = tmp;
-		tmp->prev = NULL;
+		if (tmp != NULL)
+			tmp->prev = NULL;
 	}
 }
 

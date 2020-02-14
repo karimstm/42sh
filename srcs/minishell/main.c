@@ -71,10 +71,8 @@ void		run_shell2(t_list *blt)
 		job_notification(JOB_LIST);
 		node = NULL;
 		init_shell();
-		sh_system(new_line);
+		sh_system(new_line, 1);
 		ft_strdel(&new_line);
-		ft_strdel((char **)&g_token.line);
-		ft_strdel(&g_token.current);
 	}
 	deallocate(STACK_LIST);
 	free(STACK_LIST);
