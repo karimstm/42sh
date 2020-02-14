@@ -51,7 +51,7 @@ int			sh_system(char *name)
 	{
 		push_to_stack(STACK_LIST, node);
 		execute(JOB_LIST, node, get_set_blt(NULL));
-		add_to_history(g_token.current, ft_strlen(g_token.current));
+		add_to_history(g_token.current, ft_strlen(g_token.current), 0);
 		job_notification(get_job_list(NULL));
 		free_stacked_node(STACK_LIST, JOB_LIST);
 	}

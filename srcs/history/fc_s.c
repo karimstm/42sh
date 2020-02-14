@@ -47,9 +47,13 @@ static int	fc_exec(char *rep, char *cmd)
 {
 	char	*full_command;
 	int		status;
+	char	*command;
 
 	status = 1;
-	full_command = ft_strdup(search_history(cmd));
+	command = search_history(cmd);
+	full_command = NULL;
+	if (command != NULL)
+		full_command = ft_strdup(search_history(cmd));
 	if (rep != NULL)
 		full_command = fc_s_replace(full_command, rep);
 	if (full_command != NULL && ft_strstr(full_command, "fc "))

@@ -20,7 +20,8 @@ static t_cmd_history	*get_first(char *first)
 	t_cmd_history	*history;
 
 	first_is_number = 0;
-	if (first != NULL && ft_strlen(first) == ft_strlen(ft_itoa(ft_atoi(first))))
+	if (first != NULL &&
+			ft_strlen(first) == ft_strlen_free(ft_itoa(ft_atoi(first))))
 		first_is_number = 1;
 	if (first != NULL && first_is_number && first[0] != '-')
 		return (get_specific_history(ft_atoi(first), 1));
@@ -47,7 +48,8 @@ static t_cmd_history	*get_last(char *last)
 	t_cmd_history	*history;
 
 	last_is_number = 0;
-	if (last != NULL && ft_strlen(last) == ft_strlen(ft_itoa(ft_atoi(last))))
+	if (last != NULL &&
+			ft_strlen(last) == ft_strlen_free(ft_itoa(ft_atoi(last))))
 		last_is_number = 1;
 	if (last != NULL && last_is_number && last[0] != '-')
 		return (get_specific_history(ft_atoi(last), 1));
@@ -73,7 +75,8 @@ int						fc_l(int flags, char *first, char *last)
 	t_cmd_history	*last_h;
 	t_cmd_history	*history;
 
-	if (!(first_h = get_first(first)) || !(last_h = get_last(last)))
+	if (!(first_h = get_first(first)) ||
+		!(last_h = get_last(last)))
 		return (1);
 	if (first_h && last_h && last_h->index - first_h->index < 0 &&
 			(flags |= R_FLAG) >= 0)

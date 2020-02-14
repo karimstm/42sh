@@ -19,7 +19,7 @@ t_cmd_history	*get_cmd_history_head(void)
 	return (g_history_list);
 }
 
-void			add_to_history(const char *str, int len)
+void			add_to_history(const char *str, int len, char from_readline)
 {
 	t_cmd_history	*tmp;
 
@@ -35,7 +35,7 @@ void			add_to_history(const char *str, int len)
 		tmp->tmp_line = ft_strdup(str);
 		tmp->len = len;
 		tmp->tmp_len = len;
-		if (len > 0 && ft_strcmp(str, "") != 0) {
+		if (from_readline != 1) {
 			if (!history_begining)
 				history_begining = tmp;
 			if (!new_history_begining)
@@ -74,6 +74,7 @@ void			clean_hsitory(void)
 		free(g_history_list->tmp_line);
 		free(g_history_list);
 		g_history_list = tmp;
+		tmp->prev = NULL;
 	}
 }
 

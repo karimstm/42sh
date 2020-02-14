@@ -12,11 +12,12 @@
 
 #include "shell.h"
 
-static void	print_fc_usage(void)
+static int	print_fc_usage(void)
 {
 	ft_printf("fc [-r] [-e editor] [first [last]]\n");
 	ft_printf("fc -l [-nr] [first [last]]\n");
 	ft_printf("fc -s [old=new] [first]\n");
+	return (1);
 }
 
 static int	get_fc_flags(int flags, char *arg)
@@ -75,16 +76,14 @@ int			ft_fc(char **args)
 		{
 			editor = ft_strlen(*args) == 2 ? *(++args) : *args + 2;
 			if (editor == NULL)
-			{
-				print_fc_usage();
-				return (1);
-			}
+				return (print_fc_usage());
 		}
 		else if (*args[0] != '-')
 			break ;
 		else if (*args[0] == '-' && (flags = get_fc_flags(flags, *args)) == -1)
 			return (0);
-		else if (*args[0] == '-' && ((flags = get_fc_flags(flags, *args)) & BREAK_FLAG) > 0)
+		else if (*args[0] == '-' &&
+			((flags = get_fc_flags(flags, *args)) & BREAK_FLAG) > 0)
 			break ;
 		args++;
 	}

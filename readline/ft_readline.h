@@ -137,7 +137,7 @@ int				*get_line_details(t_readline *readline);
 **	CMD History
 */
 void			clean_hsitory(void);
-void			add_to_history(const char *str, int len);
+void			add_to_history(const char *str, int len, char from_readline);
 void			free_history(void);
 void			set_cur_history(t_readline *readline, t_cmd_history *cur);
 t_cmd_history	*get_cmd_history_head(void);

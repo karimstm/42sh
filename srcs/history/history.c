@@ -33,7 +33,8 @@ void	restore_history(void)
 	first = 1;
 	while (get_next_line(fd, &buf) == 1)
 	{
-		add_to_history(buf, ft_strlen(buf));
+		if (buf[0] != '\n' && buf[0] != '\0')
+			add_to_history(buf, ft_strlen(buf), 0);
 		if (first)
 		{
 			first = 0;
@@ -87,11 +88,10 @@ char	*search_history(char *format)
 	if (format[0] == '!')
 		history = get_cmd_history_head();
 	else if (format[0] != '-' && !ft_isdigit(format[0]))
-		history =  get_specific_history_by_str(format, "");
+		history = get_specific_history_by_str(format, "");
 	else if (format[0] == '-' && ft_isdigit(format[1]))
 		history = get_history_by_reverse(ft_atoi(format + 1));
 	else if (ft_isdigit(format[0]))
 		history = get_specific_history(ft_atoi(format), 0);
-
 	return (history ? history->line : NULL);
 }
