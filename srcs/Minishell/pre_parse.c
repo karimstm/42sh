@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:49:43 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/13 18:20:57 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/14 17:57:14 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,6 +160,9 @@ void consume_double_quote(const char **line, t_string *str)
 			new ++;
 		*line = new;
 	}
+	if (*new == '"')
+		push(str, *new++);
+	*line = new;
 }
 
 /*
@@ -178,7 +181,7 @@ int consume_history(const char **pure_line, t_string *str)
 			consume_single_quote(&line, str);
 		else if (*line == '"')
 			consume_double_quote(&line, str);
-		else if (*line == '\\')
+		else if (*line == '\\' || *line == '[')
 		{
 			push(str, *line++);
 			if (*line)
