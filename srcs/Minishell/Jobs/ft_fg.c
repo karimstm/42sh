@@ -1,6 +1,16 @@
-# include "shell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_fg.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/15 14:09:51 by amoutik           #+#    #+#             */
+/*   Updated: 2020/02/15 14:26:03 by amoutik          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-
+#include "shell.h"
 
 int			fg_usage(char c)
 {
@@ -18,17 +28,14 @@ int			fg_error(char *job)
 
 int			get_job_number(char **args)
 {
-	int		job_number;
 	char	*tmp;
 
 	if (args == NULL || *args == NULL)
 		return (0);
-	job_number = -1;
+	DECLARE(int, _(job_number, -1));
 	if (args != NULL)
-	{
-		if (args[0])
+		if ((tmp = args[0]))
 		{
-			tmp = args[0];
 			if (*tmp == '%')
 				tmp++;
 			if (*tmp)
@@ -45,11 +52,10 @@ int			get_job_number(char **args)
 			else
 				return (fg_error(args[0]));
 		}
-	}
 	return (job_number);
 }
 
-t_job			*get_job(t_job_list *jobs, int job_number)
+t_job		*get_job(t_job_list *jobs, int job_number)
 {
 	t_job *current;
 
@@ -70,7 +76,7 @@ t_job			*get_job(t_job_list *jobs, int job_number)
 	return (current);
 }
 
-int		ft_fg(char **args)
+int			ft_fg(char **args)
 {
 	t_job		*current;
 	t_job_list	*list;

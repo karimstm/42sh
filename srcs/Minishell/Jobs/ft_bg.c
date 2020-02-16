@@ -1,6 +1,16 @@
-# include "shell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_bg.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/15 14:10:18 by amoutik           #+#    #+#             */
+/*   Updated: 2020/02/16 11:26:31 by amoutik          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-
+#include "shell.h"
 
 int			bg_usage(char c)
 {
@@ -18,17 +28,14 @@ int			bg_error(char *job)
 
 int			bg_get_job_number(char **args)
 {
-	int		job_number;
 	char	*tmp;
 
 	if (args == NULL || *args == NULL)
 		return (0);
-	job_number = -1;
+	DECLARE(int, _(job_number, -1));
 	if (args != NULL)
-	{
-		if (args[0])
+		if ((tmp = args[0]))
 		{
-			tmp = args[0];
 			if (*tmp == '%')
 				tmp++;
 			if (*tmp)
@@ -45,12 +52,10 @@ int			bg_get_job_number(char **args)
 			else
 				return (bg_error(args[0]));
 		}
-	}
 	return (job_number);
 }
 
-
-int		ft_bg(char **args)
+int			ft_bg(char **args)
 {
 	t_job		*current;
 	t_job_list	*list;

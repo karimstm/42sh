@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:13:30 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/14 14:37:00 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/16 17:40:38 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void				check_assignment(void);
 void				scan_dollar(void);
 void				scan_string(void);
 void				scan_int(void);
-int					is_token_eof(void);
 int					is_metacharacter(int ch);
 int					is_ifs(char c);
 uint8_t				get_digit(uint8_t index);

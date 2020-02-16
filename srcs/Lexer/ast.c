@@ -6,26 +6,13 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:53:09 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/09 16:37:36 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/16 15:56:08 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ast.h"
 #include "parse.h"
 #include "shell.h"
-
-void					*xmalloc(size_t num_bytes)
-{
-	void *ptr;
-
-	ptr = malloc(num_bytes);
-	if (!ptr)
-	{
-		ft_printf_fd(2, "xmalloc failed");
-		exit(EXIT_FAILURE);
-	}
-	return (ptr);
-}
 
 t_node					*command_node(t_token_node kind)
 {

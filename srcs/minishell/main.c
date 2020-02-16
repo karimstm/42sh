@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/15 12:51:56 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/16 12:52:54 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void			restore_std(int std[3])
 	close(std[2]);
 }
 
-t_node	*start_parsing_command(const char *line)
+t_node			*start_parsing_command(const char *line)
 {
 	t_node *node;
 
@@ -39,7 +39,7 @@ t_node	*start_parsing_command(const char *line)
 	return (node);
 }
 
-void		free_stacked_node(t_stack *sp, t_job_list *jobs)
+void			free_stacked_node(t_stack *sp, t_job_list *jobs)
 {
 	t_node *node;
 
@@ -54,8 +54,7 @@ void		free_stacked_node(t_stack *sp, t_job_list *jobs)
 	}
 }
 
-
-void		run_shell2(t_list *blt)
+void			run_shell2(t_list *blt)
 {
 	t_node			*node;
 	char			*new_line;
@@ -71,27 +70,12 @@ void		run_shell2(t_list *blt)
 		job_notification(JOB_LIST);
 		node = NULL;
 		init_shell();
-		sh_system(new_line);
+		sh_system(new_line, 1);
 		ft_strdel(&new_line);
-		ft_strdel((char **)&g_token.line);
-		ft_strdel(&g_token.current);
 	}
 	deallocate(STACK_LIST);
 	free(STACK_LIST);
-	ft_printf("%s", WRONG_READ); // Need to do some checkup here,
-								//so it won't show up on something like this echo 'ls -la' | ./42sh
-}
-
-void    ft_printenv()
-{
-	t_variables *cur;
-
-	cur = env2->head;
-	while (cur)
-	{
-		ft_printf("%d /// %s=%s\n",cur->is_exported, cur->key, cur->value);
-		cur = cur->next;
-	}
+	ft_printf("%s", WRONG_READ);
 }
 
 /*

@@ -24,7 +24,6 @@ int			shell_terminal;
 typedef struct 	s_process
 {
 	struct s_process *next;
-	char **argv;                /* for exec */
 	char *command;				/* command name it could be somethign *
 								* like this (ls -la && echo karim)*/
 	t_node *node;				/* for exec */
@@ -90,7 +89,7 @@ typedef struct	s_job_list
 
 
 
-void			process_push(t_list_process *list, pid_t pid, char **args, t_node *node);
+void			process_push(t_list_process *list, pid_t pid, t_node *node);
 void			init_process_list(t_list_process *p);
 void			job_push(t_job_list *jobs, t_list_process *p, pid_t pgid);
 void			init_job_list(t_job_list *jobs);
@@ -125,9 +124,23 @@ int				is_job_stopped(t_job *j);
 int				is_job_completed(t_job *j);
 void			set_active_job2(t_job_list *jobs, t_job *target);
 void			free_job_list(t_job_list *jobs);
-
+void 			update_status (t_job_list *jobs);
+void			set_max_as_active(t_job_list *jobs);
+void			delete_job(t_job_list *list, t_job *target);
+t_job			*find_job(t_job_list *list, t_job *job, t_job **prev);
+void			free_job_list(t_job_list *jobs);
+void			free_proc(t_list_process **proces);
+void			free_job(t_job *job);
+pid_t			ft_tcgetpgrp(int fd);
+int				ft_tcsetpgrp(int fd, pid_t pgrp_id);
+char			current_to_char(t_job_current current);
+void			print_pipes(t_process *process);
+int				jobs_usage(void);
+int				ft_jobs_not_found(char *args);
 /*
 ** JOB buil-in command
 */
 int				ft_job(char **args);
+
+
 #endif

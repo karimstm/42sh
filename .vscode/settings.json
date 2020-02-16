@@ -73,6 +73,8 @@
         "system_error": "c",
         "__memory": "c",
         "ratio": "c",
-        "jobs.h": "c"
+        "jobs.h": "c",
+        "termios.h": "c",
+        "fstream": "c"
     }
 }

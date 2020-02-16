@@ -6,29 +6,11 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:49:43 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/14 17:57:14 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/16 13:44:53 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-void command_line_n(const char **str, char c)
-{
-	const char *new;
-
-	new = *str;
-	if (*new)
-	{
-		if (ft_isdigit(*new))
-			while (*new &&ft_isdigit(*new))
-				new ++;
-		else
-			while (*new && !ft_isspace(*new) &&
-				   !is_metacharacter(*new) && *new != c)
-				new ++;
-	}
-	*str = new;
-}
 
 /*
 **	This function will make sure to conusme
@@ -37,11 +19,11 @@ void command_line_n(const char **str, char c)
 **	in case history resolver function return a new allocated string
 */
 
-char *consume_word(const char **line, char c)
+char		*consume_word(const char **line, char c)
 {
-	size_t len;
-	const char *str;
-	char *new_string;
+	size_t			len;
+	const char		*str;
+	char			*new_string;
 
 	str = *line;
 	str++;
@@ -67,10 +49,11 @@ char *consume_word(const char **line, char c)
 **	=> finds single quote or a null termintor
 */
 
-void consume_single_quote(const char **line, t_string *tstring)
+void		consume_single_quote(const char **line, t_string *tstring)
 {
-	const char *str;
-	char c;
+	const char	*str;
+	char		c;
+
 	str = *line;
 	push(tstring, *str++);
 	while ((c = *str))
@@ -78,59 +61,9 @@ void consume_single_quote(const char **line, t_string *tstring)
 		push(tstring, c);
 		str++;
 		if (c == '\'')
-			break;
+			break ;
 	}
 	*line = str;
-}
-
-/*
-**	event not found function
-*/
-void not_found_event(const char *name)
-{
-	ft_printf_fd(2, "42sh: %s: event not found\n", name);
-	ERRNO = EVENTE;
-}
-
-/*
-**	Now that we get our events form the history
-**  We have to swallow up all the chars in that events
-*/
-
-void feed_t_string(char *event, t_string *str)
-{
-	char *new_line;
-
-	if (event == NULL || *event == '\0')
-		return (push(str, '!'));
-	new_line = search_history(event + 1);
-	if (new_line == NULL || *new_line == '\0')
-		return (not_found_event(event));
-	while (*new_line)
-	{
-		push(str, *new_line);
-		new_line++;
-	}
-}
-
-/*
-**	This will call consume_word function
-** to gulp all the charachters up the '\0' || '"' || metacharacter
-*/
-
-int get_event(const char **new, t_string *str, char c)
-{
-	char *new_string;
-
-	if (is_metacharacter(**new))
-	{
-		not_found_event("!");
-		return (0);
-	}
-	new_string = consume_word(new, c);
-	feed_t_string(new_string, str);
-	ft_strdel(&new_string);
-	return (1);
 }
 
 /*
@@ -138,26 +71,26 @@ int get_event(const char **new, t_string *str, char c)
 **	 double quote, therefore we had to implemented on it's own
 */
 
-void consume_double_quote(const char **line, t_string *str)
+void		consume_double_quote(const char **line, t_string *str)
 {
-	const char *new;
+	const char	*new;
 
 	new = *line;
 	push(str, *new++);
-	while (*new &&*new != '"')
+	while (*new && *new != '"')
 	{
 		if (*new == '\\')
 		{
-			push(str, *new ++);
+			push(str, *new++);
 			if (*new)
 				push(str, *new);
 		}
 		else if (*new != '!')
 			push(str, *new);
 		else if (!get_event(&new, str, '"'))
-			break;
+			break ;
 		if (*new)
-			new ++;
+			new++;
 		*line = new;
 	}
 	if (*new == '"')
@@ -170,9 +103,9 @@ void consume_double_quote(const char **line, t_string *str)
 **	! => !n => !-n => !! => !string
 */
 
-int consume_history(const char **pure_line, t_string *str)
+int			consume_history(const char **pure_line, t_string *str)
 {
-	const char *line;
+	const char	*line;
 
 	line = *pure_line;
 	while (*line)
@@ -190,7 +123,7 @@ int consume_history(const char **pure_line, t_string *str)
 		else if (*line != '!')
 			push(str, *line);
 		else if (!get_event(&line, str, '\0'))
-			break;
+			break ;
 		if (*line)
 			line++;
 		*pure_line = line;
@@ -202,10 +135,10 @@ int consume_history(const char **pure_line, t_string *str)
 **	Initial parser for history expansion
 */
 
-char *pre_parse(const char *line)
+char		*pre_parse(const char *line)
 {
-	t_string string;
-	const char *start;
+	t_string		string;
+	const char		*start;
 
 	ERRNO = 0;
 	start = line;

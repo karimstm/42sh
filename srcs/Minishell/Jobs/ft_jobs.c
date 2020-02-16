@@ -6,149 +6,17 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/19 12:17:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/14 17:34:51 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/16 11:17:22 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-const char			*ft_strsignal(int sig)
-{
-	static const char *signal_str[] = {
-		[SIGHUP] = "Hangup",
-		[SIGQUIT] = "Quit",
-		"Illegal instruction", "Trace/breakpoint trap", "Aborted",
-		"Emulation trap", "Arithmetic exception",
-		"Killed", "Bus error", "Segmentation fault",
-		"Bad system call", "Broken pipe", "Alarm clock", "Terminated",
-		[SIGUSR1] = "User defined signal 1", "User defined signal 2",
-		[SIGCHLD] = "Child status changed",
-		[SIGWINCH] = "Window size changed",
-		[SIGURG] = "Urgent I/O condition",
-		[SIGIO] = "I/O possible",
-		[SIGSTOP] = "Stopped (signal)",
-		[SIGTSTP] = "Stopped (user)",
-		[SIGCONT] = "Continued",
-		[SIGTTIN] = "Stopped (tty input)",
-		[SIGTTOU] = "Stopped (tty output)",
-		[SIGVTALRM] = "Virtual timer expired",
-		[SIGPROF] = "Profiling timer expired",
-		[SIGXCPU] = "CPU time limit exceede",
-		[SIGXFSZ] = "File size limit exceeded",
-		[SIGINFO] = "Information request"
-	};
-
-	return (signal_str[sig]);
-}
-
-void				print_semi_and(t_node *node)
-{
-	if (node->spec.sep_op_command->left)
-		ft_print_node(node->spec.sep_op_command->left);
-	ft_printf("%c", node->spec.sep_op_command->kind);
-	if (node->spec.sep_op_command->right)
-		ft_print_node(node->spec.sep_op_command->right);
-}
-
-void				print_and_or_pipe(t_node *node)
-{
-	if (node->spec.and_or_command->left)
-		ft_print_node(node->spec.and_or_command->left);
-	ft_printf("%s", token_name(node->spec.and_or_command->kind));
-	if (node->spec.and_or_command->right)
-		ft_print_node(node->spec.and_or_command->right);
-}
-
-void				ft_print_node(t_node *node)
-{
-	if (node)
-	{
-		if (node->kind == NODE_SEMI_AND)
-			print_semi_and(node);
-		else if (node->kind == NODE_AND_OR || node->kind == NODE_PIPE)
-			print_and_or_pipe(node);
-		else if (node->kind == NODE_SIMPLE_COMMAND)
-		{
-			ft_printf(" ");
-			print_list_tokens(node->spec.simple_command);
-		}
-		print_redir(node->redir);
-	}
-}
-
-char				current_to_char(t_job_current current)
-{
-	if (current == CURRENT_PREV)
-		return ('-');
-	else if (current == CURRENT_ACTIVE)
-		return ('+');
-	else
-		return (' ');
-}
-
-void				print_pipes(t_process *process)
-{
-	while (process->next)
-	{
-		process = process->next;
-		ft_printf("%10d %-22s | ", process->pid, " ");
-		ft_print_node(process->node);
-		ft_printf("\n");
-	}
-}
-
-int					jobs_usage(void)
-{
-	ft_printf_fd(2, "jobs [-l|-p] [job_id...]\n");
-	return (1);
-}
 
 int					ft_job_pgid(t_job *job)
 {
 	if (job->pgid != 0)
 		ft_printf("%d\n", job->pgid);
 	return (0);
-}
-
-int					ft_jobs_not_found(char *args)
-{
-	ft_printf_fd(2, "42sh: jobs: %s: no such job\n", args);
-	return (1);
-}
-
-/*
-** This function check if an option is within args
-** 0 on failure & 1 on success
-*/
-
-int					ft_getopt(char **args, char *optstring, int *argc)
-{
-	int		i;
-	int		flag;
-	char	*tmp;
-
-	i = 0;
-	flag = -1;
-	while (args[i])
-	{
-		tmp = args[i];
-		if (*tmp && tmp[0] == '-')
-		{
-			tmp++;
-			while (*tmp)
-			{
-				if (ft_strchr(optstring, *tmp))
-					flag = *tmp;
-				else
-					return ('?');
-				tmp++;
-			}
-		}
-		else
-			return (flag);
-		*argc = ++i;
-	}
-	return (flag);
 }
 
 void				job_process(t_job *current, int flag)
@@ -192,7 +60,6 @@ void				ft_print_process(int flag)
 		current = current->next;
 	}
 }
-
 
 void				jobs_number(char **argv, int argc, int flag)
 {
