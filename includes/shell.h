@@ -158,6 +158,7 @@ char					**node_to_char(t_list_simple_command *command);
 char					*working_path(char *cmd);
 t_job_list				*start_exec(t_node *node, t_list *env);
 int						execute_redirection(t_redirection *list);
+int						assert_tok(t_token_kind base, t_token_kind k2, t_token_kind k3);
 
 /*
 **	redir.c
