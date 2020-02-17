@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:28 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 16:44:16 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/17 11:39:44 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,9 @@ void			next_token(void)
 	g_token.start = g_line;
 	if (*g_line)
 	{
-		if (isspace(*g_line))
+		if (*g_line == '\n')
+			g_token.kind = *g_line++;
+		else if (isspace(*g_line))
 			set_token_as_space();
 		else if (ft_isdigit(*g_line))
 			scan_for_digit();
