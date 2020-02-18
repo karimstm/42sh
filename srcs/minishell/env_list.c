@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 12:02:02 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/18 18:03:15 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/18 18:04:18 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,7 +226,6 @@ void		complete_reset(char **assign)
 
 void		reset_env(t_variables_list *tmp, char **assign)
 {
-<<<<<<< HEAD
     t_variables_list    *dup;
 
     if (tmp)
@@ -251,29 +250,4 @@ void		reset_env(t_variables_list *tmp, char **assign)
         // still need to free dup
         complete_reset(assign);
     }
-=======
-	t_variables_list    *dup;
-
-	if (tmp)
-	{
-		DECLARE(t_variables , *cur_dup, *edit_var);
-		dup = env2;
-		env2 = tmp;
-		cur_dup = dup ? dup->head : NULL;
-		while (cur_dup)
-		{
-			if ((edit_var = get_var(cur_dup->key)) && cur_dup->is_modified == ENV_MODIFIED)
-			{
-				ft_strdel(&edit_var->value);
-				edit_var->value = ft_strdup(cur_dup->value);
-			}
-			else if (cur_dup->is_modified == ENV_ADDED)
-				variable_push(ft_strdup(cur_dup->key), ft_strdup(cur_dup->value), 1, ENV_NOTDELETED);
-			edit_var ? edit_var->is_modified = ENV_NOTDELETED : 0;
-			free_node_env(cur_dup);
-			cur_dup = cur_dup->next;
-		}
-		complete_reset(assign);
-	}
->>>>>>> dd7878c45712664bf5d6648bb58efab47073c085
 }
