@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 12:02:02 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/18 18:04:18 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/18 18:17:10 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -247,7 +247,7 @@ void		reset_env(t_variables_list *tmp, char **assign)
             free_node_env(cur_dup);
             cur_dup = cur_dup->next;
         }
-        // still need to free dup
+		dup ? free(dup) : 0;
         complete_reset(assign);
     }
 }

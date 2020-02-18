@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 13:29:57 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/18 18:03:03 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/18 18:09:06 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,14 @@ void    _glob_match(char *dirname, char *pattern, t_glob *pglob)
   if (list_names == NULL)
   	return ;
   _match_reg(pattern, list_names);
-  /* got up to the next SEP '/' */
   while (*pattern && *pattern != SEP)
     pattern++;
   if (*pattern != EOS)
     list_func(list_names, pattern, _join_with_path);
-  /* loop back recursively on each element in the list */
   if (*pattern != EOS)
     if (!(*pattern == SEP && ft_strlen(pattern) == 1))
       _glob_back(list_names, pglob);
   list_names->head = merge_sort(list_names->head);
-  //print_list(list_names);
-  //printf("hi\n");
   fill_glob(list_names, pglob);
 }
 
@@ -143,17 +139,13 @@ char    *_basename(char *path)
   return path;
 }
 
-/* Loop throught the pattern */
-
 void    _glob_loop(char *pattern, t_glob *pglob)
 {
   char  dirname[MAXPATHLEN];
   char  *basename;
-  // char  prev_token;
   int   index;
 
   ft_bzero(dirname, MAXPATHLEN);
-  // prev_token = 0;
   index = 0;
   while (*pattern)
   {
@@ -161,9 +153,7 @@ void    _glob_loop(char *pattern, t_glob *pglob)
     {
       basename = _basename(dirname);
       return (_glob_match(_get_starting_path(dirname), ft_strjoin(basename, pattern), pglob));
-      /* The third argument here is to denote a string to find */
     }
-    // prev_token = *pattern;
     dirname[index++] = *pattern;
     pattern++;
   }
@@ -177,20 +167,4 @@ int     _glob(const char *pattern, int flags, int (*errfunc)(const char *epath, 
   (void)pglob;
   (void)errfunc;
   return (0);
-}
-
-int main(int ac , char **av)
-{
-  t_glob res;
-
-  (void)ac;
-  if (av[1])
-  {
-  _glob(av[1],0, 0, &res);
-  while (res.gl_pathv && *res.gl_pathv)
-  {
-    ft_putendl(*res.gl_pathv);
-    res.gl_pathv++;
-  }
-  } 
 }
