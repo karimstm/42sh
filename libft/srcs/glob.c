@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   glob.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 13:29:57 by amoutik           #+#    #+#             */
-/*   Updated: 2019/10/12 11:43:43 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/15 15:32:07 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globing.h"
+#include "libft.h"
 
 int     is_match(const char *pattern, const char *string);
 
@@ -22,10 +23,10 @@ static DIR    *g_opendir(char *str)
     ft_strcpy(buf, ".");
   else
     ft_strcpy(buf, str);
-  return(opendir(buf));
+  return (opendir(buf));
 }
 
-t_list_path   *g_readdir(DIR *dirp, int flags, char *filename)
+t_list_path   *g_readdir(DIR *dirp, int flags, char *pattern)
 {
   t_list_path   *list_names;
   struct dirent *dp;
@@ -33,17 +34,20 @@ t_list_path   *g_readdir(DIR *dirp, int flags, char *filename)
   list_names = alloc_path_list(1);
   if (dirp == NULL)
     return (NULL);
-  while ((dp = readdir(dirp)) != NULL)
+  while ((dp = readdir(dirp)))
   {
-    if (dp->d_name[0] != '.')
+    if (!ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
     {
-      if (flags & ISDIR)
+      if (!(dp->d_name[0] == '.' && pattern[0] != '.'))
       {
-        if (dp->d_type == DT_DIR)
-          push_path(list_names, (ft_strcmp(filename, ".") ? ft_strjoin(filename, dp->d_name) : ft_strdup(dp->d_name)), ft_strlen(dp->d_name));
+        if (flags & ISDIR)
+        {
+          if (dp->d_type == DT_DIR)
+            push_path(list_names, ft_strdup(dp->d_name), ft_strlen(dp->d_name));
+        }
+        else
+          push_path(list_names, ft_strdup(dp->d_name), ft_strlen(dp->d_name));
       }
-      else
-        push_path(list_names, (ft_strcmp(filename, ".") ? ft_strjoin(filename, dp->d_name) : ft_strdup(dp->d_name)), ft_strlen(dp->d_name));
     }
   }
   closedir(dirp);
@@ -92,10 +96,9 @@ void    _glob_match(char *dirname, char *pattern, t_glob *pglob)
   t_list_path *list_names;
 
   flags = 0;
-
   if (pattern[ft_strlen(pattern) - 1] == SEP)
     flags |= ISDIR;
-  list_names  = g_readdir(g_opendir(dirname), flags, dirname);
+  list_names  = g_readdir(g_opendir(dirname), flags, pattern);
   if (list_names == NULL)
   	return ;
   _match_reg(pattern, list_names);
@@ -174,4 +177,20 @@ int     _glob(const char *pattern, int flags, int (*errfunc)(const char *epath, 
   (void)pglob;
   (void)errfunc;
   return (0);
+}
+
+int main(int ac , char **av)
+{
+  t_glob res;
+
+  (void)ac;
+  if (av[1])
+  {
+  _glob(av[1],0, 0, &res);
+  while (res.gl_pathv && *res.gl_pathv)
+  {
+    ft_putendl(*res.gl_pathv);
+    res.gl_pathv++;
+  }
+  } 
 }
