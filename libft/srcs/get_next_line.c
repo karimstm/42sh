@@ -144,6 +144,6 @@ int				get_next_line(const int fd, char **line)
 	if (ret == 0 && **line)
 		ret = 1;
 	if (ret != 1)
-		free(*line);
+		ft_strdel(line);
 	return (ret);
 }

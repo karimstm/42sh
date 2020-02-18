@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/16 13:52:49 by amoutik           #+#    #+#             */
+/*   Updated: 2020/02/16 14:02:09 by amoutik          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 void			restore_fds(int std[2])
@@ -15,7 +27,7 @@ char			**node_to_char(t_list_simple_command *command)
 	current = (command && command->head) ? command->head : NULL;
 	if (current == NULL)
 		return (NULL);
-	cmds = (char **)malloc(sizeof(char *) * (command->node_count + 1));
+	cmds = (char **)xmalloc(sizeof(char *) * (command->node_count + 1));
 	i = 0;
 	while (current && current->kind != TOKEN_WORD)
 		current = current->next;
@@ -45,7 +57,7 @@ char			*working_path(char *cmd)
 		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
 			break ;
 		else if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == -1)
-			syntax_error("%s: Permission denied.", cmd); // needs more check later on
+			syntax_error("%s: Permission denied.", cmd);
 		ft_strdel(&full_path);
 		tmp++;
 	}
@@ -60,7 +72,7 @@ int				exec_builin(t_list *env, t_list *blt, t_node *node)
 	char		**cmds;
 
 	cmds = NULL;
-	if(blt && (*(cmds = node_to_char(node->spec.simple_command)) != NULL))
+	if (blt && (*(cmds = node_to_char(node->spec.simple_command)) != NULL))
 	{
 		((t_builtin*)blt->content)->f(cmds + 1, &env);
 		ft_free_strtab(cmds);
@@ -68,24 +80,28 @@ int				exec_builin(t_list *env, t_list *blt, t_node *node)
 	return (0);
 }
 
+int		assert_tok(t_token_kind base, t_token_kind k2, t_token_kind k3)
+{
+	if (base == k2 || base == k3)
+		return (1);
+	return (0);
+}
+
 int		execute_redirection(t_redirection *list)
 {
 	t_redirection	*current;
-	int				error;
 
-	error = 0;
+	DECLARE(int, _(error, 0));
 	current = list;
-	while (current)
+	while (current && !error)
 	{
-		if (error)
-			return (1);
 		if (current->kind == '>' || current->kind == TOKEN_CLOBBER)
 			error = output(current);
 		else if (current->kind == TOKEN_DGREAT)
 			error = output_append(current);
-		else if (current->kind == TOKEN_GREATAND || current->kind == TOKEN_ANDGREAT)
+		else if (assert_tok(current->kind, TOKEN_GREATAND, TOKEN_ANDGREAT))
 			error = output_with_aggregate(current, 0);
-		else if (current->kind == TOKEN_DGREATAND || current->kind == TOKEN_AND_DEGREATE)
+		else if (assert_tok(current->kind, TOKEN_DGREATAND, TOKEN_AND_DEGREATE))
 			error = output_with_aggregate(current, 1);
 		else if (current->kind == '<')
 			error = input(current);

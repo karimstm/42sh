@@ -23,3 +23,12 @@ size_t	ft_strlen(const char *str)
 		i++;
 	return (i);
 }
+
+size_t ft_strlen_free(const char *str)
+{
+	size_t	len;
+
+	len = ft_strlen(str);
+	free((void*)str);
+	return (len);
+}

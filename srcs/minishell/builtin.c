@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/10 20:46:53 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/18 15:37:08 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void		init_builtin(t_list **lst)
 	add_builtin(lst, "pwd", &ft_pwd);
 	add_builtin(lst, "set", &ft_set);
 	add_builtin(lst, "unset", &ft_unset);
-	add_builtin(lst, "jobs", &ft_jobs);
+	add_builtin(lst, "jobs", &ft_job);
 	add_builtin(lst, "exit", &ft_exit);
 	add_builtin(lst, "fg", &ft_fg);
 	add_builtin(lst, "bg", &ft_bg);
@@ -62,6 +62,7 @@ void		init_builtin(t_list **lst)
 	add_builtin(lst, "hash", &ft_handle_hash_table);
 	add_builtin(lst, "history", &ft_history);
 	add_builtin(lst, "fc", &ft_fc);
+	add_builtin(lst, "test", &ft_test);
 }
 
 /*

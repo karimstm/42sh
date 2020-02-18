@@ -1,28 +1,48 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lex.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/16 16:25:28 by amoutik           #+#    #+#             */
+/*   Updated: 2020/02/17 11:39:44 by amoutik          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
+
+void			scan_for_digit(void)
+{
+	while (ft_isdigit(*g_line))
+		g_line++;
+	if (*g_line == '>' || *g_line == '<')
+	{
+		g_line = g_token.start;
+		scan_int();
+		scan_meta();
+	}
+	else
+		scan_string();
+}
+
+void			set_token_as_space(void)
+{
+	g_token.kind = TOKEN_SPACE;
+	g_line++;
+}
 
 void			next_token(void)
 {
 	g_token.start = g_line;
 	if (*g_line)
 	{
-		if (isspace(*g_line))
-		{
-			g_token.kind = TOKEN_SPACE;
-			g_line++;
-		}
+		if (*g_line == '\n')
+			g_token.kind = *g_line++;
+		else if (isspace(*g_line))
+			set_token_as_space();
 		else if (ft_isdigit(*g_line))
-		{
-			while (ft_isdigit(*g_line))
-				g_line++;
-			if (*g_line == '>' || *g_line == '<')
-			{
-				g_line = g_token.start;
-				scan_int();
-				scan_meta();
-			}
-			else
-				scan_string();
-		}
+			scan_for_digit();
 		else if (is_metacharacter(*g_line))
 		{
 			g_token.spec.int_val = -1;
@@ -37,9 +57,7 @@ void			next_token(void)
 		}
 	}
 	else
-	{
 		g_token.kind = TOKEN_EOF;
-	}
 	g_token.end = g_line;
 }
 
@@ -61,36 +79,4 @@ int				expect_token(t_token_kind kind)
 		syntax_error("syntax error near unexpected token");
 		return (0);
 	}
-}
-
-int				match_token(t_token_kind kind)
-{
-	if (is_token(kind))
-	{
-		next_token();
-		return (1);
-	}
-	else
-		return (0);
-}
-
-int				match_token_test(t_token_kind kind)
-{
-	while (is_token(TOKEN_SPACE))
-		next_token();
-	if (is_token(kind))
-	{
-		next_token();
-		return (1);
-	}
-	else
-		return (0);
-}
-
-void			init_stream(const char *str)
-{
-	g_line = str;
-	g_token.line = str;
-	g_token.current = ft_strdup(str);
-	escape_space();
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   meta.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/16 16:46:09 by amoutik           #+#    #+#             */
+/*   Updated: 2020/02/16 17:24:54 by amoutik          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 void			scan_redirection_input(void)
@@ -61,7 +73,7 @@ void			and_meta(char k1, t_token_kind k2, t_token_kind k3)
 		g_line++;
 		if (is_metacharacter(*g_line))
 		{
-			if(g_token.kind == TOKEN_ANDGREAT && *g_line == '>')
+			if (g_token.kind == TOKEN_ANDGREAT && *g_line == '>')
 			{
 				g_token.kind = TOKEN_AND_DEGREATE;
 				g_line++;
@@ -86,13 +98,4 @@ void			scan_meta(void)
 		scan_redirection_output();
 	else
 		g_token.kind = *g_line++;
-}
-
-void			scan_curly(void)
-{
-	if (*g_line == '{')
-		g_token.kind = TOKEN_LBRACE;
-	else if (*g_line == '}')
-		g_token.kind = TOKEN_RBRACE;
-	g_line++;
 }

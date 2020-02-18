@@ -12,48 +12,6 @@
 
 #include "shell.h"
 
-static t_cmd_history	*get_specific_history(int index)
-{
-	int				total;
-	char			from_begin;
-	t_cmd_history	*history;
-
-	total = get_cmd_history_head()->index;
-	if (total - index > total / 2)
-		from_begin = 1;
-	else
-		from_begin = 0;
-	if (from_begin)
-		history = history_begining;
-	else
-		history = get_cmd_history_head();
-	while (history)
-	{
-		if (history->index == index)
-			return (history);
-		if (from_begin)
-			history = history->prev;
-		else
-			history = history->next;
-	}
-	return (get_cmd_history_head());
-}
-
-static t_cmd_history	*get_specific_history_by_str(char *first)
-{
-	t_cmd_history	*history;
-
-	history = get_cmd_history_head();
-	while (history)
-	{
-		if (ft_strncmp(history->line, first, ft_strlen(first)) == 0)
-			return (history);
-		history = history->next;
-	}
-	ft_printf("fc: history specification out of range\n");
-	return (NULL);
-}
-
 static t_cmd_history	*get_first(char *first)
 {
 	char			first_is_number;
@@ -62,12 +20,13 @@ static t_cmd_history	*get_first(char *first)
 	t_cmd_history	*history;
 
 	first_is_number = 0;
-	if (first != NULL && ft_strlen(first) == ft_strlen(ft_itoa(ft_atoi(first))))
+	if (first != NULL &&
+			ft_strlen(first) == ft_strlen_free(ft_itoa(ft_atoi(first))))
 		first_is_number = 1;
 	if (first != NULL && first_is_number && first[0] != '-')
-		return (get_specific_history(ft_atoi(first)));
+		return (get_specific_history(ft_atoi(first), 1));
 	else if (first != NULL && !first_is_number)
-		return (get_specific_history_by_str(first));
+		return (get_specific_history_by_str(first, MSG_HISTORY_FAIL));
 	history = get_cmd_history_head();
 	max = 16;
 	if (first != NULL && first_is_number && first[0] == '-')
@@ -89,12 +48,13 @@ static t_cmd_history	*get_last(char *last)
 	t_cmd_history	*history;
 
 	last_is_number = 0;
-	if (last != NULL && ft_strlen(last) == ft_strlen(ft_itoa(ft_atoi(last))))
+	if (last != NULL &&
+			ft_strlen(last) == ft_strlen_free(ft_itoa(ft_atoi(last))))
 		last_is_number = 1;
 	if (last != NULL && last_is_number && last[0] != '-')
-		return (get_specific_history(ft_atoi(last)));
+		return (get_specific_history(ft_atoi(last), 1));
 	else if (last != NULL && !last_is_number)
-		return (get_specific_history_by_str(last));
+		return (get_specific_history_by_str(last, MSG_HISTORY_FAIL));
 	history = get_cmd_history_head();
 	if (last != NULL && last_is_number && last[0] == '-')
 	{
@@ -109,16 +69,15 @@ static t_cmd_history	*get_last(char *last)
 	return (history == NULL ? history_begining : history);
 }
 
-void					fc_l(int flags, char *first, char *last)
+int						fc_l(int flags, char *first, char *last)
 {
 	t_cmd_history	*first_h;
 	t_cmd_history	*last_h;
 	t_cmd_history	*history;
 
-	if ((first_h = get_first(first)) == NULL)
-		return ;
-	if ((last_h = get_last(last)) == NULL)
-		return ;
+	if (!(first_h = get_first(first)) ||
+		!(last_h = get_last(last)))
+		return (1);
 	if (first_h && last_h && last_h->index - first_h->index < 0 &&
 			(flags |= R_FLAG) >= 0)
 		ft_swap_pt((void *)&first_h, (void *)&last_h);
@@ -136,4 +95,5 @@ void					fc_l(int flags, char *first, char *last)
 			break ;
 		history = (flags & R_FLAG) > 0 ? history->next : history->prev;
 	}
+	return (0);
 }

@@ -6,13 +6,13 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:27:30 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/05 10:29:02 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/16 13:51:54 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int	is_directory(const char *path)
+int		is_directory(const char *path)
 {
 	struct stat statbuf;
 

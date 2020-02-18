@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   const.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/12 18:35:02 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/18 12:29:07 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define MSG_QUOTE "> "
 # define GET_MSG(x) x == 1 ? MSG_PURE : MSG_QUOTE
 # define MSG "\033[32;1m" MSG_PURE "\033[0m"
+# define MSG_HISTORY_FAIL "fc: history specification out of range\n"
 # define SINGLE_QUOTE 39
 # define DOUBLE_QUOTE 34
 # define DOLLAR_SIGN '$'
@@ -101,6 +102,7 @@
 
 # define SYNTAXE 1
 # define ACCESE 2
+# define EVENTE 3
 
 /*
 ** environnement duplication constants
@@ -110,5 +112,16 @@
 # define ENV_MODIFIED 1
 # define ENV_ADDED 2
 # define ENV_NOTDELETED 3
+
+/*
+**	Global variable mimicking
+*/
+
+#define JOB_LIST	get_job_list(NULL)
+#define STACK_LIST	get_stack(NULL)
+#define ALIAS_LIST	get_alias_list(NULL)
+#define HASH_TABLE	get_hash_table(NULL)
+#define BUILT_LIST	get_set_blt(NULL)
+
 
 #endif

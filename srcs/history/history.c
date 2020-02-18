@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 06:03:16 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/11 06:03:18 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:31:53 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@
 void	restore_history(void)
 {
 	int		fd;
-	char	*buf;
-	char	*log_file;
 	int		first;
 
+	DECLARE(char, _(*buf, NULL), _(*log_file, NULL));
 	log_file = ft_strjoin(getenv("HOME"), "/.bash_history");
 	fd = open(log_file, O_RDONLY);
 	free(log_file);
@@ -34,14 +33,16 @@ void	restore_history(void)
 	first = 1;
 	while (get_next_line(fd, &buf) == 1)
 	{
-		add_to_history(buf, ft_strlen(buf));
+		if (buf[0] != '\n' && buf[0] != '\0')
+			add_to_history(buf, ft_strlen(buf), 0);
 		if (first)
 		{
 			first = 0;
 			history_begining = get_cmd_history_head();
 		}
-		free(buf);
+		ft_strdel(&buf);
 	}
+	free_gnl(fd);
 	new_history_begining = get_cmd_history_head();
 	close(fd);
 }
@@ -77,4 +78,20 @@ int		ft_history(char **args)
 		history = history->prev;
 	}
 	return (0);
+}
+
+char	*search_history(char *format)
+{
+	t_cmd_history	*history;
+
+	history = NULL;
+	if (format[0] == '!')
+		history = get_cmd_history_head();
+	else if (format[0] != '-' && !ft_isdigit(format[0]))
+		history = get_specific_history_by_str(format, "");
+	else if (format[0] == '-' && ft_isdigit(format[1]))
+		history = get_history_by_reverse(ft_atoi(format + 1));
+	else if (ft_isdigit(format[0]))
+		history = get_specific_history(ft_atoi(format), 0);
+	return (history ? history->line : NULL);
 }

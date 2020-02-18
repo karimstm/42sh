@@ -81,9 +81,9 @@ int    ft_handle_hash_table(char **args)
         {
             new_table = ht_new();
             lookup_and_insert(new_table, &args[1]);
-        } else 
+        } else
             lookup_and_insert(ht, args);
-    } else 
+    } else
         ht_print(ht);
     if (new_table)
     {
@@ -101,7 +101,7 @@ int    ft_handle_hash_table(char **args)
 // int main()
 // {
 //     t_hash_table *ht = ht_new();
-//     char *args[] = { 
+//     char *args[] = {
 //         "-r",
 //         "vim",
 //         "ls",

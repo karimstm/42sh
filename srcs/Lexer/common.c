@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   common.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/16 15:56:33 by amoutik           #+#    #+#             */
+/*   Updated: 2020/02/16 15:57:57 by amoutik          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 /*
@@ -32,13 +44,12 @@ int				get_new_line(void)
 	if (new_line == NULL)
 		return (1);
 	new_line = ft_strjoin(tmp, new_line);
+	ft_strdel(&tmp);
 	g_token.line = new_line;
 	g_token.start = new_line + startlen;
 	g_line = new_line + len;
-	tmp = tmp2;
-	tmp2 = ft_strjoin("\n", tmp2);
-	ft_strdel(&tmp);
-	g_token.current = ft_strjoin(g_token.current, tmp2);
+	g_token.current = ft_strjoin_pre_free(g_token.current, "\n", tmp2);
+	ft_strdel(&tmp2);
 	return (1);
 }
 
@@ -48,9 +59,7 @@ int				get_new_line(void)
 
 void			scan_dquotes(void)
 {
-	int flag;
-
-	flag = 1;
+	DECLARE(int, _(flag, 1));
 	g_line++;
 	while (*g_line)
 	{
@@ -82,7 +91,6 @@ void			scan_squotes(void)
 
 	flag = 1;
 	g_line++;
-	//&& !ifs
 	while (*g_line)
 	{
 		if (*g_line == '\'')

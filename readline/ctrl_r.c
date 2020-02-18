@@ -53,10 +53,10 @@ static void	search_cmd(int buff, t_readline *line, char **search)
 	while (history)
 	{
 		not_found = 0;
-		if (!ft_str_isnull(*search) && ft_strstr(history->tmp_line, *search))
+		if (!ft_str_isnull(*search) && ft_strstr(history->tmp_line ?
+							history->tmp_line : history->line, *search))
 		{
-			change_cmd(line, history->tmp_line, *search,
-									"\033[32;1mFound\033[0m '%s_' %s");
+			change_cmd(line, history->tmp_line, *search, FOUND_MSG);
 			history = history->next;
 			return ;
 		}
@@ -65,8 +65,8 @@ static void	search_cmd(int buff, t_readline *line, char **search)
 			history = get_cmd_history_head();
 	}
 	history = NULL;
-	change_cmd(line, g_original, *search, ft_strlen(*search) == 0 ? "'%s_' %s" :
-										"\033[31;1mNot Found\033[0m '%s_' %s");
+	change_cmd(line, g_original, *search, !ft_strlen(*search) ? "'%s_' %s" :
+															NOT_FOUND_MSG);
 	not_found = 1;
 }
 

@@ -60,7 +60,7 @@ static void	readline_init(t_readline *readline, const char *g_prompt)
 	signal_resize(0);
 	signal(SIGWINCH, signal_resize);
 	get_cursor_position(readline);
-	add_to_history("", 0);
+	add_to_history("", 0, 1);
 	readline->cmd = get_cmd_history_head();
 	readline->line_props.linecount = 1;
 	readline->line_props.details = ft_memalloc(sizeof(int));

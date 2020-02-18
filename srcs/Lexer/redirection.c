@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 16:50:32 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/11 14:56:53 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/16 16:47:03 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char				is_n_number(char *str, int len)
 	return (1);
 }
 
-t_redirection			*output_redirection(t_token_kind kind)
+t_redirection		*output_redirection(t_token_kind kind)
 {
 	int					fd1;
 	int					fd2;
@@ -51,8 +51,8 @@ t_redirection			*output_redirection(t_token_kind kind)
 	return (list);
 }
 
-void					aggregate_number(int *fd2,
-							int *fd1, t_redirection **list, t_token_kind kind)
+void				aggregate_number(int *fd2,
+						int *fd1, t_redirection **list, t_token_kind kind)
 {
 	*fd2 = ft_atoi(g_token.spec.word);
 	*list = new_redir(*fd1, *fd2, kind);
@@ -65,7 +65,8 @@ void					aggregate_number(int *fd2,
 		ft_strdel(&g_token.spec.word);
 }
 
-void					aggregate_word(int *fd2, int *fd1, t_redirection **list, t_token_kind kind)
+void				aggregate_word(int *fd2, int *fd1, t_redirection **list,
+						t_token_kind kind)
 {
 	if (*fd1 < 0)
 		syntax_error("42sh: %s: ambiguous redirect", g_token.spec.word);
@@ -77,7 +78,7 @@ void					aggregate_word(int *fd2, int *fd1, t_redirection **list, t_token_kind k
 	}
 }
 
-t_redirection			*output_aggregate(t_token_kind kind, int skip_number)
+t_redirection		*output_aggregate(t_token_kind kind, int skip_number)
 {
 	int				fd1;
 	int				fd2;

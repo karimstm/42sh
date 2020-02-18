@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin_pre_free.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/20 08:42:52 by zoulhafi          #+#    #+#             */
-/*   Updated: 2019/03/11 13:23:48 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/16 14:27:13 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,6 @@ char	*ft_strjoin_pre_free(char *s1, char *del, char const *s2)
 		s1 = ft_strjoin(s1, s2);
 	else
 		s1 = ft_strjoin_pre(s1, del, s2);
-	free(tmp);
+	ft_strdel(&tmp);
 	return (s1);
 }

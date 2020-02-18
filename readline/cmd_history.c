@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_history.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 08:55:45 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/23 00:23:21 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/13 12:08:41 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_cmd_history	*get_cmd_history_head(void)
 	return (g_history_list);
 }
 
-void			add_to_history(const char *str, int len)
+void			add_to_history(const char *str, int len, char from_readline)
 {
 	t_cmd_history	*tmp;
 
@@ -35,7 +35,7 @@ void			add_to_history(const char *str, int len)
 		tmp->tmp_line = ft_strdup(str);
 		tmp->len = len;
 		tmp->tmp_len = len;
-		if (len > 0 && ft_strcmp(str, "") != 0) {
+		if (from_readline != 1) {
 			if (!history_begining)
 				history_begining = tmp;
 			if (!new_history_begining)
@@ -56,6 +56,7 @@ void			free_history(void)
 		{
 			ft_bzero(g_history_list->line, g_history_list->len);
 			free(g_history_list->line);
+			ft_strdel(&g_history_list->tmp_line);
 		}
 		free(g_history_list);
 		g_history_list = next;
@@ -73,6 +74,8 @@ void			clean_hsitory(void)
 		free(g_history_list->tmp_line);
 		free(g_history_list);
 		g_history_list = tmp;
+		if (tmp != NULL)
+			tmp->prev = NULL;
 	}
 }
 

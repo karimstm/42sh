@@ -45,6 +45,8 @@
 # define BUTTON_CTL_D 4
 # define BUTTON_CTL_L 12
 # define BUTTON_CTL_R 18
+# define FOUND_MSG "\033[32;1mFound\033[0m '%s_' %s"
+# define NOT_FOUND_MSG "\033[31;1mNot Found\033[0m '%s_' %s"
 
 typedef struct	s_point
 {
@@ -135,7 +137,7 @@ int				*get_line_details(t_readline *readline);
 **	CMD History
 */
 void			clean_hsitory(void);
-void			add_to_history(const char *str, int len);
+void			add_to_history(const char *str, int len, char from_readline);
 void			free_history(void);
 void			set_cur_history(t_readline *readline, t_cmd_history *cur);
 t_cmd_history	*get_cmd_history_head(void);

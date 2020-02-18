@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ast_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/02/16 16:13:55 by amoutik           #+#    #+#             */
+/*   Updated: 2020/02/16 16:15:20 by amoutik          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "shell.h"
 
 /*
 ** print redirection list
 */
 
-void					free_list(t_list_simple_command *list)
+void			free_list(t_list_simple_command *list)
 {
 	t_simple_command *current;
 	t_simple_command *tmp;
@@ -23,15 +35,14 @@ void					free_list(t_list_simple_command *list)
 	list = NULL;
 }
 
-
-void				print_redir(t_redirection *list)
+void			print_redir(t_redirection *list)
 {
 	t_redirection *current;
 
 	current = list;
 	while (current)
 	{
-		if(current->fd1 >= 0)
+		if (current->fd1 >= 0)
 			ft_printf("%d", current->fd1);
 		ft_printf("%s", redirect_name(current->kind));
 		if (current->word)
@@ -42,7 +53,7 @@ void				print_redir(t_redirection *list)
 	}
 }
 
-void		free_redir(t_redirection **redir)
+void			free_redir(t_redirection **redir)
 {
 	t_redirection	*current;
 	t_redirection	*tmp;
@@ -60,7 +71,7 @@ void		free_redir(t_redirection **redir)
 	*redir = NULL;
 }
 
-void		free_semi_node(t_node *current)
+void			free_semi_node(t_node *current)
 {
 	if (current->spec.sep_op_command->left)
 		free_tree(&current->spec.sep_op_command->left);
@@ -69,7 +80,7 @@ void		free_semi_node(t_node *current)
 	free(current->spec.sep_op_command);
 }
 
-void		free_tree(t_node **node)
+void			free_tree(t_node **node)
 {
 	t_node *current;
 
