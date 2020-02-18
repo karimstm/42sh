@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:49:43 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 13:44:53 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/18 17:36:37 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,14 @@ void		consume_double_quote(const char **line, t_string *str)
 	*line = new;
 }
 
+int			spacial_cases(const char *line)
+{
+	if (*line == '!' && *(line + 1) == '=')
+		return (1);
+	if (*line == '!' && ft_isspace(*(line + 1)))
+		return (1);
+	return (0);
+}
 /*
 **	This function consume history keyword
 **	! => !n => !-n => !! => !string
@@ -111,21 +119,25 @@ int			consume_history(const char **pure_line, t_string *str)
 	while (*line)
 	{
 		if (*line == '\'')
+		{
 			consume_single_quote(&line, str);
+			continue ;
+		}
 		else if (*line == '"')
+		{
 			consume_double_quote(&line, str);
+			continue ;
+		}
 		else if (*line == '\\' || *line == '[')
 		{
 			push(str, *line++);
-			if (*line)
-				push(str, *line);
+			*line ? push(str, *line) : 0;
 		}
-		else if (*line != '!')
+		else if (*line != '!' || spacial_cases(line))
 			push(str, *line);
 		else if (!get_event(&line, str, '\0'))
 			break ;
-		if (*line)
-			line++;
+		*line ? line++ : 0;
 		*pure_line = line;
 	}
 	return (0);

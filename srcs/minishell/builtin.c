@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/14 12:15:05 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/18 15:37:08 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void		init_builtin(t_list **lst)
 	add_builtin(lst, "hash", &ft_handle_hash_table);
 	add_builtin(lst, "history", &ft_history);
 	add_builtin(lst, "fc", &ft_fc);
+	add_builtin(lst, "test", &ft_test);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 17:51:39 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 18:01:17 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/17 16:39:29 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static int				hash(const char *s, const int a, const int m)
 	i = 0;
 	while (i < len_s)
 	{
-		hash += (long)pow(a, len_s - (i + 1)) * s[i];
+		hash += (long)ft_pow(a, len_s - (i + 1)) * s[i];
 		hash = hash % m;
 		i++;
 	}

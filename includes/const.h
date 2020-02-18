@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/13 19:14:00 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/18 12:29:07 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,5 +122,6 @@
 #define ALIAS_LIST	get_alias_list(NULL)
 #define HASH_TABLE	get_hash_table(NULL)
 #define BUILT_LIST	get_set_blt(NULL)
+
 
 #endif

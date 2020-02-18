@@ -32,6 +32,7 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <sys/random.h>
+# include <sys/stat.h>
 # include "jobs.h"
 # include "alias.h"
 # include "hash.h"
@@ -75,6 +76,33 @@ typedef struct			s_variables_list
 }						t_variables_list;
 
 t_variables_list	*env2;
+
+/*
+** Structure for the test built-in
+*/
+
+typedef	enum			e_token_op
+{
+	TOKEN_OP_NONE,
+	TOKEN_OP_Z,
+	TOKEN_OP_STRING_EQ,
+	TOKEN_OP_STRING_NE,
+	TOKEN_OP_EQ,
+	TOKEN_OP_NE,
+	TOKEN_OP_GE,
+	TOKEN_OP_GT,
+	TOKEN_OP_LE,
+	TOKEN_OP_LT,
+}						t_token_op;
+
+typedef struct			s_test
+{
+	t_token_op			op;
+	char				*s1;
+	char				*s2;
+}						t_test;
+
+
 
 /*
 **	=============================== MINISHELL ==================================
@@ -290,5 +318,16 @@ char					*consume_word(const char **line, char c);
 */
 void					command_line_n(const char **str, char c);
 int						get_event(const char **new, t_string *str, char c);
+
+/*
+** Test command
+*/
+
+int						do_file_checking(char *filename, int flag);
+int						expression(char  **argv);
+int						ft_test(char **argv);
+t_token_op				get_token_op(char *tmp);
+int						ft_op_error(char *s);
+int						ft_integer_error(char *s);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/10 23:59:05 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/17 16:36:49 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -232,5 +232,14 @@ char				*ft_rskip_unitl_char(const char *str, const char *compare,
 														int (*f)(int), int i);
 char				*ft_skip_unitl_char(const char *str, const char *compare,
 																int (*f)(int));
+
+/*
+** Added by amoutik (-_-)
+*/
+
+/*
+**	ft_pow does not garante overflow
+*/
+long				ft_pow(long val1, long val2);
 
 #endif
