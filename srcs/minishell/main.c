@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/18 16:19:36 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/20 16:09:56 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void			run_shell2(t_list *blt)
 		node = NULL;
 		init_shell();
 		sh_system(new_line, 1);
+		init_shell();
 		ft_strdel(&new_line);
 	}
 	deallocate(STACK_LIST);
@@ -90,7 +91,11 @@ int				main(int ac, char **av, char **ev)
 	t_list		*env;
 	t_list		*blt;
 	t_list		*history;
+	t_fifo_list	*list;
 
+	list = (t_fifo_list *)xmalloc(sizeof(t_fifo_list));
+	init_fifo_list(list);
+	fifo_list(list);
 	(void)ac;
 	(void)av;
 	blt = NULL;

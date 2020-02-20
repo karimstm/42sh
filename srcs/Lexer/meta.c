@@ -6,11 +6,41 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:46:09 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 17:24:54 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/20 13:41:13 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+/*
+** This function need more cheching in case something went wrong
+** It also need some more syntax checking.
+*/
+
+void			scan_process()
+{
+	DECLARE(int, _(index, 0), stack[100]);
+	DECLARE(const char, _(*start, g_line));
+	if (*g_line == '(')
+	{
+		while (*g_line)
+		{
+			if (*g_line == '(')
+				stack[index++] = '(';
+			else if (*g_line == ')')
+				index--;
+			if (index == 0)
+				break ;
+			g_line++;
+		}
+		g_line++;
+	}
+	g_token.kind = TOKEN_WORD;
+	if (index)
+		return (unexpected_error());
+	g_token.start = --start;
+	g_token.spec.word = ft_strsub(g_token.start, 0, g_line - g_token.start);
+}
 
 void			scan_redirection_input(void)
 {
@@ -30,6 +60,9 @@ void			scan_redirection_input(void)
 		g_token.kind = *g_line == '&' ? TOKEN_LESSAND : TOKEN_LESSGREAT;
 		g_line++;
 	}
+	else if (*g_line == '(')
+		scan_process();
+
 }
 
 void			scan_redirection_output(void)
@@ -50,6 +83,8 @@ void			scan_redirection_output(void)
 		g_token.kind = *g_line == '&' ? TOKEN_GREATAND : TOKEN_CLOBBER;
 		g_line++;
 	}
+	else if (*g_line == '(')
+		scan_process();
 }
 
 void			scan_meta_semi(void)

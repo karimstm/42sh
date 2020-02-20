@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:27:44 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 12:28:38 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/20 15:43:45 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,15 @@ char					*command_path(char *name)
 
 	path = NULL;
 	if ((path = ht_search(HASH_TABLE, name)))
-		return (ft_strdup(path));
+	{
+		if (access(path, F_OK) == 0)
+		{
+			if(check_file_permission(path, X_OK))
+				return (ft_strdup(path));
+		}
+		else
+			ft_printf_fd(2, "42sh: %s No such file or directory\n", path);
+	}
 	else if ((path = working_path(name)))
 		return (path);
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:52:49 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 14:02:09 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/20 15:50:47 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ char			**node_to_char(t_list_simple_command *command)
 		current = current->next;
 	while (current)
 	{
-		cmds[i++] = quote_stripping(current->name);
+
+		cmds[i++] = process_sub_parser(current->name); //quote_stripping(current->name)
 		current = current->next;
 	}
 	cmds[i] = NULL;

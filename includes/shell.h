@@ -103,6 +103,19 @@ typedef struct			s_test
 }						t_test;
 
 
+typedef	struct			s_fifo
+{
+	char				*pathname;
+	int					fd;
+	struct s_fifo		*next;
+}						t_fifo;
+
+typedef	struct			s_fifo_list
+{
+	t_fifo				*head;
+	t_fifo				*tail;
+	int					node_count;
+}						t_fifo_list;
 
 /*
 **	=============================== MINISHELL ==================================
@@ -329,5 +342,18 @@ int						ft_test(char **argv);
 t_token_op				get_token_op(char *tmp);
 int						ft_op_error(char *s);
 int						ft_integer_error(char *s);
+
+/*
+** Process Sub: Testing phase
+*/
+
+char					*process_sub_parser(char *name);
+void					setup_sub_proce(t_list_simple_command *list);
+void					init_fifo_list(t_fifo_list *list);
+char					*ft_tpname(const char *tmpdir);
+void					fifo_push(t_fifo_list *list, char *pathname, int fd);
+void					close_fifos(t_fifo_list *list);
+char					*dev_path(int fd);
+t_fifo_list				*fifo_list(t_fifo_list *list);
 
 #endif

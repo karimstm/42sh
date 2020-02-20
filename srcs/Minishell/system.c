@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 18:24:07 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/17 11:21:54 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/20 16:09:34 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int			sh_system(char *name, char save_history)
 			ft_strdel(&history_cmd);
 	}
 	ft_strdel(&g_token.current);
-	if (backup_line != g_token.line)
+	 if (backup_line != g_token.line)
 		ft_strdel(&backup_line);
 	ft_strdel((char **)&g_token.line);
 	return (JOB_LIST->status);

@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 17:51:39 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/17 16:39:29 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/20 16:30:17 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_hash_table		*ht_new_sized(const int base_size)
 	ht->base_size = base_size;
 	ht->size = next_prime(ht->base_size);
 	ht->count = 0;
-	ht->items = calloc((size_t)ht->size, sizeof(t_hash_item *));
+	ht->items = (t_hash_item **)ft_memalloc(sizeof(t_hash_item *) * (size_t)ht->size);
 	return (ht);
 }
 
