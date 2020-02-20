@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:10:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 12:23:40 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/20 19:55:22 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ void			simple_command(t_job_list *job_list,
 	t_variables_list	*tmp;
 
 	tmp = NULL;
+	expand_args(node->spec.simple_command);
+	// ft_printf(node->spec.simple_command->head->name);
 	cmd = get_command_name(node->spec.simple_command);
 	name = cmd && cmd->name ? ft_strdup(cmd->name) : NULL;
 	assign = get_assignements(node->spec.simple_command);

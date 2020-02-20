@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 20:27:30 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/20 07:30:18 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/20 20:36:43 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static char *join_expan_result(t_parser_expansion result, char **str)
 	char *ret;
 
 	tmp = *str;
+	// ft_printf("|%|", tmp);
 	if((*str = ft_strnjoin((char*[]){tmp, result.str, result.index}, 3)))
 	{
 		ret = *str + ft_strlen(result.str) + ft_strlen(tmp);
@@ -38,6 +39,7 @@ char *expand(char *str, t_parser_expansion (*expand_fun)(char *))
 
 	tmp = str;
 	qoute = 0;
+	ft_printf("to expand !%s!\n", tmp);
 	while (*tmp)
 	{
 		if (*tmp == '\\')

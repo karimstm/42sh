@@ -6,14 +6,44 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 02:26:22 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/29 07:17:13 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/20 22:06:40 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <stdio.h>
+#include "libft.h"
+
+static long count_chars(const char *str, const char *chars, size_t size)
+{
+    long count;
+
+    count = 0;
+    while (size--)
+        count += ft_isinstr(*str++, chars);
+    return(count);
+}
+
+static int join_result(char *dst, char *src, int size)
+{
+    int i;
+    int j;
+
+    i = 0;
+    j = 0;
+    while (i < size)
+    {
+        if(src[i])
+        {
+            if (ft_isinstr(src[i], "\"'$(){}\\"))
+                dst[j++] = '\\';
+            dst[j++] =  src[i];
+        }
+        i++;
+    }
+    if (dst[j - 1] == '\n')
+        j--;
+    dst[j] = 0;
+    return(j);
+}
 
 char *get_fd_content(int fd)
 {
@@ -27,46 +57,18 @@ char *get_fd_content(int fd)
     ret  = NULL;
     while ((r = read(fd, buff, 100000)) > 0)
     {
-        buff[r] = 0;
-        size += r;
         tmp = ret;
-        if (!(ret = malloc(size + 1)))
+        if (!(ret = malloc(size + r + count_chars(buff,  "\"'$(){}\\", r) + 1)))
         {
             free(tmp);
             return(NULL);
         }
-        bzero(ret, size + 1);
-        strcpy(ret, tmp ? tmp : "");
-        strcat(ret + (size - r), buff);
+        ft_strcpy(ret, tmp ? tmp : "");
+        size += join_result(ret + size, buff, r);
         free(tmp);
     }
     return(ret);
 }
-
-// char *get_fd_content(int fd)
-// {
-//     char buff[100001];
-//     char *tmp;
-//     char *ret;
-//     int r;
-//     size_t size;
-
-//     size = 0;
-//     ret = ft_strdup("");
-//     while ((r = read(fd, buff, 100000)) > 0)
-//     {
-//         buff[r] = 0;
-//         size += r;
-//         tmp = ret;
-//         if (!(ret = ft_strnjoin((char *[]){ret, buff}, 2)))
-//         {
-//             free(tmp);
-//             return (NULL);
-//         }
-//         free(tmp);
-//     }
-//     return (ret);
-// }
 
 char *cmd_substitution(const char *cmd)
 {
@@ -95,9 +97,3 @@ char *cmd_substitution(const char *cmd)
     }
     return (NULL);
 }
-
-// int main(int ac, char **av)
-// {
-//     (void)ac;
-//     printf("%s",cmd_substitution(av[1]));
-// }
