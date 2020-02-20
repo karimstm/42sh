@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:52:49 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 14:02:09 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/20 06:48:21 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char			**node_to_char(t_list_simple_command *command)
 	int					i;
 	t_simple_command	*current;
 
+	expand_args(command);
 	current = (command && command->head) ? command->head : NULL;
 	if (current == NULL)
 		return (NULL);
