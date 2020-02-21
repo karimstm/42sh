@@ -1,0 +1,16 @@
+main.cc
+.DS_Store
+tags
+*.swp
+*.dSYM
+.*.dSYM
+*.o
+*~
+.*.swp
+.vscode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
