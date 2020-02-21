@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/20 06:41:42 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/21 12:05:23 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -258,6 +258,8 @@ char *ft_rskip_unitl_char(const char *str, const char *compare,
 char *ft_skip_unitl_char(const char *str, const char *compare,
 						 int (*f)(int));
 
+void free_content_list(t_list **list, size_t size);
+void ft_lstdel2(t_list **alst, void (*del)(void *));
 t_list *ft_lstenqueue(t_list **list, t_list *new);
 void ft_lstdequeue(t_list **list, void (*del)(void **));
 long long ft_atoi_base(const char *s, const char *s_base, int base);

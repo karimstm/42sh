@@ -3,43 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   evaluation_core.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 05:17:28 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/20 07:19:17 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/21 14:39:41 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "arithmetic.h"
 
-static char *operetors[14] = {"||", "&&", "!=", "==", ">", "<", ">=", "<=",
-							  "-", "+", "%", "/", "*", 0};
+// static char *operetors[14] = {"||", "&&", "!=", "==", ">", "<", ">=", "<=",
+// 							  "-", "+", "%", "/", "*", 0};
 
-// static int convert_variable(t_list **token, long long *result)
-// {
-// 	int prefix;
-// 	int postfix;
-// 	char *tmp;
-// 	t_variables *var;
+static int convert_variable(t_list **token, long long *result)
+{
+	int prefix;
+	int postfix;
+	char *tmp[2];
+	t_variables *var;
 
-// 	prefix = 0;
-// 	postfix = 0;
-// 	if (ft_isinstr(((char *)(*token)->content)[0], "-+"))
-// 		prefix = 44 - ((char *)(*token)->content)[0]; //ascii
-// 	if (prefix)
-// 		(*token)->content += 2;
-// 	tmp = ft_skip_chars((*token)->content, NULL, ft_isalnum);
-// 	if (!prefix && ft_isinstr(*tmp, "+-"))
-// 	{
-// 		postfix = 44 - *tmp;
-// 		*tmp = 0;
-// 	}
-// 	if ((var = get_var((*token)->content) && !is_number(var->value)))
-// 		return (1);
-// 	*result = (var ? ft_atoi(var->value) : 0) + prefix;
-// 	edit_add_var((*token)->content, ft_itoa(*result + postfix));
-// 	return (0);
-// }
+	prefix = 0;
+	postfix = 0;
+	var = NULL;
+	*tmp = (*token)->content;
+	if (ft_isinstr(**tmp, "-+"))
+	{
+		prefix = 44 - **tmp;
+		*tmp += 2;
+	}
+	tmp[1] = ft_skip_chars(*tmp, "_", ft_isalnum);
+	if (ft_isinstr(tmp[1][0], "+-"))
+	{
+		postfix = (44 - tmp[1][0]) ;
+		tmp[1][0] = 0;
+	}
+	if ((var = get_var(*tmp)) && !is_number(var->value))
+		return (1);
+	*result = (var ? ft_atoi(var->value) : 0) + prefix;
+	ar_edit_var(*tmp, *result, postfix || prefix);
+	return (0);
+}
 
 long long convert_operand(t_list **token, long long *result)
 {
@@ -63,8 +66,8 @@ long long convert_operand(t_list **token, long long *result)
 		else
 			*result = ft_atoi((*token)->content);
 	}
-	// else
-	// 	error = convert_variable(token, result);
+	else
+		error = convert_variable(token, result);
 	*token ? (*token = (*token)->next) : 0;
 	*result *= sign;
 	return (error);
@@ -114,7 +117,7 @@ int eval_expr(t_list **tokens, long long *result)
 			has_error = convert_operand(tokens, &operand2);
 		else
 			has_error = eval_expr(tokens, &operand2);
-		ft_printf("%d %s %d\n",*result, operetors[operator - 1], operand2);
+		// ft_printf("%d %s %d\n",*result, operetors[operator - 1], operand2);
 		has_error = do_op(result, operator, operand2, 0);
 	}
 	return (has_error);
@@ -122,20 +125,23 @@ int eval_expr(t_list **tokens, long long *result)
 
 char *expand_ar_expr(char *expr)
 {
-	// need to free token
 	t_list *tokens;
+	t_list *tokens_tmp;
 	long long result;
 	int status;
 
 	result = 0;
 	tokens = parse_ar_expression(&expr, NULL);
+	tokens_tmp = tokens;
 	if ((status = eval_expr(&tokens, &result)))
 	{
 		if (status == 2)
 			ft_printf("divised by zero\n");
 		else
 			ft_printf("token error: %s\n", tokens ? tokens->content : NULL);
+		ft_lstdel2(&tokens_tmp, free);
 		return (NULL);
 	}
+	ft_lstdel2(&tokens_tmp, free);
 	return (ft_itoa(result));
 }

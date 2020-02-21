@@ -1,26 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_number.c                                        :+:      :+:    :+:   */
+/*   free_content_list.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 17:42:11 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/21 09:56:09 by aait-ihi         ###   ########.fr       */
+/*   Created: 2020/02/21 11:48:05 by aait-ihi          #+#    #+#             */
+/*   Updated: 2020/02/21 11:59:11 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "libft.h"
 
-int		is_number(char *str)
+void free_content_list(t_list **list, size_t size)
 {
-	if (*str == '-' || *str == '+')
-		str++;
-	while (*str && !ft_isspace(*str))
-	{
-		if (!ft_isdigit(*str))
-			return (0);
-		str++;
-	}
-	return (1);
+    t_list *tmp;
+
+    (void)size;
+    while (*list)
+    {
+       tmp = *list;
+       list = &(*list)->next;
+       free(tmp->content);
+       free(tmp);
+    }
 }
