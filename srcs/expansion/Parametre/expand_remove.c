@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_remove.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 04:41:04 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/20 06:55:41 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/21 01:10:23 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char *expand_rem_pre(char *var_name, char *expr, long val, long(*f)(long, long))
     ret = NULL;
     if(!(var = get_var(var_name)))
         return(ft_strdup(""));
-    if ((tmp = expand(ft_strdup(expr), NULL)))
+    if ((tmp = expand(ft_strjoin("^", ft_skip_chars(expr, "#", NULL)), NULL)))
     {
         cut_len = matched_len(var->value, tmp, val, f);
         free(tmp);
@@ -71,7 +71,7 @@ char *expand_rem_suf(char *var_name, char *expr, long val, long(*f)(long, long))
     ret = NULL;
     if(!(var = get_var(var_name)))
         return(ft_strdup(""));
-    if ((tmp = expand(ft_strdup(expr), NULL)))
+    if ((tmp = expand(ft_strjoin(ft_skip_chars(expr, "%", NULL), "$"), NULL)))
     {
         cut_len = matched_len(var->value, tmp, val, f);
         free(tmp);
