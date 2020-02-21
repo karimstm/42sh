@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+         #
+#    By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/17 16:41:20 by amoutik           #+#    #+#              #
-#    Updated: 2020/02/18 17:15:53 by amoutik          ###   ########.fr        #
+#    Updated: 2020/02/20 07:20:08 by aait-ihi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,6 +33,11 @@ SRC_BLT = $(patsubst %.c, $(SRC)/Builtins/%.c, ft_exit.c test_utils.c ft_test.c 
 SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c)
 SRC_HSH= $(patsubst %.c, $(SRC)/HashTable/%.c, hash_handle.c hash.c prime.c)
 SRC_HISTORY= $(patsubst %.c, $(SRC)/history/%.c, history.c history_helper.c ft_fc.c fc_l.c fc_s.c fc_edit.c)
+SRC_EXPNASION = $(shell find $(SRC)/expansion -name '*.c')
+
+
+# SRC_EXPNASION_CORE = $(addprefix $(SRC)/expansion/Core/, expand_parametre.c expand_sub_art.c expand.c)
+# SRC_EXPNASION_PARAMETRE = $(addprefix $(SRC)/expansion/Parametre/, expand_operator.c expand_simple.c expand_remove.c)
 
 OBJ_MIN = $(patsubst %.c, %.o, $(SRC_MIN))
 OBJ_JOB = $(patsubst %.c, %.o, $(SRC_JOBS))
@@ -44,10 +49,11 @@ OBJ_BLT = $(patsubst %.c, %.o, $(SRC_BLT))
 OBJ_AL = $(patsubst %.c, %.o, $(SRC_AL))
 OBJ_HSH = $(patsubst %.c, %.o, $(SRC_HSH))
 OBJ_HISTORY = $(patsubst %.c, %.o, $(SRC_HISTORY))
+OBJ_EXPNASION = $(patsubst %.c, %.o, $(SRC_EXPNASION))
 
-OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_LEXER) $(OBJ_EVENT) $(OBJ_BLT) $(OBJ_AL) $(OBJ_HSH) $(OBJ_JOB) $(OBJ_HISTORY)
+OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_LEXER) $(OBJ_EVENT) $(OBJ_BLT) $(OBJ_AL) $(OBJ_HSH) $(OBJ_JOB) $(OBJ_HISTORY) $(OBJ_EXPNASION)
 REAL_OBJECT = $(patsubst %, $(BIN)/%, /$(notdir $(OBJECT)))
-REAL_SRC = $(SRC_MIN) $(SRC_JOBS) $(SRC_EVENT) $(SRC_QUO) $(SRC_LEXER) $(SRC_BLT) $(SRC_AL) $(SRC_HSH) $(SRC_HISTORY)
+REAL_SRC = $(SRC_MIN) $(SRC_JOBS) $(SRC_EVENT) $(SRC_QUO) $(SRC_LEXER) $(SRC_BLT) $(SRC_AL) $(SRC_HSH) $(SRC_HISTORY) $(SRC_EXPNASION)
 
 CC = gcc
 FLAGS = -g -Wall -Wextra -Werror

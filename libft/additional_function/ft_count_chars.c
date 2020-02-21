@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   is_number.c                                        :+:      :+:    :+:   */
+/*   ft_count_chars.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/05/04 17:42:11 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/21 09:56:09 by aait-ihi         ###   ########.fr       */
+/*   Created: 2020/02/20 21:33:17 by aait-ihi          #+#    #+#             */
+/*   Updated: 2020/02/20 21:42:52 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "shell.h"
+#include "libft.h"
 
-int		is_number(char *str)
+long ft_count_chars(const char *str, const char *chars)
 {
-	if (*str == '-' || *str == '+')
-		str++;
-	while (*str && !ft_isspace(*str))
-	{
-		if (!ft_isdigit(*str))
-			return (0);
-		str++;
-	}
-	return (1);
+    long count;
+
+    count = 0;
+    while (*str)
+        count += ft_isinstr(*str, chars);
+    return(count);
 }
