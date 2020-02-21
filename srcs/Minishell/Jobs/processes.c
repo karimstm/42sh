@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:10:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 11:39:45 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/21 19:07:03 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,21 @@ void		init_shell(void)
 	shell_is_interactive = isatty(shell_terminal);
 	if (shell_is_interactive)
 	{
-		while (ft_tcgetpgrp(shell_terminal) != (shell_pgid = getpgrp()))
-			kill(-shell_pgid, SIGTTIN);
+		while (ft_tcgetpgrp(shell_terminal) != (g_shell_pgid = getpgrp()))
+			kill(-g_shell_pgid, SIGTTIN);
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
 		signal(SIGTSTP, SIG_IGN);
 		signal(SIGTTIN, SIG_IGN);
 		signal(SIGTTOU, SIG_IGN);
 		signal(SIGCHLD, SIG_DFL);
-		shell_pgid = getpid();
-		if (setpgid(shell_pgid, shell_pgid) < 0)
+		g_shell_pgid = getpid();
+		if (setpgid(g_shell_pgid, g_shell_pgid) < 0)
 		{
 			ft_printf_fd(2, "Couldn't put the shell in its own process group");
 			exit(EXIT_FAILURE);
 		}
-		ft_tcsetpgrp(shell_terminal, shell_pgid);
+		ft_tcsetpgrp(shell_terminal, g_shell_pgid);
 		tcgetattr(shell_terminal, shell_tmodes);
 	}
 }

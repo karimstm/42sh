@@ -3,29 +3,177 @@
 /*                                                        :::      ::::::::   */
 /*   quote_stripping.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 16:25:05 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/21 20:18:27 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
+
+int			back_slash_escape(char **string, t_string *str)
+{
+	char *new;
+
+	new = *string;
+	if (*(new + 1) != '\n')
+		push(str, *new++);
+	else
+	{
+		*(++new) ? ++new : 0;
+		*string = new;
+		return (1);
+	}
+	*string = new;
+	return (0);
+}
+
+/*
+**	karim \<new_line>karim
+**	\
+*/
+void		skip_dqoute_w(char **string, char c, t_string *str, int include)
+{
+	char	*new;
+
+	new = *string;
+	include ? push(str, *new++) : new++;
+	while (*new)
+	{
+		if (!include && *new == '\\' && c == '"' && *(new + 1) == '"')
+		{
+			new++;
+			push(str, *new++);
+			continue ;
+		}
+		if (*new == '\\' && c != '\'')
+		{
+			if (back_slash_escape(&new, str))
+				continue ;
+		}
+		else if (*new == c)
+		{
+			include ? push(str, *new++) : new++;
+			break ;
+		}
+		*new ? push(str, *new++) : 0;
+	}
+	*string = new;
+}
+
+/*
+**	something"To Test with" like this one 'here ' and\<new_line>now
+**	=> something"To Test with"
+**	=> like
+**	=> this
+**	=> one
+**	=> 'here '
+**	=> andnow
+*/
+
+void		word_looping(t_list_simple_command *list, t_string *str, char **word)
+{
+	char	*s;
+
+	s = *word;
+	while (*s != EOS)
+	{
+		if (ft_isspace(*s) || *s == EOS)
+			break ;
+		if (*s == '\'' || *s == '"')
+			skip_dqoute_w(&s, *s, str, 1);
+		else
+		{
+			if (*s == '\\')
+				back_slash_escape(&s, str);
+			if (*s)
+				push(str, *s++);
+		}
+	}
+	token_push(list, str->string, TOKEN_WORD);
+	*word = s;
+}
+
+t_list_simple_command	*split_word(char	*word)
+{
+	t_string	string;
+	char		*start;
+	t_list_simple_command	*list;
+
+	list = malloc_list_simple_command();
+	start = word;
+	string.string = NULL;
+	new_string(&string);
+	while (*word)
+	{
+		while (ft_isspace(*word))
+			word++;
+		if (*word)
+			word_looping(list, &string, &word);
+		string.string = NULL;
+		new_string(&string);
+	}
+	return (list);
+}
+
+/*
+**	NODE -> NODE -> NODE
+**		new -> new -> new
+**		TMP -> TMP -> TMP
+**	new -> new -> new -> TMP -> TMP -> TMP -> NODE
+**					|
+**					|
+**					-->next = TMP
+*/
+
+void		init_expansion(t_list_simple_command *list)
+{
+	t_simple_command		*current;
+	t_simple_command		*next;
+	t_simple_command		*prev;
+	t_list_simple_command	*res;
+
+	current = list && list->head ? list->head : NULL;
+	prev = NULL;
+	while (current)
+	{
+		next = current->next;
+		if ((res = split_word(current->name))->node_count)
+		{
+			if (prev)
+				prev->next = res->head;
+			else
+				list->head = res->head;
+			prev = res->tail;
+			list->node_count += (res->node_count - 1);
+		}
+		free(res);
+		ft_strdel(&current->name);
+		free(current);
+		current = next;
+	}
+	if (prev)
+		list->tail = prev;
+}
+
 char		*quote_stripping(char *str)
 {
 	t_string	string;
 	char		*tmp;
+	char		c;
 
 	string.string = NULL;
 	new_string(&string);
 	tmp = str;
+	c = 0;
 	while (*tmp)
 	{
 		if (*tmp == '\\')
 			tmp++;
 		else if (*tmp == '"' || *tmp == '\'')
-			tmp++;
+			skip_dqoute_w(&tmp, *tmp, &string, 0);
 		else if (*tmp)
 			push(&string, *tmp++);
 	}

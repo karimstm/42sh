@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/17 16:41:20 by amoutik           #+#    #+#              #
-#    Updated: 2020/02/20 07:20:08 by aait-ihi         ###   ########.fr        #
+#    Updated: 2020/02/21 20:17:27 by amoutik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ BUILT = builtin
 LEXINC = srcs/Lexer/
 REALINE = realine
 
-SRC_MIN = $(patsubst %.c, $(SRC)/Minishell/%.c, system.c input_red.c output_red.c handlers.c ft_type.c env_list.c fds.c builtin.c free.c ft_cd.c ft_echo.c \
+SRC_MIN = $(patsubst %.c, $(SRC)/Minishell/%.c, setup_expan.c system.c input_red.c output_red.c handlers.c ft_type.c env_list.c fds.c builtin.c free.c ft_cd.c ft_echo.c \
 												ft_env_new.c ft_pwd.c main.c shell.c exec.c redir.c)
 SRC_JOBS = $(patsubst %.c, $(SRC)/Minishell/Jobs/%.c, ft_getopt.c ft_strsignal.c job_misc.c node_to_cmd.c job_status.c activejob.c delete_job.c processes.c\
 														terminal.c jobs_list.c job.c execute.c job_helpers.c ft_jobs.c ft_fg.c ft_bg.c \
@@ -34,7 +34,7 @@ SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c)
 SRC_HSH= $(patsubst %.c, $(SRC)/HashTable/%.c, hash_handle.c hash.c prime.c)
 SRC_HISTORY= $(patsubst %.c, $(SRC)/history/%.c, history.c history_helper.c ft_fc.c fc_l.c fc_s.c fc_edit.c)
 SRC_EXPNASION = $(shell find $(SRC)/expansion -name '*.c')
-
+SRC_SUB_PROCESS = $(patsubst %.c, $(SRC)/Process_Sub/%.c, sub_core.c fifo.c process_sub.c tpname.c)
 
 # SRC_EXPNASION_CORE = $(addprefix $(SRC)/expansion/Core/, expand_parametre.c expand_sub_art.c expand.c)
 # SRC_EXPNASION_PARAMETRE = $(addprefix $(SRC)/expansion/Parametre/, expand_operator.c expand_simple.c expand_remove.c)
@@ -50,10 +50,11 @@ OBJ_AL = $(patsubst %.c, %.o, $(SRC_AL))
 OBJ_HSH = $(patsubst %.c, %.o, $(SRC_HSH))
 OBJ_HISTORY = $(patsubst %.c, %.o, $(SRC_HISTORY))
 OBJ_EXPNASION = $(patsubst %.c, %.o, $(SRC_EXPNASION))
+OBJ_SUB_PROCESS = $(patsubst %.c, %.o, $(SRC_SUB_PROCESS))
 
-OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_LEXER) $(OBJ_EVENT) $(OBJ_BLT) $(OBJ_AL) $(OBJ_HSH) $(OBJ_JOB) $(OBJ_HISTORY) $(OBJ_EXPNASION)
+OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_LEXER) $(OBJ_EVENT) $(OBJ_BLT) $(OBJ_AL) $(OBJ_HSH) $(OBJ_JOB) $(OBJ_HISTORY) $(OBJ_EXPNASION) $(OBJ_SUB_PROCESS)
 REAL_OBJECT = $(patsubst %, $(BIN)/%, /$(notdir $(OBJECT)))
-REAL_SRC = $(SRC_MIN) $(SRC_JOBS) $(SRC_EVENT) $(SRC_QUO) $(SRC_LEXER) $(SRC_BLT) $(SRC_AL) $(SRC_HSH) $(SRC_HISTORY) $(SRC_EXPNASION)
+REAL_SRC = $(SRC_MIN) $(SRC_JOBS) $(SRC_EVENT) $(SRC_QUO) $(SRC_LEXER) $(SRC_BLT) $(SRC_AL) $(SRC_HSH) $(SRC_HISTORY) $(SRC_EXPNASION) $(SRC_SUB_PROCESS)
 
 CC = gcc
 FLAGS = -g -Wall -Wextra -Werror

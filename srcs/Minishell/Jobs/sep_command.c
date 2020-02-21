@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:11:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 12:11:28 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/21 19:08:56 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void			seperator_handling(t_job_list *job_list,
 {
 	t_job_kind kind;
 
-	kind = getpid() != shell_pgid ? J_NON_INTERACTIVE : J_FOREGROUND;
+	kind = getpid() != g_shell_pgid ? J_NON_INTERACTIVE : J_FOREGROUND;
 	if (LEFT(node))
 	{
 		if (node->spec.sep_op_command->kind == ';')

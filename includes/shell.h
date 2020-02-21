@@ -102,6 +102,21 @@ typedef struct			s_test
 	char				*s2;
 }						t_test;
 
+typedef	struct			s_fifo
+{
+	char				*pathname;
+	int					fd;
+	pid_t				child;
+	struct s_fifo		*next;
+}						t_fifo;
+
+typedef	struct			s_fifo_list
+{
+	t_fifo				*head;
+	t_fifo				*tail;
+	int					node_count;
+}						t_fifo_list;
+
 /*
 **	============================= Expansion struct =============================
 */
@@ -341,7 +356,7 @@ int						ft_op_error(char *s);
 int						ft_integer_error(char *s);
 
 /*
-** Expansion Core 
+** Expansion Core
 */
 
 int						expand_args(t_list_simple_command *args);
@@ -349,5 +364,31 @@ char					*expand(char *str, t_parser_expansion (*f)(char *));
 
 //???????????????????????????
 int    edit_add_var(char *key, char *value, int is_exported, int mod);
+
+/*
+** Sub process
+*/
+
+void					scan_process();
+void					init_scan_process();
+char					*process_sub_parser(char *name);
+void					setup_sub_proce(t_list_simple_command *list);
+void					init_fifo_list(t_fifo_list *list);
+char					*ft_tpname(const char *tmpdir);
+void					fifo_push(t_fifo_list *list, char *pathname, int fd, pid_t child);
+void					close_fifos(t_fifo_list *list);
+char					*dev_path(int fd);
+t_fifo_list				*fifo_list(t_fifo_list *list);
+int						skip_dqoute(char **string, char c);
+pid_t					setup_proc(char *cmd, char *path, int flag);
+char					*scan_pro(char *name);
+char					*setup_fifo();
+
+/*
+** General expansion
+*/
+
+void					init_expansion(t_list_simple_command *list);
+void					setup_expan(t_list_simple_command *list);
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   job2.c                                             :+:      :+:    :+:   */
+/*   job_helpers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:10:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 11:33:20 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/21 19:07:23 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void		foreground_job(t_job_list *job_list, t_job *job, int cont)
 			ft_printf_fd(2, "kill (SIGCONT) failed");
 	}
 	job_waiting(job_list, job);
-	ft_tcsetpgrp(shell_terminal, shell_pgid);
+	ft_tcsetpgrp(shell_terminal, g_shell_pgid);
 	tcgetattr(shell_terminal, &job->tmodes);
 	tcsetattr(shell_terminal, TCSADRAIN, get_termios());
 }

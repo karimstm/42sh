@@ -14,7 +14,7 @@
 # include "ast.h"
 # include "libft.h"
 
-pid_t		shell_pgid;
+pid_t		g_shell_pgid;
 int			shell_terminal;
 
 

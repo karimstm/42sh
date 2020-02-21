@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:09:46 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 16:33:28 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/21 15:50:13 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void					xfork(t_process *process, int pip[2],
 		process->pid = child;
 		if (job->kind != J_NON_INTERACTIVE)
 			setup_pgid(child, job);
+		close_fifos(FIFO_LIST);
 	}
 }
 
