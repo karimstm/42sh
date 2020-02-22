@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   evaluation_core.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 05:17:28 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/21 14:39:41 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/22 00:46:29 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,13 @@ static int convert_variable(t_list **token, long long *result)
 	tmp[1] = ft_skip_chars(*tmp, "_", ft_isalnum);
 	if (ft_isinstr(tmp[1][0], "+-"))
 	{
-		postfix = (44 - tmp[1][0]) ;
+		postfix = (44 - tmp[1][0]) * !prefix;
 		tmp[1][0] = 0;
 	}
 	if ((var = get_var(*tmp)) && !is_number(var->value))
 		return (1);
 	*result = (var ? ft_atoi(var->value) : 0) + prefix;
-	ar_edit_var(*tmp, *result, postfix || prefix);
+	ar_edit_var(*tmp, *result + postfix, postfix || prefix);
 	return (0);
 }
 

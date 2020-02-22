@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 02:47:00 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/21 12:04:57 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/22 00:38:41 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ void ft_lstdel2(t_list **alst, void (*del)(void *))
 	{
 		while (*alst)
 		{
+
 			to_free = *alst;
-			*alst = NULL;
-			alst = &to_free->next;
+			*alst = to_free->next;
 			(*del)(to_free->content);
 			free(to_free);
 		}
