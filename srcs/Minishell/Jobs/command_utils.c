@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:27:44 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 13:31:17 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 16:23:21 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_simple_command		*get_command_name(t_list_simple_command *list)
 {
 	t_simple_command	*current;
 
-	current = list && list->node_count ? list->head : NULL;
+	current = list && list->head ? list->head : NULL;
 	while (current)
 	{
 		if (current->kind == TOKEN_WORD)
@@ -70,8 +70,8 @@ t_cmd_type				cmd_type(t_process *p)
 		cmd = get_command_name(SIMPLE_CMD(p->node));
 	else
 		return (0);
-	if ((name = cmd && cmd->name ? cmd->name : NULL) == NULL)
-		return (1);
+	if (cmd == NULL || (name = cmd && cmd->name ? cmd->name : NULL) == NULL)
+		return (IS_NONE);
 	if (ft_strchr(name, '/'))
 		return (local_path(name, cmd));
 	else if (ft_lstsearch(BUILT_LIST, name, &check_builtin))

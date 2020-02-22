@@ -6,7 +6,7 @@
 #    By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/17 16:41:20 by amoutik           #+#    #+#              #
-#    Updated: 2020/02/22 13:47:41 by amoutik          ###   ########.fr        #
+#    Updated: 2020/02/22 16:32:58 by amoutik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -74,7 +74,7 @@ $(REALINE):
 
 $(NAME): $(OBJECT)
 	@echo "$(RED)Linking...$(NC)"
-	@$(CC) $(FLAGS) $(REAL_OBJECT) -ltermcap readline/readline.a $(LIBFT) -o $(NAME)
+	@$(CC) $(FLAGS) $(REAL_OBJECT) -ltermcap readline/readline.a -lreadline $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)Finished...$(NC)"
 
 $(LIBFT):
