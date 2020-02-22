@@ -12,7 +12,7 @@
 
 NAME = readline.a
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -g -Wall -Werror -Wextra
 
 CC = gcc
 

@@ -12,20 +12,13 @@
 
 #include "shell.h"
 
-/*
-** bash-3.2 when a mutiline resotred it split it into multiple command like our
-** shell, i need to check if bash latest version do the same
-** i need also to make a limit of the numbers of lines the log_file can handle
-** like bash
-*/
-
 void	restore_history(void)
 {
 	int		fd;
 	int		first;
 
 	DECLARE(char, _(*buf, NULL), _(*log_file, NULL));
-	log_file = ft_strjoin(getenv("HOME"), "/.bash_history");
+	log_file = ft_strjoin(getenv("HOME"), "/.history");
 	fd = open(log_file, O_RDONLY);
 	free(log_file);
 	if (fd == -1)
@@ -52,12 +45,11 @@ void	save_history(void)
 	int		fd;
 	char	*log_file;
 
-	log_file = ft_strjoin(getenv("HOME"), "/.bash_history");
+	log_file = ft_strjoin(getenv("HOME"), "/.history");
 	fd = open(log_file, O_APPEND | O_CREAT | O_WRONLY, S_IRUSR | S_IWUSR);
 	free(log_file);
 	if (fd == -1)
 		return ;
-	new_history_begining = new_history_begining->prev;
 	while (new_history_begining)
 	{
 		ft_printf_fd(fd, "%s\n", new_history_begining->line);
