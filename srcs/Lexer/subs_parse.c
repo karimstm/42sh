@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:47:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/21 20:20:57 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 15:25:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,20 @@ void			scan_dollar(void)
 	{
 		while (*g_line)
 		{
+			if(*g_line == '"')
+				scan_dquotes();
+			else if (*g_line == '\'')
+				scan_squotes();
+			else if (*g_line == '\\')
+				g_line++;
 			if (*g_line == '(')
 				stack[index++] = '(';
 			else if (*g_line == ')')
 				index--;
 			if (index == 0)
 				break ;
-			g_line++;
+			if (*g_line)
+				g_line++;
 		}
 		g_line++;
 	}
@@ -68,6 +75,12 @@ void			scan_process()
 	{
 		while (*g_line)
 		{
+			if(*g_line == '"')
+				scan_dquotes();
+			else if (*g_line == '\'')
+				scan_squotes();
+			else if (*g_line == '\\')
+				g_line++;
 			if (*g_line == '(')
 				stack[index++] = '(';
 			else if (*g_line == ')')

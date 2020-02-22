@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:16:23 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 14:54:34 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 15:21:49 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void		setup_sub_proce(t_list_simple_command *list)
 	{
 		name = current->name;
 		current->name = process_sub_parser(current->name);
+		ft_printf_fd(2, "%s\n", current->name);
 		ft_strdel(&name);
 		current = current->next;
 	}

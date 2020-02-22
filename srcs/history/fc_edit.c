@@ -80,7 +80,6 @@ static void	write_cmds(int fd, char *first, char *last, int flags)
 	last_h = last == NULL ? NULL : get_last(last);
 	if (!last_h)
 		return ((void)ft_printf_fd(fd, "%s\n", first_h->line));
-	ft_debug("/dev/ttys002", "last : %s\n", last_h ? last_h->line : NULL);
 	if (first_h && last_h && last_h->index - first_h->index < 0 &&
 			(flags |= R_FLAG) >= 0)
 		ft_swap_pt((void *)&first_h, (void *)&last_h);
@@ -107,7 +106,7 @@ static void	exec_cmds_in_file(char *path)
 	while (get_next_line(fd, &buf) == 1)
 	{
 		ft_printf_fd(2, "%s\n", buf);
-		sh_system(buf, 0);
+		sh_system(buf, 1);
 		ft_strdel(&buf);
 	}
 	free_gnl(fd);

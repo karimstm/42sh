@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/21 20:18:27 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 15:14:57 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		skip_dqoute_w(char **string, char c, t_string *str, int include)
 
 	new = *string;
 	include ? push(str, *new++) : new++;
-	while (*new)
+	while (new && *new)
 	{
 		if (!include && *new == '\\' && c == '"' && *(new + 1) == '"')
 		{
@@ -106,7 +106,7 @@ t_list_simple_command	*split_word(char	*word)
 	start = word;
 	string.string = NULL;
 	new_string(&string);
-	while (*word)
+	while (word && *word)
 	{
 		while (ft_isspace(*word))
 			word++;
@@ -168,7 +168,7 @@ char		*quote_stripping(char *str)
 	new_string(&string);
 	tmp = str;
 	c = 0;
-	while (*tmp)
+	while (tmp && *tmp)
 	{
 		if (*tmp == '\\')
 			tmp++;
