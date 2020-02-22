@@ -14,6 +14,7 @@
 
 static int	print_fc_usage(void)
 {
+	ft_printf("fc : Invalid Options\n");
 	ft_printf("fc [-r] [-e editor] [first [last]]\n");
 	ft_printf("fc -l [-nr] [first [last]]\n");
 	ft_printf("fc -s [old=new] [first]\n");
@@ -39,7 +40,7 @@ static int	get_fc_flags(int flags, char *arg)
 			return (-1);
 		}
 		else
-			return ((flags |= BREAK_FLAG));
+			flags |= BREAK_FLAG;
 		arg++;
 	}
 	return (flags);
@@ -78,13 +79,17 @@ int			ft_fc(char **args)
 			if (editor == NULL)
 				return (print_fc_usage());
 		}
-		else if (*args[0] != '-')
-			break ;
-		else if (*args[0] == '-' && (flags = get_fc_flags(flags, *args)) == -1)
-			return (0);
-		else if (*args[0] == '-' &&
-			((flags = get_fc_flags(flags, *args)) & BREAK_FLAG) > 0)
-			break ;
+		else
+		{
+			if ((flags = get_fc_flags(flags, *args)) == -1)
+				return (1);
+			else if (*args[0] != '-')
+				break ;
+			else if (*args[0] == '-' && flags == -1)
+				return (0);
+			else if (*args[0] == '-' && (flags & BREAK_FLAG) > 0)
+				break ;
+		}
 		args++;
 	}
 	return (fc_exec(flags, editor == NULL ? "vim" : editor, args));

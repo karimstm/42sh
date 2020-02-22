@@ -59,7 +59,7 @@ static int	fc_exec(char *rep, char *cmd)
 	if (full_command != NULL)
 	{
 		ft_printf_fd(2, "%s\n", full_command);
-		status = sh_system(full_command, 0);
+		status = sh_system(full_command, 1);
 	}
 	else
 		ft_printf_fd(2, "fc: no command found\n");
