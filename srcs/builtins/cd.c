@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 23:20:37 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/29 01:56:30 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/22 14:25:48 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int get_cd_path(char **cmd)
 		if((pwd = get_pwd()))
 		{
 			tmp = path;
-			path = ft_strnjoin((char*[]){pwd, "/", path});
+			path = ft_strnjoin((char*[]){pwd, "/", path}, 3);
 			free(tmp);
 		}
 	}

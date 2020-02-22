@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 16:24:53 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 17:36:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,19 +118,6 @@ t_list_simple_command	*split_word(char	*word)
 	return (list);
 }
 
-void		resolve_node_count(t_list_simple_command *list)
-{
-	t_simple_command	*current;
-
-	current = list && list->head ? list->head : NULL;
-	list->node_count = 0;
-	while (current)
-	{
-		list->node_count++;
-		current = current->next;
-	}
-}
-
 /*
 **	NODE -> NODE -> NODE
 **		new -> new -> new
@@ -143,13 +130,10 @@ void		resolve_node_count(t_list_simple_command *list)
 
 void		init_expansion(t_list_simple_command *list)
 {
-	t_simple_command		*current;
-	t_simple_command		*next;
-	t_simple_command		*prev;
 	t_list_simple_command	*res;
 
+	DECLARE(t_simple_command, *current, *next, _(*prev, NULL));
 	current = list && list->head ? list->head : NULL;
-	prev = NULL;
 	while (current)
 	{
 		next = current->next;
@@ -170,9 +154,7 @@ void		init_expansion(t_list_simple_command *list)
 		free(current);
 		current = next;
 	}
-	if (prev)
-		list->tail = prev;
-	resolve_node_count(list);
+	prev ? list->tail = prev : 0;
 }
 
 char		*quote_stripping(char *str)

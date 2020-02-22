@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_matched_bracket.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 01:19:16 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/19 14:56:37 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/22 14:57:08 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ int get_bracket_index(char c, const char *bracket)
 
 char *skip_bracket(char *str, const char *bracket, int index, int escaping)
 {
+    
     while (*str)
     {
         if (escaping && *str == '\\')
@@ -56,7 +57,7 @@ char *get_matched_bracket(char *str, const char *bracket, char *to_skip, int esc
     if ((bracket_index = get_bracket_index(*str, bracket)) != -1 && str++)
         while (*str && bracket_count)
         {
-            if (ft_isinstr(*str, to_skip))
+            if (to_skip && ft_isinstr(*str, to_skip))
                 ;
             else if (escaping && *str == '\\')
                 str++;
@@ -65,7 +66,7 @@ char *get_matched_bracket(char *str, const char *bracket, char *to_skip, int esc
             else if (*str == bracket[bracket_index + 1])
                 bracket_count--;
             else if ((i = get_bracket_index(*str, bracket)) != -1)
-                str = skip_bracket(str, bracket, i, escaping);
+                str = skip_bracket(str + 1, bracket, i, escaping);
             if (bracket_count && *str)
                 str++;
         }
