@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:31:02 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/21 15:50:35 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 14:35:21 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int				setup_redirection(t_process *p, int doexit)
 {
 	if (p->node->redir)
 	{
+		expand_redirection(p->node->redir);
 		if (execute_redirection(reverse_redirection(p->node->redir)))
 		{
 			if (doexit)

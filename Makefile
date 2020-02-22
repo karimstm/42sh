@@ -6,7 +6,7 @@
 #    By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/17 16:41:20 by amoutik           #+#    #+#              #
-#    Updated: 2020/02/21 20:17:27 by amoutik          ###   ########.fr        #
+#    Updated: 2020/02/22 13:47:41 by amoutik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ BUILT = builtin
 LEXINC = srcs/Lexer/
 REALINE = realine
 
-SRC_MIN = $(patsubst %.c, $(SRC)/Minishell/%.c, setup_expan.c system.c input_red.c output_red.c handlers.c ft_type.c env_list.c fds.c builtin.c free.c ft_cd.c ft_echo.c \
+SRC_MIN = $(patsubst %.c, $(SRC)/Minishell/%.c, expand_redirection.c setup_expan.c system.c input_red.c output_red.c handlers.c ft_type.c env_list.c fds.c builtin.c free.c ft_cd.c ft_echo.c \
 												ft_env_new.c ft_pwd.c main.c shell.c exec.c redir.c)
 SRC_JOBS = $(patsubst %.c, $(SRC)/Minishell/Jobs/%.c, ft_getopt.c ft_strsignal.c job_misc.c node_to_cmd.c job_status.c activejob.c delete_job.c processes.c\
 														terminal.c jobs_list.c job.c execute.c job_helpers.c ft_jobs.c ft_fg.c ft_bg.c \
