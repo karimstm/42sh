@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:31:02 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 14:35:21 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 16:51:36 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ void			execute_process(t_job *job, t_process *process,
 		exit(run_built_in(blt_line, process));
 	else if (cmd)
 		execve(cmd[0], cmd, p_env);
+	ft_printf_fd(2, "something\n");
 	exit(EXIT_FAILURE);
 }
 
@@ -82,8 +83,8 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 		&& ((cmds = node_to_char(process->node->spec.simple_command)) != NULL)
 		&& *cmds)
 	{
-		bltin = ft_lstsearch(blt_line->blt, cmds[0], &check_builtin);
-		process->status = ((t_builtin*)bltin->content)->f(cmds + 1);
+		if ((bltin = ft_lstsearch(blt_line->blt, cmds[0], &check_builtin)))
+			process->status = ((t_builtin*)bltin->content)->f(cmds + 1);
 		ft_free_strtab(cmds);
 		process->completed = 1;
 		close_fifos(FIFO_LIST);

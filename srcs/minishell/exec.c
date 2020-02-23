@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:52:49 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 13:17:51 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 15:56:45 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char			**node_to_char(t_list_simple_command *command)
 	t_simple_command	*current;
 
 	current = (command && command->head) ? command->head : NULL;
-	if (current == NULL)
+	if (current == NULL || command->node_count == 0)
 		return (NULL);
 	cmds = (char **)xmalloc(sizeof(char *) * (command->node_count + 1));
 	i = 0;

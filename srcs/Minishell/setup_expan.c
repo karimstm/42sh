@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_expan.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 20:15:41 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 13:49:11 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/22 17:33:01 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,14 @@ void	init_globing(t_list_simple_command *list)
 		list->tail = prev;
 }
 
-void		setup_expan(t_list_simple_command *list)
+int		setup_expan(t_list_simple_command *list)
 {
 	setup_sub_proce(list);
-	expand_args(list);
+	if (!expand_args(list))
+		return (0);
 	init_expansion(list);
 	init_globing(list);
+	return (1);
 }
 
 

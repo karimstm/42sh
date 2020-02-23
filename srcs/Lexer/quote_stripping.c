@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 15:14:57 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/22 17:36:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,32 +130,31 @@ t_list_simple_command	*split_word(char	*word)
 
 void		init_expansion(t_list_simple_command *list)
 {
-	t_simple_command		*current;
-	t_simple_command		*next;
-	t_simple_command		*prev;
 	t_list_simple_command	*res;
 
+	DECLARE(t_simple_command, *current, *next, _(*prev, NULL));
 	current = list && list->head ? list->head : NULL;
-	prev = NULL;
 	while (current)
 	{
 		next = current->next;
-		if ((res = split_word(current->name))->node_count)
+		if (current->name && (res = split_word(current->name))->node_count)
 		{
 			if (prev)
 				prev->next = res->head;
 			else
 				list->head = res->head;
 			prev = res->tail;
-			list->node_count += (res->node_count - 1);
+			list->node_count += res->node_count;
 		}
+		else if (current == list->head)
+			list->head = NULL;
 		free(res);
 		ft_strdel(&current->name);
+		list->node_count--;
 		free(current);
 		current = next;
 	}
-	if (prev)
-		list->tail = prev;
+	prev ? list->tail = prev : 0;
 }
 
 char		*quote_stripping(char *str)
