@@ -79,17 +79,13 @@ int			ft_fc(char **args)
 			if (editor == NULL)
 				return (print_fc_usage());
 		}
-		else
-		{
-			if ((flags = get_fc_flags(flags, *args)) == -1)
-				return (1);
-			else if (*args[0] != '-')
-				break ;
-			else if (*args[0] == '-' && flags == -1)
-				return (0);
-			else if (*args[0] == '-' && (flags & BREAK_FLAG) > 0)
-				break ;
-		}
+		else if (*args[0] != '-')
+			break ;
+		else if (*args[0] == '-' && (flags = get_fc_flags(flags, *args)) == -1)
+			return (0);
+		else if (*args[0] == '-' &&
+			((flags = get_fc_flags(flags, *args)) & BREAK_FLAG) > 0)
+			break ;
 		args++;
 	}
 	return (fc_exec(flags, editor == NULL ? "vim" : editor, args));
