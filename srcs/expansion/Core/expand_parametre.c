@@ -6,7 +6,7 @@
 /*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:12:20 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/20 07:49:50 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/23 02:23:02 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,20 @@ char *get_variable_name(char **str)
     char *tmp;
 
     i = 0;
-    if (ft_isinstr(**str, "#_") || ft_isalpha(**str))
+    if ((str[0][0] == '#' && str[0][1] == '?') || str[0][0] == '?')
+        i = 1 + str[0][0] == '#';
+    else if (ft_isinstr(**str, "#_") || ft_isalpha(**str))
+    {
         i++;
-    while (i && str[0][i] && (ft_isalnum(str[0][i]) || str[0][i] == '_'))
-        i++;
+        while (i && str[0][i] && (ft_isalnum(str[0][i]) || str[0][i] == '_'))
+            i++;
+    }
     if (i > 0)
     {
         tmp = ft_strsub(*str, 0, i);
         *str = *str + i;
         str[0][-1] = 0;
         return (tmp);
-        
     }
     return (NULL);
 }

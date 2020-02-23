@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd_helper.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 19:19:20 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/01/29 01:49:14 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/23 01:40:14 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,21 @@ int is_correct_path(char *path)
 			PRINT_ERROR(path, NOT_DIR);
 			return (0);
 		}
-		return(1);
+		return (1);
 	}
 	PRINT_ERROR(path, FILE_NOTFOUND);
-	return(0);
+	return (0);
+}
+
+char *get_path_var(const char *key, int get_current_dir)
+{
+	t_variables *var;
+
+	if ((var = get_var("PWD")))
+		return (ft_strdup(var->value));
+	if (get_current_dir)
+		return (getcwd(NULL, 0));
+	return (NULL);
 }
 
 char *concat_path_with_cdpath(char *path)
@@ -34,24 +45,28 @@ char *concat_path_with_cdpath(char *path)
 	int i;
 
 	i = 0;
-	cd_paths = ft_strsplit(get_cdpath());
-	while (cd_paths && *cd_paths[i])
+	cd_paths = ft_strsplit(get_path_var("CDPATH", 0), ' ');
+	if (cd_paths)
 	{
-		tmp = ft_strnjoin((char *[]){cd_paths[i],"/", path});
-		if(is_correct_path(tmp))
+		while (cd_paths && *cd_paths[i])
 		{
-			free(path);
-			path = tmp;
-			break;
+			tmp = ft_strnjoin((char *[]){cd_paths[i], "/", path}, 3);
+			if (is_correct_path(tmp))
+			{
+				free(path);
+				path = tmp;
+				break;
+			}
+			free(tmp);
 		}
+		free_2d_tab(cd_paths);
 	}
-	free_2d_tab(cd_paths);
-	return(path);
+	return (path);
 }
 
-void	ft_update_pwd(char *path, t_env_var *var)
+void ft_update_pwd(char *path, t_env_var *var)
 {
-	const char	*pwd = var->pwd->content;
+	const char *pwd = var->pwd->content;
 
 	ft_lstmodifone(var->oldpwd, ft_strjoin("OLDPWD=", (pwd ? pwd + 4 : "")));
 	ft_lstmodifone(var->pwd, ft_strjoin("PWD=", path));

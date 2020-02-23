@@ -6,7 +6,7 @@
 /*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:09:49 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/20 05:26:14 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/23 02:42:47 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include "shell.h"
 #include <limits.h>
+#include <pwd.h>
 
 enum{
 	MIN,MAX
