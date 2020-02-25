@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   expand_parametre.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 00:12:20 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/23 02:23:02 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/25 19:10:29 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
+
+static void exp_parm_update_status()
+{
+    char *tmp;
+
+    tmp = ft_itoa(JOB_LIST->status);
+    edit_add_var("_status", tmp, 0, 0);
+    free(tmp);
+}
 
 char *get_variable_name(char **str)
 {
@@ -19,7 +28,7 @@ char *get_variable_name(char **str)
 
     i = 0;
     if ((str[0][0] == '#' && str[0][1] == '?') || str[0][0] == '?')
-        i = 1 + str[0][0] == '#';
+        i = 1 + (str[0][0] == '#');
     else if (ft_isinstr(**str, "#_") || ft_isalpha(**str))
     {
         i++;
@@ -38,6 +47,7 @@ char *get_variable_name(char **str)
 
 char *dispach_expansion(char *var_name, char *expression)
 {
+    var_name =  ft_strstr(var_name , "?") ? "_status" : var_name;
     if (*var_name == '#')
         return (expand_string_lenght(var_name, expression));
     if (!*expression)
@@ -82,6 +92,7 @@ t_parser_expansion expand_parametre(char *str)
     var_name = get_variable_name(&str);
     ret.index = tmp ? tmp + 1 : str--;
     ft_printf("<%s, %s>\n", var_name, str);
+    exp_parm_update_status();
     if (!(ret.str = dispach_expansion(var_name, str)))
         ft_printf("${%s} : bad substitution", dup);
     free(var_name);
