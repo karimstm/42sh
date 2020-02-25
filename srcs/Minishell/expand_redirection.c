@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/22 13:33:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 14:56:29 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 13:07:59 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void		expand_redirection(t_redirection *redir)
 			setup_expan(list);
 			ft_strdel(&redir->word);
 			if (list->node_count == 1)
-				redir->word = ft_strdup(list->head->name);
+				redir->word = quote_stripping(list->head->name);
 			else
 				redir->word = NULL;
 		}

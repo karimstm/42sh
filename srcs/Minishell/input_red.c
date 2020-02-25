@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   input_redir.c                                      :+:      :+:    :+:   */
+/*   input_red.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:06:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 13:06:38 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 12:50:32 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int		input(t_redirection *redir)
 {
 	if (check_file_status(redir->word) == 0)
 	{
-		if ((redir->fd2 = open(redir->word, O_RDONLY)))
+		if ((redir->fd2 = open(redir->word, O_RDONLY)) != -1)
 		{
 			dup2(redir->fd2, redir->fd1);
 			if (redir->fd2 != redir->fd1)

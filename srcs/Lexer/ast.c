@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:53:09 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 15:56:08 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 12:12:21 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ t_list_simple_command	*merge_list(t_list_simple_command *left,
 {
 	if (right == NULL)
 		return (left);
+	if (left == NULL)
+		return (right);
 	if (left && right)
 		left->node_count += right->node_count;
 	if (left->head && right->head)

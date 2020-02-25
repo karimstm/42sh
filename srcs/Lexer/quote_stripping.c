@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 17:36:20 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 12:04:13 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,22 +98,28 @@ void		word_looping(t_list_simple_command *list, t_string *str, char **word)
 
 t_list_simple_command	*split_word(char	*word)
 {
-	t_string	string;
-	char		*start;
+	t_string				string;
+	char					*start;
 	t_list_simple_command	*list;
 
 	list = malloc_list_simple_command();
 	start = word;
 	string.string = NULL;
 	new_string(&string);
-	while (word && *word)
+	if (word == NULL)
+	{
+		token_push(list, string.string, TOKEN_WORD);
+		return (list);
+	}
+	while (*word)
 	{
 		while (ft_isspace(*word))
 			word++;
 		if (*word)
 			word_looping(list, &string, &word);
 		string.string = NULL;
-		new_string(&string);
+		if (*word)
+			new_string(&string);
 	}
 	return (list);
 }

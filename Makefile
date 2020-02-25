@@ -6,7 +6,7 @@
 #    By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/17 16:41:20 by amoutik           #+#    #+#              #
-#    Updated: 2020/02/22 16:32:58 by amoutik          ###   ########.fr        #
+#    Updated: 2020/02/25 11:55:41 by amoutik          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ SRC_JOBS = $(patsubst %.c, $(SRC)/Minishell/Jobs/%.c, ft_getopt.c ft_strsignal.c
 
 SRC_EVENT = $(patsubst %.c, $(SRC)/Minishell/events/%.c, event.c pre_parse.c)
 SRC_QUO = $(patsubst %.c, $(SRC)/Strings/%.c, free_string.c is_number.c string.c)
-SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, parse_error.c parse_utils.c parse_alias_redir.c parse_helper.c lex_helpers.c ft_xmalloc.c herdoc.c input_redir.c ast_rest.c ast_redir.c ast_utils.c stack_helper.c stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c quote_stripping.c common.c meta.c subs_parse.c)
+SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, expans.utils.c parse_error.c parse_utils.c parse_alias_redir.c parse_helper.c lex_helpers.c ft_xmalloc.c herdoc.c input_redir.c ast_rest.c ast_redir.c ast_utils.c stack_helper.c stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c quote_stripping.c common.c meta.c subs_parse.c)
 SRC_BLT = $(patsubst %.c, $(SRC)/Builtins/%.c, ft_exit.c test_utils.c ft_test.c test_expr.c test_file.c)
 SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c)
 SRC_HSH= $(patsubst %.c, $(SRC)/HashTable/%.c, hash_handle.c hash.c prime.c)

@@ -6,11 +6,17 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:04:55 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 14:53:22 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 12:42:25 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
+
+int			open_failed(char *name)
+{
+	ft_printf_fd(2, "42sh: %s: No such file or directory\n", name);
+	return (1);
+}
 
 int			output(t_redirection *redir)
 {
@@ -20,6 +26,8 @@ int			output(t_redirection *redir)
 	{
 		if ((redir->fd2 = open(redir->word, oflag, 0644)) != -1)
 			dup2(redir->fd2, redir->fd1);
+		else
+			return (open_failed(redir->word));
 		if (redir->fd2 != redir->fd1)
 			close(redir->fd2);
 		return (0);
@@ -35,6 +43,8 @@ int			output_append(t_redirection *redir)
 	{
 		if ((redir->fd2 = open(redir->word, oflag, 0644)) != -1)
 			dup2(redir->fd2, redir->fd1);
+		else
+			return (open_failed(redir->word));
 		if (redir->fd2 != redir->fd1)
 			close(redir->fd2);
 		return (0);

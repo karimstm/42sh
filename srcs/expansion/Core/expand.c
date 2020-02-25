@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 20:27:30 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/23 02:47:00 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/25 12:06:29 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int expand_args(t_list_simple_command *args)
 {
 	t_simple_command *ptr;
 
-	ptr = args->head;
+	ptr = args && args->head ? args->head : NULL;
 	while (ptr)
 	{
 		if (!ptr->name || !(ptr->name = expand(ptr->name, NULL)))

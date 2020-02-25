@@ -391,5 +391,6 @@ char					*setup_fifo();
 void					init_expansion(t_list_simple_command *list);
 int						setup_expan(t_list_simple_command *list);
 void					expand_redirection(t_redirection *redir);
+void					clean_list(t_list_simple_command	*list);
 
 #endif

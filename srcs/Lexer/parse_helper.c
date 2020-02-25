@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 17:27:34 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 17:37:04 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 12:50:00 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,17 @@ t_redirection				*parse_redirection(void)
 }
 
 void						node_is_word_or_redirection(
-								t_list_simple_command *list,
-								t_redirection *tmp, t_redirection *redir)
+								t_list_simple_command **list,
+								t_redirection *tmp, t_redirection **redir)
 {
 	if (g_token.kind == TOKEN_WORD)
-		list = merge_list(list, parse_word_cmd());
+		*list = merge_list(*list, parse_word_cmd());
 	else
 	{
 		if ((tmp = parse_redirection()) == NULL)
 			return (unexpected_error());
-		tmp->next = redir;
-		redir = tmp;
+		tmp->next = *redir;
+		*redir = tmp;
 	}
 }
 
@@ -97,7 +97,7 @@ t_node						*init_parse_initial(void)
 	list = parse_word_cmd();
 	redir = parse_redirection();
 	while (g_token.kind == TOKEN_WORD || redirect_name(g_token.kind))
-		node_is_word_or_redirection(list, tmp, redir);
+		node_is_word_or_redirection(&list, tmp, &redir);
 	if (redir != NULL || (list && list->head))
 		simple_node(&node, list, redir);
 	else if (redir == NULL &&
