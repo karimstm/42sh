@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:13:55 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 16:15:20 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 14:48:07 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ void			free_redir(t_redirection **redir)
 	{
 		tmp = current->next;
 		ft_strdel(&current->word);
-		current->fd1 >= 0 ? close(current->fd1) : 0;
-		current->fd2 >= 0 ? close(current->fd2) : 0;
 		free(current);
 		current = tmp;
 	}
@@ -87,6 +85,8 @@ void			free_tree(t_node **node)
 	current = *node != NULL ? *node : NULL;
 	if (current)
 	{
+		if (current->redir)
+			free_redir(&current->redir);
 		if (current->kind == NODE_SEMI_AND)
 			free_semi_node(current);
 		if (current->kind == NODE_AND_OR || current->kind == NODE_PIPE)

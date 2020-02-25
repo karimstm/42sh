@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:31:02 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 16:51:36 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 14:50:04 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void			execute_process(t_job *job, t_process *process,
 		exit(run_built_in(blt_line, process));
 	else if (cmd)
 		execve(cmd[0], cmd, p_env);
-	ft_printf_fd(2, "something\n");
 	exit(EXIT_FAILURE);
 }
 
