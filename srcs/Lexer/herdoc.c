@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:22:19 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 13:24:23 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 20:13:35 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,19 @@
 void					write_to_herdoc_fd(int fd2)
 {
 	char	*buf;
-	char	*new;
+
 	while (1)
 	{
 		buf = ft_readline("> ");
-		if (ft_strcmp(buf, g_token.spec.word) == 0)
+		if (ft_strequ(buf, g_token.spec.word) || ft_strequ("\4", buf))
 		{
 			ft_strdel(&buf);
 			return ;
 		}
-		if ((new = expand(buf, NULL)) != NULL)
+		if ((buf = expand(buf, NULL)))
 		{
-			ft_printf_fd(fd2, "%s\n", new);
-			ft_strdel(&new);
+			ft_printf_fd(fd2, "%s\n", buf);
+			ft_strdel(&buf);
 		}
 	}
 }
