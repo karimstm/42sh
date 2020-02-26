@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/19 12:16:23 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 16:25:21 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:51:11 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ void		handle_sub_proc(t_string *string, char *name, int status)
 	char		*proc;
 	int			fd;
 	char		*start;
+	char		*path;
+	pid_t		child;
 
 	proc = scan_pro(name + 1);
 	name += 2;
-	char *path = setup_fifo();
-	pid_t child = setup_proc(proc, path, status == '<' ? O_WRONLY : O_RDONLY);
-	fd = open(path,  status == '<' ? O_RDONLY : O_WRONLY);
+	path = setup_fifo();
+	child = setup_proc(proc, path, status == '<' ? O_WRONLY : O_RDONLY);
+	fd = open(path, status == '<' ? O_RDONLY : O_WRONLY);
 	ft_strdel(&proc);
 	proc = dev_path(fd);
 	fifo_push(FIFO_LIST, path, fd, child);
@@ -62,15 +64,12 @@ char		*process_sub_parser(char *name)
 	return (string.string);
 }
 
-
-
-
 void		setup_sub_proce(t_list_simple_command *list)
 {
 	t_simple_command	*current;
 	char				*name;
-	current = list && list->head ? list->head : NULL;
 
+	current = list && list->head ? list->head : NULL;
 	while (current)
 	{
 		name = current->name;

@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:47:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 15:25:20 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:46:38 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,13 @@ void			check_assignment(void)
 	}
 }
 
+void			scan_dollar_param(void)
+{
+	while (*g_line && *g_line != '}')
+		g_line++;
+	g_line++;
+}
+
 void			scan_dollar(void)
 {
 	DECLARE(int, _(index, 0), stack[100]);
@@ -43,7 +50,7 @@ void			scan_dollar(void)
 	{
 		while (*g_line)
 		{
-			if(*g_line == '"')
+			if (*g_line == '"')
 				scan_dquotes();
 			else if (*g_line == '\'')
 				scan_squotes();
@@ -61,21 +68,17 @@ void			scan_dollar(void)
 		g_line++;
 	}
 	else if (*g_line == '{')
-	{
-		while (*g_line && *g_line != '}')
-			g_line++;
-		g_line++;
-	}
+		scan_dollar_param();
 }
 
-void			scan_process()
+void			scan_process(void)
 {
 	DECLARE(int, _(index, 0), stack[100]);
 	if (*g_line == '(')
 	{
 		while (*g_line)
 		{
-			if(*g_line == '"')
+			if (*g_line == '"')
 				scan_dquotes();
 			else if (*g_line == '\'')
 				scan_squotes();
@@ -109,7 +112,7 @@ int				globa_scanner(void)
 	return (1);
 }
 
-void			init_scan_process()
+void			init_scan_process(void)
 {
 	g_token.kind = TOKEN_WORD;
 	scan_process();
@@ -118,7 +121,7 @@ void			init_scan_process()
 	scan_string();
 }
 
-int			scan_backslash()
+int				scan_backslash(void)
 {
 	if (*g_line == '\\')
 	{
@@ -126,12 +129,12 @@ int			scan_backslash()
 		if (*g_line == '\0')
 		{
 			get_new_line();
-				if (g_line && *g_line == '\n')
-				{
-					g_line++;
-					return (-1);
-				}
-			return(1);
+			if (g_line && *g_line == '\n')
+			{
+				g_line++;
+				return (-1);
+			}
+			return (1);
 		}
 	}
 	return (0);
@@ -152,7 +155,7 @@ void			scan_string(void)
 		}
 		if (is_metacharacter(*g_line) || is_ifs(*g_line)
 			|| *g_line == '}' || *g_line == '{')
-			break;
+			break ;
 		if (!globa_scanner())
 		{
 			if ((status = scan_backslash()) == -1)

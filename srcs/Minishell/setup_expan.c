@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 20:15:41 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 12:00:51 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:34:45 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,3 @@ int		setup_expan(t_list_simple_command *list)
 	init_globing(list);
 	return (1);
 }
-
-

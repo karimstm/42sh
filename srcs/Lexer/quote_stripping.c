@@ -6,14 +6,13 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 12:04:13 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:41:28 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-
-int			back_slash_escape(char **string, t_string *str)
+int						back_slash_escape(char **string, t_string *str)
 {
 	char *new;
 
@@ -34,7 +33,9 @@ int			back_slash_escape(char **string, t_string *str)
 **	karim \<new_line>karim
 **	\
 */
-void		skip_dqoute_w(char **string, char c, t_string *str, int include)
+
+void					skip_dqoute_w(char **string, char c,
+						t_string *str, int include)
 {
 	char	*new;
 
@@ -73,7 +74,8 @@ void		skip_dqoute_w(char **string, char c, t_string *str, int include)
 **	=> andnow
 */
 
-void		word_looping(t_list_simple_command *list, t_string *str, char **word)
+void					word_looping(t_list_simple_command *list,
+						t_string *str, char **word)
 {
 	char	*s;
 
@@ -96,7 +98,7 @@ void		word_looping(t_list_simple_command *list, t_string *str, char **word)
 	*word = s;
 }
 
-t_list_simple_command	*split_word(char	*word)
+t_list_simple_command	*split_word(char *word)
 {
 	t_string				string;
 	char					*start;
@@ -134,7 +136,7 @@ t_list_simple_command	*split_word(char	*word)
 **					-->next = TMP
 */
 
-void		init_expansion(t_list_simple_command *list)
+void					init_expansion(t_list_simple_command *list)
 {
 	t_list_simple_command	*res;
 
@@ -163,7 +165,7 @@ void		init_expansion(t_list_simple_command *list)
 	prev ? list->tail = prev : 0;
 }
 
-char		*quote_stripping(char *str)
+char					*quote_stripping(char *str)
 {
 	t_string	string;
 	char		*tmp;
