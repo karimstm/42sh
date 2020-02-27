@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   quote_stripping.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 12:04:13 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 15:56:43 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ void		skip_dqoute_w(char **string, char c, t_string *str, int include)
 **	=> andnow
 */
 
-void		word_looping(t_list_simple_command *list, t_string *str, char **word)
+void		word_looping(t_list_simple_command *list, t_string *str, char **word, t_token_kind kind)
 {
 	char	*s;
 
@@ -92,11 +92,11 @@ void		word_looping(t_list_simple_command *list, t_string *str, char **word)
 				push(str, *s++);
 		}
 	}
-	token_push(list, str->string, TOKEN_WORD);
+	token_push(list, str->string, kind);
 	*word = s;
 }
 
-t_list_simple_command	*split_word(char	*word)
+t_list_simple_command	*split_word(char	*word, t_token_kind kind)
 {
 	t_string				string;
 	char					*start;
@@ -108,7 +108,7 @@ t_list_simple_command	*split_word(char	*word)
 	new_string(&string);
 	if (word == NULL)
 	{
-		token_push(list, string.string, TOKEN_WORD);
+		token_push(list, string.string, kind);
 		return (list);
 	}
 	while (*word)
@@ -116,7 +116,7 @@ t_list_simple_command	*split_word(char	*word)
 		while (ft_isspace(*word))
 			word++;
 		if (*word)
-			word_looping(list, &string, &word);
+			word_looping(list, &string, &word, kind);
 		string.string = NULL;
 		if (*word)
 			new_string(&string);
@@ -143,7 +143,7 @@ void		init_expansion(t_list_simple_command *list)
 	while (current)
 	{
 		next = current->next;
-		if (current->name && (res = split_word(current->name))->node_count)
+		if (current->name && (res = split_word(current->name, current->kind))->node_count)
 		{
 			if (prev)
 				prev->next = res->head;
