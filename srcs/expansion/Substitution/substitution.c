@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   substitution.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 02:26:22 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/22 17:16:18 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/25 18:47:41 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ char *cmd_substitution(const char *cmd)
         if (pid > 0)
         {
             ret = get_fd_content(fd[0]);
+            wait(&pid);
             close(fd[0]);
             return (ret);
         }

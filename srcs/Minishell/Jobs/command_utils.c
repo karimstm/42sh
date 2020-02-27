@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:27:44 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 16:23:21 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:38:21 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ t_simple_command		*get_command_name(t_list_simple_command *list)
 	return (NULL);
 }
 
-int						is_valid_path(char	*path)
+int						is_valid_path(char *path)
 {
 	if (access(path, F_OK) == 0)
 	{
-		if(check_file_permission(path, X_OK))
+		if (check_file_permission(path, X_OK))
 			return (1);
 	}
 	else

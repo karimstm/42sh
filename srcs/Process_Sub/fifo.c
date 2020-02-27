@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 11:10:03 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/21 20:10:43 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 12:07:42 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,21 @@
 t_fifo_list		*fifo_list(t_fifo_list *list)
 {
 	static t_fifo_list	*new = NULL;
+
 	if (list != NULL)
 		new = list;
 	return (new);
 }
 
-void		init_fifo_list(t_fifo_list *list)
+void			init_fifo_list(t_fifo_list *list)
 {
 	list->head = NULL;
 	list->tail = NULL;
 	list->node_count = 0;
 }
 
-void		fifo_push(t_fifo_list *list, char *pathname, int fd, pid_t child)
+void			fifo_push(t_fifo_list *list, char *pathname,
+				int fd, pid_t child)
 {
 	t_fifo *file;
 
@@ -44,7 +46,7 @@ void		fifo_push(t_fifo_list *list, char *pathname, int fd, pid_t child)
 	list->node_count++;
 }
 
-void	close_fifos(t_fifo_list *list)
+void			close_fifos(t_fifo_list *list)
 {
 	t_fifo	*current;
 	t_fifo	*next;
@@ -57,7 +59,7 @@ void	close_fifos(t_fifo_list *list)
 			close(current->fd);
 		unlink(current->pathname);
 		ft_strdel(&current->pathname);
-		kill(current->child, SIGCONT);
+		kill(current->child, SIGPIPE);
 		waitpid(current->child, NULL, 0);
 		free(current);
 		current = next;
@@ -67,9 +69,9 @@ void	close_fifos(t_fifo_list *list)
 	list->head = NULL;
 }
 
-char	*dev_path(int fd)
+char			*dev_path(int fd)
 {
-	const char *dirname = "/dev/fd/";
+	const char	*dirname = "/dev/fd/";
 	char		*cfd;
 	char		*path;
 

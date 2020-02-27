@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/25 11:39:20 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 11:56:43 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:39:09 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void			free_simple_cmd(t_simple_command *job)
 	job = NULL;
 }
 
-void	delete_first_cmd(t_list_simple_command *list)
+void			delete_first_cmd(t_list_simple_command *list)
 {
 	t_simple_command *first;
 
@@ -36,7 +36,7 @@ void	delete_first_cmd(t_list_simple_command *list)
 	list->node_count--;
 }
 
-void	delete_last_cmd(t_list_simple_command *list)
+void			delete_last_cmd(t_list_simple_command *list)
 {
 	t_simple_command	*current;
 	t_simple_command	*last;
@@ -61,7 +61,7 @@ void	delete_last_cmd(t_list_simple_command *list)
 	list->node_count--;
 }
 
-void	delete_simple_cmd(t_list_simple_command *list,
+void			delete_simple_cmd(t_list_simple_command *list,
 					t_simple_command *target, t_simple_command *m_prev)
 {
 	t_simple_command *current;
@@ -81,7 +81,7 @@ void	delete_simple_cmd(t_list_simple_command *list,
 	}
 }
 
-void		clean_list(t_list_simple_command	*list)
+void			clean_list(t_list_simple_command *list)
 {
 	t_simple_command	*current;
 	t_simple_command	*prev;

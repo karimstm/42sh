@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 20:15:41 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/26 15:57:24 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/27 13:10:56 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,5 +68,3 @@ int		setup_expan(t_list_simple_command *list)
 	init_globing(list);
 	return (1);
 }
-
-

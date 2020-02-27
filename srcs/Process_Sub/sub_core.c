@@ -6,13 +6,13 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 16:01:25 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/21 20:07:15 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/26 11:56:15 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int		skip_dqoute(char **string, char c)
+int			skip_dqoute(char **string, char c)
 {
 	char	*new;
 	size_t	len;
@@ -37,18 +37,18 @@ int		skip_dqoute(char **string, char c)
 
 pid_t		setup_proc(char *cmd, char *path, int flag)
 {
-	pid_t	child;
-	int		output;
-	int		fd;
+	pid_t		child;
+	int			output;
+	int			fd;
+	t_fifo_list	*list;
 
 	output = flag == O_WRONLY ? dup3(1) : dup3(0);
 	if ((child = fork()) == 0)
 	{
-		t_fifo_list *list = (t_fifo_list *)xmalloc(sizeof(t_fifo_list));
+		list = (t_fifo_list *)xmalloc(sizeof(t_fifo_list));
 		init_fifo_list(list);
 		fifo_list(list);
-		if ((fd = open(path,  flag)) == -1)
-			exit(EXIT_FAILURE);
+		(fd = open(path, flag)) == -1 ? exit(EXIT_FAILURE) : 0;
 		flag == O_WRONLY ? dup2(fd, 1) : dup2(fd, 0);
 		sh_system(cmd, 0);
 		close_fifos(list);
@@ -64,7 +64,7 @@ pid_t		setup_proc(char *cmd, char *path, int flag)
 	return (child);
 }
 
-char		*setup_fifo()
+char		*setup_fifo(void)
 {
 	char	*path;
 

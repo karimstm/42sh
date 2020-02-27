@@ -44,6 +44,8 @@
 # define R_FLAG 0x00000004
 # define S_FLAG 0x00000008
 # define BREAK_FLAG 0x00000010
+# define PRINT_ERROR(s) ft_printf_fd(2, "42sh: %s: %s\n",s)
+# define PRINT_ERROR2(s1,s2) ft_printf_fd(2, "42sh: %s: %s\n", s1, s2)
 
 typedef struct			s_builtin
 {
@@ -178,6 +180,13 @@ int						ft_unset(char **args);
 int						ft_export(char **args);
 int						ft_pwd(char **args);
 
+/*
+** Builtin cd helpres
+*/
+
+int is_correct_path(char *path, int print_error);
+char *get_path_var(const char *key, int get_current_dir);
+char *concat_path_with_cdpath(char *path);
 
 /*
 **	handlers.c

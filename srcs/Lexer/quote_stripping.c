@@ -6,19 +6,21 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/26 15:56:43 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/27 13:11:43 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-
-int			back_slash_escape(char **string, t_string *str)
+int						back_slash_escape(char **string,
+						t_string *str, int include)
 {
 	char *new;
 
 	new = *string;
-	if (*(new + 1) != '\n')
+	if (!include && *(new + 1) == '\\')
+		new++;
+	else if (*(new + 1) != '\n')
 		push(str, *new++);
 	else
 	{
@@ -34,7 +36,9 @@ int			back_slash_escape(char **string, t_string *str)
 **	karim \<new_line>karim
 **	\
 */
-void		skip_dqoute_w(char **string, char c, t_string *str, int include)
+
+void					skip_dqoute_w(char **string, char c,
+						t_string *str, int include)
 {
 	char	*new;
 
@@ -50,7 +54,7 @@ void		skip_dqoute_w(char **string, char c, t_string *str, int include)
 		}
 		if (*new == '\\' && c != '\'')
 		{
-			if (back_slash_escape(&new, str))
+			if (back_slash_escape(&new, str, include))
 				continue ;
 		}
 		else if (*new == c)
@@ -87,7 +91,7 @@ void		word_looping(t_list_simple_command *list, t_string *str, char **word, t_to
 		else
 		{
 			if (*s == '\\')
-				back_slash_escape(&s, str);
+				back_slash_escape(&s, str, 1);
 			if (*s)
 				push(str, *s++);
 		}
@@ -134,7 +138,7 @@ t_list_simple_command	*split_word(char	*word, t_token_kind kind)
 **					-->next = TMP
 */
 
-void		init_expansion(t_list_simple_command *list)
+void					init_expansion(t_list_simple_command *list)
 {
 	t_list_simple_command	*res;
 
@@ -163,7 +167,7 @@ void		init_expansion(t_list_simple_command *list)
 	prev ? list->tail = prev : 0;
 }
 
-char		*quote_stripping(char *str)
+char					*quote_stripping(char *str)
 {
 	t_string	string;
 	char		*tmp;
@@ -179,7 +183,7 @@ char		*quote_stripping(char *str)
 			tmp++;
 		else if (*tmp == '"' || *tmp == '\'')
 			skip_dqoute_w(&tmp, *tmp, &string, 0);
-		else if (*tmp)
+		if (*tmp)
 			push(&string, *tmp++);
 	}
 	return (string.string);

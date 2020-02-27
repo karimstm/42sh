@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 15:56:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 15:57:57 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/27 11:56:44 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,22 @@ int				get_new_line(void)
 	size_t		startlen;
 	char		*new_line;
 
+	if (ERRNO == EOTE)
+	{
+		g_line = "              ";
+		return ((ERRNO = EOTE));
+	}
 	len = g_line - g_token.line;
 	startlen = g_token.start - g_token.line;
 	new_line = ft_readline("> ");
 	tmp = ft_strjoin(g_token.line, "\n");
 	ft_strdel((char **)&g_token.line);
 	tmp2 = new_line;
-	if (new_line == NULL)
-		return (1);
+	if (new_line == NULL || ft_strequ(new_line, "\4"))
+	{
+		ft_strdel(&new_line);
+		return ((ERRNO = EOTE));
+	}
 	new_line = ft_strjoin(tmp, new_line);
 	ft_strdel(&tmp);
 	g_token.line = new_line;
@@ -72,7 +80,7 @@ void			scan_dquotes(void)
 		if (*g_line && *g_line == '\\')
 		{
 			g_line++;
-			if (*g_line == '"' || *g_line == '$')
+			if (*g_line == '"' || *g_line == '$' || *g_line == '\\')
 				g_line++;
 		}
 		else if (*g_line)
@@ -80,7 +88,8 @@ void			scan_dquotes(void)
 	}
 	if (flag % 2 != 0)
 	{
-		get_new_line();
+		if (get_new_line() == EOTE)
+			return ;
 		scan_dquotes();
 	}
 }
@@ -103,7 +112,8 @@ void			scan_squotes(void)
 	}
 	if (flag % 2 != 0)
 	{
-		get_new_line();
+		if (get_new_line() == EOTE)
+			return ;
 		scan_squotes();
 	}
 }
