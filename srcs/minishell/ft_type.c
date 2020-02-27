@@ -1,13 +1,5 @@
 #include "shell.h"
 
-/*
-type steps
-    Builtin
-    aliases t_alias_list *alias_list global
-    hashtable static t_hash_table* global
-    path
-    not found
-*/
 char    *working_path_type(char *cmd)
 {
 	char        **all_paths;
@@ -22,7 +14,7 @@ char    *working_path_type(char *cmd)
 	while (*tmp)
 	{
 		full_path = ft_strjoin_pre(*tmp, "/", cmd);
-		if (access(full_path, F_OK) == 0)
+		if (access(full_path, F_OK) == 0 && !is_directory(full_path))
 			break ;
 		ft_strdel(&full_path);
 		tmp++;
