@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/19 13:10:15 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 12:50:40 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/27 10:34:46 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void				sig_handler(int sig)
 	c = 0;
 	ft_printf("\n"); // Move to a new line
     (void)sig;
+	ERRNO = EOTE;
 	ioctl(0, TIOCSTI , &c);
 	// We need to clear the readline buffer here
 	// nad redisplay a new prompt

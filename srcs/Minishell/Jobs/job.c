@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   job.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:09:57 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 19:26:15 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/27 11:37:33 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	print_and_delete_job(t_job_list *jobs, t_job **job)
 	}
 	format_job_info(current);
 	delete_job(jobs, current);
+	set_max_as_active(jobs);
 	*job = jobs->head;
 }
 

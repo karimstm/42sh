@@ -6,18 +6,21 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/26 11:41:28 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/27 12:44:05 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int						back_slash_escape(char **string, t_string *str)
+int						back_slash_escape(char **string,
+						t_string *str, int include)
 {
 	char *new;
 
 	new = *string;
-	if (*(new + 1) != '\n')
+	if (!include && *(new + 1) == '\\')
+		new++;
+	else if (*(new + 1) != '\n')
 		push(str, *new++);
 	else
 	{
@@ -51,7 +54,7 @@ void					skip_dqoute_w(char **string, char c,
 		}
 		if (*new == '\\' && c != '\'')
 		{
-			if (back_slash_escape(&new, str))
+			if (back_slash_escape(&new, str, include))
 				continue ;
 		}
 		else if (*new == c)
@@ -89,7 +92,7 @@ void					word_looping(t_list_simple_command *list,
 		else
 		{
 			if (*s == '\\')
-				back_slash_escape(&s, str);
+				back_slash_escape(&s, str, 1);
 			if (*s)
 				push(str, *s++);
 		}
@@ -181,7 +184,7 @@ char					*quote_stripping(char *str)
 			tmp++;
 		else if (*tmp == '"' || *tmp == '\'')
 			skip_dqoute_w(&tmp, *tmp, &string, 0);
-		else if (*tmp)
+		if (*tmp)
 			push(&string, *tmp++);
 	}
 	return (string.string);

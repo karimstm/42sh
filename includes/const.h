@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/21 15:43:31 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/27 10:15:06 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@
 # define SYNTAXE 1
 # define ACCESE 2
 # define EVENTE 3
+# define EOTE 4
 
 /*
 ** environnement duplication constants

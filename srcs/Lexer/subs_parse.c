@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:47:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/26 11:46:38 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/27 10:48:27 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void			scan_string(void)
 				g_line++;
 		}
 	}
-	g_token.spec.word = ft_strsub(g_token.start, 0, g_line - g_token.start);
+	g_token.spec.word = !ERRNO ? ft_strsub(g_token.start, 0, g_line - g_token.start) : ft_strdup("");
 }
 
 void			scan_int(void)
@@ -186,10 +186,3 @@ void			scan_int(void)
 	}
 	g_token.spec.int_val = val;
 }
-
-/*
-**	int				is_token_eof(void)
-**	{
-**		return (g_token.kind == TOKEN_EOF);
-**	}
-*/
