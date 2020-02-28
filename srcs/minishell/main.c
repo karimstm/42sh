@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/22 16:43:14 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/28 10:13:51 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,8 @@ void			run_shell2(t_list *blt)
 	init_shell_variables();
 	while ((tmp = ft_readline(MSG)))
 	{
+		if (ft_strequ(tmp, "\4"))
+			ft_exit(NULL);
 		ERRNO = 0;
 		new_line = pre_parse(tmp);
 		ft_strdel(&tmp);
