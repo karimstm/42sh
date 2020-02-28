@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:10:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/27 11:04:46 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/28 20:47:13 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void			simple_command(t_job_list *job_list,
 		ft_set_var(assign);
 	}
 	execute_simple_command(job_list, blt_line);
-	//cmd = get_command_name(node->spec.simple_command);
 	if (name && cmd && cmd->type == IS_FOUND)
 		ht_insert(get_hash_table(NULL), name, cmd->name);
 	reset_env(tmp, assign);

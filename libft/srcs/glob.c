@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/02 13:29:57 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/27 15:21:11 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/28 20:14:43 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,25 @@ static DIR    *g_opendir(char *str)
 {
   char buf[MAXPATHLEN];
 
-  if (!*str)
+  if (str && !*str)
     ft_strcpy(buf, ".");
   else
     ft_strcpy(buf, str);
   return (opendir(buf));
 }
 
-t_list_path   *g_readdir(DIR *dirp, int flags, char *pattern)
+t_list_path   *g_readdir(DIR *dirp, int flags, char *pattern, char *dirname)
 {
   t_list_path   *list_names;
   struct dirent *dp;
 
   list_names = alloc_path_list(1);
   if (dirp == NULL)
+  {
+    ft_strdel(&dirname);
+    free(list_names);
     return (NULL);
+  }
   while ((dp = readdir(dirp)))
   {
     if (!ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
@@ -51,24 +55,8 @@ t_list_path   *g_readdir(DIR *dirp, int flags, char *pattern)
     }
   }
   closedir(dirp);
+  ft_strdel(&dirname);
   return (list_names);
-}
-
-void    del_list(t_list_path *todel)
-{
-  t_path *cur;
-  t_path *next;
-  
-  cur = todel && todel->head ? todel->head : 0;
-  while (cur)
-  {
-    next = cur->next;
-    ft_strdel(&cur->path);
-    free(cur);
-    cur = next;
-  }
-  if (todel)
-    free(todel);
 }
 
 void    _match_reg(char *to_find, t_list_path *list)
@@ -82,7 +70,7 @@ void    _match_reg(char *to_find, t_list_path *list)
     next = current->next;  
     if (is_match(to_find, &current->path[ft_strlen(current->path) - current->path_len]))
       delete_target(list, &current);
-      current = next;
+    current = next;
   }
 }
 
@@ -97,14 +85,15 @@ char    *_join_with_path(char **s1, char *s2)
 void    _glob_back(t_list_path *list, t_glob *pglob)
 {
   t_path *current;
-
+  t_path *next;
+  
   current = list->head;
   while (current)
   {
+    next = current->next;
     _glob_loop(current->path, pglob);
     delete_target(list, &current);
-    if (current)
-      current = current->next;
+    current = next;
   }
 }
 
@@ -112,13 +101,18 @@ void    _glob_match(char *dirname, char *pattern, t_glob *pglob)
 {
   int flags;
   t_list_path *list_names;
+  char *tmp;
 
+  tmp = pattern;
   flags = 0;
   if (pattern[ft_strlen(pattern) - 1] == SEP)
     flags |= ISDIR;
-  list_names  = g_readdir(g_opendir(dirname), flags, pattern);
+  list_names  = g_readdir(g_opendir(dirname), flags, pattern, dirname);
   if (list_names == NULL)
+  {
+    ft_strdel(&tmp);
   	return ;
+  }
   _match_reg(pattern, list_names);
   while (*pattern && *pattern != SEP)
     pattern++;
@@ -129,24 +123,21 @@ void    _glob_match(char *dirname, char *pattern, t_glob *pglob)
       _glob_back(list_names, pglob);
   list_names->head = merge_sort(list_names->head);
   fill_glob(list_names, pglob);
-  del_list(list_names);
+  ft_strdel(&tmp);
 }
 
 char    *_get_starting_path(char *path)
 {
   size_t len;
-
+  
   len = ft_strlen(path);
-  while (len--)
+  while (len)
   {
     if (path[len] == SEP)
-    {
-      ft_strdel(&path);
-      return (ft_strndup(path, len + 1));
-    }
+      return (ft_strndup(path, len));
+    len--;
   }
-  ft_strdel(&path);
-  return (".");
+  return (ft_strdup("."));
 }
 
 char    *_basename(char *path)
@@ -159,7 +150,7 @@ char    *_basename(char *path)
     if (path[len] == SEP)
       return (ft_strdup(&path[++len]));
   }
-  return path;
+  return ft_strdup(path);
 }
 
 int			skip_dquote(char **string, char c)
@@ -184,11 +175,24 @@ int			skip_dquote(char **string, char c)
 	*string = new;
 	return (len);
 }
+void exec_glob(char *dirname, char *pattern, t_glob *pglob)
+{
+  char *basename;
+  char *pathdir;
+  char *tmp;
+
+  tmp = pattern;
+  basename = _basename(dirname);
+  tmp = ft_strjoin(basename, pattern);
+  pathdir = _get_starting_path(dirname);
+  ft_strdel(&dirname);
+  ft_strdel(&basename);
+  return (_glob_match(pathdir, tmp, pglob));
+}
 
 void    _glob_loop(char *pattern, t_glob *pglob)
 {
   char  *dirname;
-  char  *basename;
   int   index;
   int   len;
   char *start;
@@ -207,17 +211,11 @@ void    _glob_loop(char *pattern, t_glob *pglob)
       index += len;
     }
     else if (*pattern == STAR || *pattern == QUESTION || *pattern == LBRACKET)
-    {
-      basename = _basename(dirname);
-      pattern = ft_strjoin(basename, pattern);
-      //ft_strdel(&basename);
-      return (_glob_match(_get_starting_path(dirname), pattern, pglob));
-    }
+      return (exec_glob(dirname, pattern, pglob));
     dirname[index++] = *pattern;
     if(*pattern)
       pattern++;
   }
-  
   ft_strdel(&dirname);
 }
 
@@ -226,12 +224,8 @@ int     _glob(const char *pattern, int flags, int (*errfunc)(const char *epath, 
   ft_memset(pglob, 0, sizeof(pglob));
   pglob->gl_pathv = NULL;
   if (pattern == NULL || pglob == NULL || (flags & ~__GLOB_FLAGS) != 0)
-  {
-    ft_strdel((char**)&pattern);
     return (-1);
-  }
   _glob_loop((char *)pattern, pglob);
-  ft_strdel((char**)&pattern);
   (void)errfunc;
   return (0);
 }

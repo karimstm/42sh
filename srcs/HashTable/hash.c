@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hash.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 17:51:39 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/21 15:46:14 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/28 21:02:57 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,8 @@ static t_hash_item		*ht_new_item(const char *k, const char *v)
 
 static void				ht_del_item(t_hash_item *item)
 {
-	free(item->key);
-	free(item->value);
+	ft_strdel(&item->key);
+	ft_strdel(&item->value);
 	free(item);
 }
 

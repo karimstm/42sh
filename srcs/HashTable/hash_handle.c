@@ -94,26 +94,3 @@ int    ft_handle_hash_table(char **args)
     get_hash_table(ht);
     return (0);
 }
-
-
-
-
-// int main()
-// {
-//     t_hash_table *ht = ht_new();
-//     char *args[] = {
-//         "-r",
-//         "vim",
-//         "ls",
-//         NULL
-//     };
-//     ht_insert(ht, "ls", "/bin/ls");
-//     ht_insert(ht, "echo", "/bin/echo");
-//     ht_insert(ht, "emacs", "/usr/bin/emacs");
-//     ht_insert(ht, "vim", "usr/bin/vim");
-//     ht_insert(ht, "grep", "usr/bin/grep");
-//     ht = handle_hash_table(ht, args);
-//     ht = handle_hash_table(ht, NULL);
-//     // ht_print(ht);
-//     ht_del_hash_table(ht);
-// }

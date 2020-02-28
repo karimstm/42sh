@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 12:02:02 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/18 18:17:10 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/28 21:18:00 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,6 +194,20 @@ void		free_node_env(t_variables *node)
 		ft_strdel(&node->value);
 		free(node);
 	}
+}
+void ft_del_env()
+{
+	t_variables *cur;
+	t_variables *next;
+	
+	cur = env2 ? env2->head : 0;
+	while (cur)
+	{
+		next = cur->next;
+		free_node_env(cur);
+		cur = next;
+	}
+	env2 ? free(env2) : 0;
 }
 
 int			is_assigned(char **assign, char *key)

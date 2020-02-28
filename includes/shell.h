@@ -293,7 +293,8 @@ void					delete_var(char *target);
 char					**get_tab_env();
 t_variables_list        *dup_env(void);
 void					reset_env(t_variables_list *tmp, char **assign);
-
+void					ft_del_env();
+int						edit_add_var(char *key, char *value, int is_exported, int mod);
 /*
 **	pre_parse.c
 */
@@ -370,9 +371,6 @@ int						ft_integer_error(char *s);
 
 int						expand_args(t_list_simple_command *args);
 char					*expand(char *str, t_parser_expansion (*f)(char *));
-
-//???????????????????????????
-int    edit_add_var(char *key, char *value, int is_exported, int mod);
 
 /*
 ** Sub process

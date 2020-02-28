@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/28 10:13:51 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/28 21:18:40 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int				main(int ac, char **av, char **ev)
 	t_list		*blt;
 	t_list		*history;
 	t_fifo_list	*list;
-
+	
 	(void)ac;
 	(void)av;
 	list = (t_fifo_list *)xmalloc(sizeof(t_fifo_list));
@@ -109,6 +109,8 @@ int				main(int ac, char **av, char **ev)
 	init_shell();
 	restore_history();
 	run_shell2(blt);
+	ht_del_hash_table(get_hash_table(NULL));
+	ft_del_env();
 	free_builtin(blt);
 	return (0);
 }
