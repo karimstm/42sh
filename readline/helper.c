@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 23:23:56 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/11 00:10:33 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/28 16:30:01 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,29 @@ int		get_virtua_line_count(t_readline *readline)
 	int			count;
 	int			i;
 	const int	*details = readline->line_props.details;
+	const int	lc = readline->line_props.linecount - 1;
 
 	i = 0;
-	count = !!((details[i] + readline->o_cursor.x) % readline->col);
-	count += ((details[i] + readline->o_cursor.x) / readline->col);
+	count = !!((details[i] + readline->o_cursor.x + (i == lc)) % readline->col);
+	count += ((details[i] + readline->o_cursor.x + (i == lc)) / readline->col);
 	i++;
 	while (i < readline->line_props.linecount)
 	{
-		count += !!(details[i] % readline->col) + (details[i] / readline->col);
+		count += !!((details[i] + (i == lc)) % readline->col);
+		count += ((details[i] + (i == lc)) / readline->col);
 		i++;
 	}
 	return (count);
+}
+
+void	update_o_v_cursor(t_readline *env)
+{
+	const t_point o_c = env->o_cursor;
+	const t_point o_v = env->ov_cursor;
+
+	get_cursor_position(env);
+	env->o_cursor = (t_point){o_c.x, o_c.y + (env->o_cursor.y - o_v.y)};
+	set_virtual_origin(env);
 }
 
 void	update_o_cursor(t_readline *env)
@@ -52,7 +64,7 @@ void	get_cursor_position(t_readline *readline)
 	begin = 0;
 	column = 0;
 	row = 0;
-	tputs("\E[6n", 1, ft_putchar);
+	tputs("\e[6n", 1, ft_putchar);
 	while (read(0, &buf, 1) > 0)
 	{
 		if (begin == 3 && buf == 'R')

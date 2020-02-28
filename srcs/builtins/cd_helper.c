@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 19:19:20 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/27 00:39:22 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/28 15:53:26 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char *concat_path_with_cdpath(char *path)
 
 	i = 0;
 	var = get_var("CDPATH");
-	cd_paths = ft_strsplit(var->value ? var->value : NULL, ' ');
+	cd_paths = ft_strsplit(var ? var->value : NULL, ' ');
 	if (cd_paths)
 	{
 		while (cd_paths)

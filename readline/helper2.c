@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 09:53:31 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/11 12:04:39 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/28 03:54:25 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ int		manage_ctlr_d(t_readline *readline)
 
 char	*manage_ctlr_c(t_readline *readline)
 {
+	const t_point	cursor = readline->o_cursor;
+	
+	tputs(tgoto(tgetstr("cm", 0), cursor.x, cursor.y), 0, put_char);
+	if (readline->cmd && readline->cmd->tmp_line)
+		ft_putendl(readline->cmd->tmp_line);
 	ft_memdel((void **)&readline->cmd->tmp_line);
 	free(readline->line_props.details);
 	clean_hsitory();

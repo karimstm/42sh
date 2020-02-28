@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 00:57:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/11 12:04:45 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/28 16:21:06 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ char		*ft_readline(const char *g_prompt)
 	int r;
 
 	g_prompt = g_prompt ? g_prompt : "";
-	ft_printf(g_prompt);
+	tputs(g_prompt, 0, put_char);
 	readline_init(&readline, g_prompt);
 	while (everything_is_ok(&readline) && ft_memset(buff, 0, 2049))
 		if ((r = read(0, buff, 2048)) > 0)
@@ -121,6 +121,7 @@ char		*ft_readline(const char *g_prompt)
 			if(r == 1 && *buff == 0)
 				return (manage_ctlr_c(&readline));
 			button = *((int *)buff);
+			update_o_v_cursor(&readline);
 			if (key_handel(&readline, button, 1))
 			{
 				if (button == BUTTON_CTL_L)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   line_operation.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/12 22:57:02 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/10 23:56:00 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/28 03:42:21 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,20 @@
 
 void		rewrite_line(t_readline *readline)
 {
+	int i;
 	const t_point	cursor = readline->o_cursor;
 
 	tputs(tgoto(tgetstr("cm", 0), cursor.x, cursor.y), 0, put_char);
 	update_o_cursor(readline);
 	tputs(tgetstr("cd", NULL), 0, put_char);
-	ft_putstr(readline->cmd->tmp_line);
+	i = 0;
+	while (readline->cmd->tmp_line[i])
+	{
+		if (readline->cmd->tmp_line[i] == '\n')
+			ft_putchar(' ');
+		ft_putchar(readline->cmd->tmp_line[i++]);
+	}
+	ft_putchar(' ');
 	cur_goto(readline, readline->cursor);
 }
 
