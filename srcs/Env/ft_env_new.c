@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:55:19 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 15:56:22 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 16:20:18 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	edit_add_var(char *key, char *value, int is_exported, int mod)
 	{
 		ft_strdel(&new_var->value);
 		new_var->value = ft_strdup(value);
+		new_var->is_exported = is_exported;
 		new_var->is_modified = mod ? ENV_MODIFIED : ENV_DEFAULT;
 	}
 	else if (mod)
@@ -65,14 +66,16 @@ int	ft_export(char **args)
 	return (0);
 }
 
-int	ft_set_var(char **args)
+int	ft_set_var(char **args, t_simple_command *cmd)
 {
 	char		*index;
 	int			i;
+	int			set;
 
+	set = cmd ? 1 : 0;
 	i = -1;
 	while (args[++i])
 		if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
-			edit_add_var(args[i], index, 1, ENV_DEFAULT);
+			edit_add_var(args[i], index, set, ENV_DEFAULT);
 	return (0);
 }

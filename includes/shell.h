@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/29 14:22:40 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 16:03:40 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,7 @@ void					free_elem_env(t_list *elem);
 int						ft_cd(char **args);
 int						ft_echo(char **args);
 int						ft_env(char **args);
-int						ft_set_var(char **args);
+int						ft_set_var(char **args, t_simple_command *cmd);
 int						ft_set(char **args);
 int						ft_unset(char **args);
 int						ft_export(char **args);

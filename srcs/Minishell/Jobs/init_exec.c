@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:10:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 11:42:46 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 16:02:22 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void			simple_command(t_job_list *job_list,
 			tmp = env2;
 			env2 = dup_env();
 		}
-		ft_set_var(assign);
+		ft_set_var(assign, cmd);
 	}
 	execute_simple_command(job_list, blt_line);
 	if (name && cmd && cmd->type == IS_FOUND)
