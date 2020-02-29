@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   alias.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 16:18:40 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 13:16:27 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 13:56:34 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ t_alias_list			*get_alias_list(t_alias_list *aliases);
 char					*get_alias(char *key);
 t_alias					*alias_find(t_alias_list *list, char *alias);
 char					**split_eq(char *str);
-void					alias_push(t_alias_list *list, char *alias, char *value);
+void					alias_push(t_alias_list *list,
+							char *alias, char *value);
 int						print_invalid_option(char c);
 void					alias_insert(t_alias_list *list, char *args);
 void					delete_alias(t_alias_list *list, char *to_find);

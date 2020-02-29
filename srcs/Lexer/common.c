@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 15:56:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/27 11:56:44 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 13:46:09 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,10 @@ void			escape_space(void)
 
 int				get_new_line(void)
 {
-	char		*tmp;
-	char		*tmp2;
 	size_t		len;
 	size_t		startlen;
-	char		*new_line;
 
-	if (ERRNO == EOTE)
-	{
-		g_line = "              ";
-		return ((ERRNO = EOTE));
-	}
+	DECLARE(char, *tmp, *tmp2, *new_line);
 	len = g_line - g_token.line;
 	startlen = g_token.start - g_token.line;
 	new_line = ft_readline("> ");

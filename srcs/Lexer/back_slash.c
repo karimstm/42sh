@@ -1,26 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   back_slash.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/02/29 13:44:52 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 13:44:55 by amoutik          ###   ########.fr       */
+/*   Created: 2020/02/29 13:51:33 by amoutik           #+#    #+#             */
+/*   Updated: 2020/02/29 13:51:51 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int	ft_exit(char **cmds)
+int						back_slash_escape(char **string,
+						t_string *str, int include)
 {
-	int status;
+	char *new;
 
-	status = 0;
-	if (cmds && cmds[0])
-		status = ft_atoi(cmds[0]) % 255;
-	add_to_history(g_token.current, ft_strlen(g_token.current), 0);
-	save_history();
-	free_history();
-	exit(status);
+	new = *string;
+	if (!include && *(new + 1) == '\\')
+		new++;
+	else if (*(new + 1) != '\n')
+		push(str, *new++);
+	else
+	{
+		*(++new) ? ++new : 0;
+		*string = new;
+		return (1);
+	}
+	*string = new;
+	return (0);
 }

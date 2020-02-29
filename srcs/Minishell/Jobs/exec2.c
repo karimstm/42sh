@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:31:02 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/26 12:07:25 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 14:09:04 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void			initial_process(pid_t pgid, t_job_kind kind)
 	if (kind != J_NON_INTERACTIVE)
 	{
 		if (kind == J_FOREGROUND)
-			ft_tcsetpgrp(shell_terminal, pgid);
+			ft_tcsetpgrp(g_shell_terminal, pgid);
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		signal(SIGTSTP, SIG_DFL);

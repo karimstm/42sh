@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   job_helpers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:10:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 19:23:26 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/29 14:08:59 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ void		background_job(t_job *job, int cont)
 
 void		foreground_job(t_job_list *job_list, t_job *job, int cont)
 {
-	ft_tcsetpgrp(shell_terminal, job->pgid);
+	ft_tcsetpgrp(g_shell_terminal, job->pgid);
 	if (cont)
 	{
-		tcsetattr(shell_terminal, TCSADRAIN, &job->tmodes);
+		tcsetattr(g_shell_terminal, TCSADRAIN, &job->tmodes);
 		if (kill(-job->pgid, SIGCONT) < 0)
 			ft_printf_fd(2, "kill (SIGCONT) failed");
 	}
 	job_waiting(job_list, job);
-	ft_tcsetpgrp(shell_terminal, g_shell_pgid);
-	tcgetattr(shell_terminal, &job->tmodes);
-	tcsetattr(shell_terminal, TCSADRAIN, get_termios());
+	ft_tcsetpgrp(g_shell_terminal, g_shell_pgid);
+	tcgetattr(g_shell_terminal, &job->tmodes);
+	tcsetattr(g_shell_terminal, TCSADRAIN, get_termios());
 }
 
 void		mark_job_as_running(t_job *j)

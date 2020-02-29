@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/29 12:21:47 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 14:22:40 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,26 @@ typedef	struct			s_blt_line
 	t_list				*blt;
 }						t_blt_line;
 
-/* Structure for environement and set variables */
-
+/*
+** Structure for environement and set variables
+*/
 typedef struct			s_variables
 {
-	char                *key;
-	char                *value;
-	int               	is_exported;
-	int                 is_modified;
-	struct s_variables  *next;
+	char				*key;
+	char				*value;
+	int					is_exported;
+	int					is_modified;
+	struct s_variables	*next;
 }						t_variables;
 
 typedef struct			s_variables_list
 {
-	t_variables         *head;
-	t_variables         *tail;
-	int                 node_count;
+	t_variables			*head;
+	t_variables			*tail;
+	int					node_count;
 }						t_variables_list;
 
-t_variables_list	*env2;
+t_variables_list		*env2;
 
 /*
 ** Structure for the test built-in
@@ -123,13 +124,11 @@ typedef	struct			s_fifo_list
 **	============================= Expansion struct =============================
 */
 
-typedef struct	s_parser_expansion
+typedef struct			s_parser_expansion
 {
 	char		*str;
 	char		*index;
-}				t_parser_expansion;
-
-t_variables_list	*env2;
+}						t_parser_expansion;
 
 /*
 **	=============================== MINISHELL ==================================
@@ -150,7 +149,6 @@ t_stack					*get_stack(t_stack *sp);
 */
 int						is_directory(const char *path);
 
-
 /*
 **	builtin.c
 */
@@ -159,14 +157,12 @@ int						check_builtin(t_list *elem, void *obj);
 void					free_builtin(t_list *lst);
 t_list					*get_set_blt(t_list	*blt);
 
-
 /*
 **	free.c
 */
 void					free_exec_cmd(char *error, char *full_path,
-		char **head_path);
+							char **head_path);
 void					free_elem_env(t_list *elem);
-
 
 /*
 **	builtins commands.
@@ -174,7 +170,7 @@ void					free_elem_env(t_list *elem);
 int						ft_cd(char **args);
 int						ft_echo(char **args);
 int						ft_env(char **args);
-int                     ft_set_var(char **args);
+int						ft_set_var(char **args);
 int						ft_set(char **args);
 int						ft_unset(char **args);
 int						ft_export(char **args);
@@ -184,9 +180,9 @@ int						ft_pwd(char **args);
 ** Builtin cd helpres
 */
 
-int is_correct_path(char *path, int print_error);
-char *get_path_var(const char *key, int get_current_dir);
-char *concat_path_with_cdpath(char *path);
+int						is_correct_path(char *path, int print_error);
+char					*get_path_var(const char *key, int get_current_dir);
+char					*concat_path_with_cdpath(char *path);
 
 /*
 **	handlers.c
@@ -201,16 +197,18 @@ void					exit_shell(char *format, ...);
 **	history.c
 */
 void					restore_history(void);
-void                    save_history(void);
-int                     ft_history(char **args);
+void					save_history(void);
+int						ft_history(char **args);
 t_cmd_history			*get_specific_history(int index, char is_l);
 t_cmd_history			*get_history_by_reverse(int max);
-t_cmd_history			*get_specific_history_by_str(char *first, char *error_msg);
+t_cmd_history			*get_specific_history_by_str(char *first,
+							char *error_msg);
 char					*search_history(char *format);
-int                     ft_fc(char **args);
-int	                    fc_l(int flags, char *first, char *last);
-int	                    fc_s(char *first, char *last);
-int	                    fc_edit(int flags, char *editor, char *first, char *last);
+int						ft_fc(char **args);
+int						fc_l(int flags, char *first, char *last);
+int						fc_s(char *first, char *last);
+int						fc_edit(int flags, char *editor, char *first,
+							char *last);
 
 /*
 **	exec.c
@@ -220,7 +218,8 @@ char					**node_to_char(t_list_simple_command *command);
 char					*working_path(char *cmd);
 t_job_list				*start_exec(t_node *node, t_list *env);
 int						execute_redirection(t_redirection *list);
-int						assert_tok(t_token_kind base, t_token_kind k2, t_token_kind k3);
+int						assert_tok(t_token_kind base, t_token_kind k2,
+						t_token_kind k3);
 
 /*
 **	redir.c
@@ -228,7 +227,8 @@ int						assert_tok(t_token_kind base, t_token_kind k2, t_token_kind k3);
 
 int						output(t_redirection *redir);
 int						output_append(t_redirection *redir);
-int						output_with_aggregate(t_redirection *redir, int is_append);
+int						output_with_aggregate(t_redirection *redir,
+							int is_append);
 int						input(t_redirection *redir);
 int						input_here_doc(t_redirection *redir);
 int						input_with_aggregate(t_redirection *redir);
@@ -244,7 +244,8 @@ int						dup4(int fd1, int fd2);
 **	JobTesting execute.c
 */
 
-void					execute(t_job_list *job_list, t_node *node, t_list *blt);
+void					execute(t_job_list *job_list,
+							t_node *node, t_list *blt);
 
 /*
 ** ft_jobs.c
@@ -261,21 +262,21 @@ int						ft_exit(char **cmds);
 */
 
 t_job_list				*get_job_list(t_job_list *jobs);
-void					execute_entry(t_job_list *job_list, t_node *node, t_blt_line *blt_line, t_job_kind kind);
-int						run_built_in(t_blt_line *blt_line, t_process *process);
-t_simple_command        *get_assignement_name(t_list_simple_command *list);
+void					execute_entry(t_job_list *job_list,
+						t_node *node, t_blt_line *blt_line, t_job_kind kind);
+int						run_built_in(t_blt_line *blt_line,
+							t_process *process);
+t_simple_command		*get_assignement_name(t_list_simple_command *list);
 char					**get_assignements(t_list_simple_command *list);
 
 /*
 **	quote_stripping.c
 */
-
 char					*quote_stripping(char *str);
 
 /*
 **	fds.c
 */
-
 int						dup3(int oldfd);
 void					set_fds(int tmp_stds[3]);
 
@@ -283,20 +284,23 @@ void					set_fds(int tmp_stds[3]);
 **	fds.c
 */
 int						ft_type(char **args);
-char    				*is_aliased(char *arg);
+char					*is_aliased(char *arg);
 
 /*
 ** env_list.c
 */
 void					ft_init_env(char **ev);
-t_variables 			*get_var(char *target);
-void					variable_push(char *key, char *value, int export, int is_modified);
+t_variables				*get_var(char *target);
+void					variable_push(char *key, char *value,
+							int export, int is_modified);
 void					delete_var(char *target);
 char					**get_tab_env();
-t_variables_list        *dup_env(void);
-void					reset_env(t_variables_list *tmp, char **assign);
+t_variables_list		*dup_env(void);
+void					reset_env(t_variables_list *tmp,
+							char **assign);
 void					ft_del_env();
-int						edit_add_var(char *key, char *value, int is_exported, int mod);
+int						edit_add_var(char *key, char *value,
+							int is_exported, int mod);
 int						ft_var_isvalid(char *str);
 /*
 **	pre_parse.c
@@ -359,14 +363,15 @@ int						get_event(const char **new, t_string *str, char c);
 int						spacial_cases(const char *line);
 int						quotes_s(const char **real_line, t_string *str);
 void					consume_double_quote(const char **line, t_string *str);
-void					consume_single_quote(const char **line, t_string *tstring);
+void					consume_single_quote(const char **line,
+							t_string *tstring);
 
 /*
 ** Test command
 */
 
 int						do_file_checking(char *filename, int flag);
-int						expression(char  **argv);
+int						expression(char **argv);
 int						ft_test(char **argv);
 t_token_op				get_token_op(char *tmp);
 int						ft_op_error(char *s);
@@ -389,7 +394,8 @@ char					*process_sub_parser(char *name);
 void					setup_sub_proce(t_list_simple_command *list);
 void					init_fifo_list(t_fifo_list *list);
 char					*ft_tpname(const char *tmpdir);
-void					fifo_push(t_fifo_list *list, char *pathname, int fd, pid_t child);
+void					fifo_push(t_fifo_list *list, char *pathname,
+							int fd, pid_t child);
 void					close_fifos(t_fifo_list *list);
 char					*dev_path(int fd);
 t_fifo_list				*fifo_list(t_fifo_list *list);
@@ -401,10 +407,15 @@ char					*setup_fifo();
 /*
 ** General expansion
 */
-
 void					init_expansion(t_list_simple_command *list);
 int						setup_expan(t_list_simple_command *list);
 void					expand_redirection(t_redirection *redir);
 void					clean_list(t_list_simple_command	*list);
+
+/*
+** back_slash.c
+*/
+int						back_slash_escape(char **string,
+						t_string *str, int include);
 
 #endif

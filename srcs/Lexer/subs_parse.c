@@ -6,98 +6,11 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:47:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/27 10:48:27 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 13:54:59 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-void			scan_curly(void)
-{
-	if (*g_line == '{')
-		g_token.kind = TOKEN_LBRACE;
-	else if (*g_line == '}')
-		g_token.kind = TOKEN_RBRACE;
-	g_line++;
-}
-
-void			check_assignment(void)
-{
-	if (ft_isalpha(*g_line) || *g_line == '_')
-	{
-		while (ft_isalnum(*g_line) || *g_line == '_')
-			g_line++;
-		if (*g_line == '=')
-		{
-			g_token.kind = TOKEN_ASSIGNMENT_WORD;
-			g_line++;
-		}
-	}
-}
-
-void			scan_dollar_param(void)
-{
-	while (*g_line && *g_line != '}')
-		g_line++;
-	g_line++;
-}
-
-void			scan_dollar(void)
-{
-	DECLARE(int, _(index, 0), stack[100]);
-	g_line++;
-	if (*g_line == '(')
-	{
-		while (*g_line)
-		{
-			if (*g_line == '"')
-				scan_dquotes();
-			else if (*g_line == '\'')
-				scan_squotes();
-			else if (*g_line == '\\')
-				g_line++;
-			if (*g_line == '(')
-				stack[index++] = '(';
-			else if (*g_line == ')')
-				index--;
-			if (index == 0)
-				break ;
-			if (*g_line)
-				g_line++;
-		}
-		g_line++;
-	}
-	else if (*g_line == '{')
-		scan_dollar_param();
-}
-
-void			scan_process(void)
-{
-	DECLARE(int, _(index, 0), stack[100]);
-	if (*g_line == '(')
-	{
-		while (*g_line)
-		{
-			if (*g_line == '"')
-				scan_dquotes();
-			else if (*g_line == '\'')
-				scan_squotes();
-			else if (*g_line == '\\')
-				g_line++;
-			if (*g_line == '(')
-				stack[index++] = '(';
-			else if (*g_line == ')')
-				index--;
-			if (index == 0)
-				break ;
-			g_line++;
-		}
-		g_line++;
-	}
-	g_token.kind = TOKEN_WORD;
-	if (index)
-		unexpected_error();
-}
 
 int				globa_scanner(void)
 {
@@ -142,8 +55,6 @@ int				scan_backslash(void)
 
 void			scan_string(void)
 {
-	int		status;
-
 	g_token.kind = TOKEN_WORD;
 	check_assignment();
 	while (*g_line)
@@ -158,6 +69,7 @@ void			scan_string(void)
 			break ;
 		if (!globa_scanner())
 		{
+			DECLARE(int, status);
 			if ((status = scan_backslash()) == -1)
 				continue ;
 			else if (status == 1)
@@ -166,7 +78,8 @@ void			scan_string(void)
 				g_line++;
 		}
 	}
-	g_token.spec.word = !ERRNO ? ft_strsub(g_token.start, 0, g_line - g_token.start) : ft_strdup("");
+	g_token.spec.word = !ERRNO ?\
+		ft_strsub(g_token.start, 0, g_line - g_token.start) : ft_strdup("");
 }
 
 void			scan_int(void)

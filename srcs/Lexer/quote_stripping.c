@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   quote_stripping.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/27 13:11:43 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 13:51:45 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
-
-int						back_slash_escape(char **string,
-						t_string *str, int include)
-{
-	char *new;
-
-	new = *string;
-	if (!include && *(new + 1) == '\\')
-		new++;
-	else if (*(new + 1) != '\n')
-		push(str, *new++);
-	else
-	{
-		*(++new) ? ++new : 0;
-		*string = new;
-		return (1);
-	}
-	*string = new;
-	return (0);
-}
 
 /*
 **	karim \<new_line>karim
@@ -77,7 +57,8 @@ void					skip_dqoute_w(char **string, char c,
 **	=> andnow
 */
 
-void		word_looping(t_list_simple_command *list, t_string *str, char **word, t_token_kind kind)
+void					word_looping(t_list_simple_command *list,
+						t_string *str, char **word, t_token_kind kind)
 {
 	char	*s;
 
@@ -100,7 +81,7 @@ void		word_looping(t_list_simple_command *list, t_string *str, char **word, t_to
 	*word = s;
 }
 
-t_list_simple_command	*split_word(char	*word, t_token_kind kind)
+t_list_simple_command	*split_word(char *word, t_token_kind kind)
 {
 	t_string				string;
 	char					*start;
@@ -142,12 +123,12 @@ void					init_expansion(t_list_simple_command *list)
 {
 	t_list_simple_command	*res;
 
-	DECLARE(t_simple_command, *current, *next, _(*prev, NULL));
-	current = list && list->head ? list->head : NULL;
-	while (current)
+	DECLARE(t_simple_command, *cur, *next, _(*prev, NULL));
+	cur = list && list->head ? list->head : NULL;
+	while (cur)
 	{
-		next = current->next;
-		if (current->name && (res = split_word(current->name, current->kind))->node_count)
+		next = cur->next;
+		if (cur->name && (res = split_word(cur->name, cur->kind))->node_count)
 		{
 			if (prev)
 				prev->next = res->head;
@@ -156,13 +137,13 @@ void					init_expansion(t_list_simple_command *list)
 			prev = res->tail;
 			list->node_count += res->node_count;
 		}
-		else if (current == list->head)
+		else if (cur == list->head)
 			list->head = NULL;
 		free(res);
-		ft_strdel(&current->name);
+		ft_strdel(&cur->name);
 		list->node_count--;
-		free(current);
-		current = next;
+		free(cur);
+		cur = next;
 	}
 	prev ? list->tail = prev : 0;
 }

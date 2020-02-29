@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:10:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 19:25:54 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/29 14:08:59 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ void		init_shell(void)
 	struct termios	*shell_tmodes;
 	int				shell_is_interactive;
 
-	shell_terminal = STDIN_FILENO;
+	g_shell_terminal = STDIN_FILENO;
 	shell_tmodes = get_termios();
-	shell_is_interactive = isatty(shell_terminal);
+	shell_is_interactive = isatty(g_shell_terminal);
 	if (shell_is_interactive)
 	{
-		while (ft_tcgetpgrp(shell_terminal) != (g_shell_pgid = getpgrp()))
+		while (ft_tcgetpgrp(g_shell_terminal) != (g_shell_pgid = getpgrp()))
 			kill(-g_shell_pgid, SIGTTIN);
 		signal(SIGINT, sig_handler);
 		signal(SIGQUIT, SIG_IGN);
@@ -36,8 +36,8 @@ void		init_shell(void)
 			ft_printf_fd(2, "Couldn't put the shell in its own process group");
 			exit(EXIT_FAILURE);
 		}
-		ft_tcsetpgrp(shell_terminal, g_shell_pgid);
-		tcgetattr(shell_terminal, shell_tmodes);
+		ft_tcsetpgrp(g_shell_terminal, g_shell_pgid);
+		tcgetattr(g_shell_terminal, shell_tmodes);
 	}
 }
 

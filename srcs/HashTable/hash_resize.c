@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hash_resize.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 12:38:32 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 12:47:52 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 14:03:21 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static void			ht_resize(t_hash_table *ht, const int base_size)
 	while (i < ht->size)
 	{
 		item = ht->items[i];
-		if (item != NULL && item != &HT_DELETED_ITEM)
+		if (item != NULL && item != &g_ht_deleted_item)
 			ht_insert(new_ht, item->key, item->value);
 		i++;
 	}

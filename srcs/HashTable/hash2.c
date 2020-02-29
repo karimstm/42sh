@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hash2.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 12:36:31 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 12:41:46 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 14:03:04 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void					ht_insert(t_hash_table *ht,
 	current_item = ht->items[index];
 	while (current_item != NULL)
 	{
-		if (current_item != &HT_DELETED_ITEM)
+		if (current_item != &g_ht_deleted_item)
 			if (strcmp(current_item->key, key) == 0)
 			{
 				ht_del_item(current_item);
@@ -79,7 +79,7 @@ char					*ht_search(t_hash_table *ht, const char *key)
 	i = 1;
 	while (item != NULL)
 	{
-		if (item != &HT_DELETED_ITEM)
+		if (item != &g_ht_deleted_item)
 		{
 			if (strcmp(item->key, key) == 0)
 				return (item->value);
@@ -105,12 +105,12 @@ void					ht_delete(t_hash_table *ht, const char *key)
 	i = 1;
 	while (item != NULL)
 	{
-		if (item != &HT_DELETED_ITEM)
+		if (item != &g_ht_deleted_item)
 		{
 			if (strcmp(item->key, key) == 0)
 			{
 				ht_del_item(item);
-				ht->items[index] = &HT_DELETED_ITEM;
+				ht->items[index] = &g_ht_deleted_item;
 			}
 		}
 		index = ht_get_hash(key, ht->size, i);

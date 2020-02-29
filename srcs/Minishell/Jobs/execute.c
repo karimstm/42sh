@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:09:46 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 11:54:47 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 13:43:50 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void					check_pipe_and_dup(t_process *process,
 	job = JOB_LIST->tail;
 	dup2(*infile, STDIN_FILENO);
 	close(*infile);
-	if (job->proc_list->node_count > 1 && process->node && process->node->kind == NODE_SIMPLE_COMMAND)
+	if (job->proc_list->node_count > 1 && process->node
+		&& process->node->kind == NODE_SIMPLE_COMMAND)
 		if (process->node->spec.simple_command)
 			setup_expan(process->node->spec.simple_command);
 	if (process->next)
@@ -102,18 +103,12 @@ void					xfork(t_process *process, int pip[2],
 void					execute_simple_command(t_job_list *job_list,
 								t_blt_line *blt_line)
 {
-	t_job		*job;
-	t_process	*process;
-	int			pip[2];
-	int			tmp[3];
-	int			infile;
-
+	DECLARE(int, pip[2], tmp[3], _(infile, dup3(STDIN_FILENO)));
+	DECLARE(t_job, _(*job, job_list->tail));
+	DECLARE(t_process, _(*process, (job) ? job->proc_list->head : NULL));
 	pip[0] = -1;
 	pip[1] = -1;
-	job = job_list->tail;
-	process = (job) ? job->proc_list->head : NULL;
 	set_fds(tmp);
-	infile = dup3(STDIN_FILENO);
 	while (process)
 	{
 		check_pipe_and_dup(process, &infile, tmp, pip);
