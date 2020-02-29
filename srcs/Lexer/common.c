@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 15:56:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 13:46:09 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 18:01:45 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void			escape_space(void)
 {
 	next_token();
-	while (is_token(TOKEN_SPACE))
+	while (!ERRNO && is_token(TOKEN_SPACE))
 		next_token();
 }
 
@@ -39,7 +39,7 @@ int				get_new_line(void)
 	tmp = ft_strjoin(g_token.line, "\n");
 	ft_strdel((char **)&g_token.line);
 	tmp2 = new_line;
-	if (new_line == NULL || ft_strequ(new_line, "\4"))
+	if (new_line == NULL || ft_strequ(new_line, "\4") || ERRNO == EOTE)
 	{
 		ft_strdel(&new_line);
 		return ((ERRNO = EOTE));

@@ -6,34 +6,35 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 23:20:37 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/27 01:06:00 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/29 16:56:21 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void ft_update_pwd(char *path)
+void	ft_update_pwd(char *path)
 {
-	t_variables *pwd = get_var("PWD");
+	t_variables	*pwd;
 
+	pwd = get_var("PWD");
 	if (pwd)
 		edit_add_var("OLDPWD", pwd->value, 0, 0);
 	edit_add_var("PWD", path, 0, 0);
 	ft_printf("%s\n", path);
 }
 
-int get_cd_flag(char ***cmd)
+int		get_cd_flag(char ***cmd)
 {
-	char **tmp;
-	int ret;
-	int i;
+	char	**tmp;
+	int		ret;
+	int		i;
 
 	ret = 1;
 	tmp = *cmd;
 	while (*tmp)
 	{
 		if (ft_strequ(*tmp, "-") || **tmp != '-')
-			break;
+			break ;
 		i = 0;
 		while (tmp[0][++i])
 		{
@@ -47,10 +48,10 @@ int get_cd_flag(char ***cmd)
 	return (ret);
 }
 
-char *ft_get_cwd(char *path, char *ret, char *tmp, char *tmp2)
+char	*ft_get_cwd(char *path, char *ret, char *tmp, char *tmp2)
 {
-	const char *ptr = path;
-	int diff;
+	const char	*ptr = path;
+	int			diff;
 
 	if (ret && !(*ret = 0))
 		while (*path)
@@ -73,10 +74,10 @@ char *ft_get_cwd(char *path, char *ret, char *tmp, char *tmp2)
 	return (ret && !*ret ? ft_strcat(ret, "/") : ret);
 }
 
-char *get_cd_path(char *path)
+char	*get_cd_path(char *path)
 {
-	char *pwd;
-	char *tmp;
+	char	*pwd;
+	char	*tmp;
 
 	if (!path)
 		path = get_path_var("HOME", 0);
@@ -99,10 +100,10 @@ char *get_cd_path(char *path)
 	return (path);
 }
 
-int ft_cd(char **cmd)
+int		ft_cd(char **cmd)
 {
-	char *path;
-	int logicaly;
+	char	*path;
+	int		logicaly;
 
 	if ((logicaly = get_cd_flag(&cmd)) == -1 || (cmd[0] && cmd[1]))
 		return (cmd[1] ? PRINT_ERROR2("cd", "to many argument") : -1);

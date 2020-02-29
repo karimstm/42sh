@@ -6,13 +6,13 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/28 19:19:20 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/28 15:53:26 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/02/29 16:54:39 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-int is_correct_path(char *path, int print_error)
+int		is_correct_path(char *path, int print_error)
 {
 	if (path && !access(path, F_OK))
 	{
@@ -29,9 +29,9 @@ int is_correct_path(char *path, int print_error)
 	return (0);
 }
 
-char *get_path_var(const char *key, int get_current_dir)
+char	*get_path_var(const char *key, int get_current_dir)
 {
-	t_variables *var;
+	t_variables	*var;
 
 	if ((var = get_var((char *)key)))
 		return (ft_strdup(var->value));
@@ -40,12 +40,12 @@ char *get_path_var(const char *key, int get_current_dir)
 	return (NULL);
 }
 
-char *concat_path_with_cdpath(char *path)
+char	*concat_path_with_cdpath(char *path)
 {
-	char *tmp;
-	char **cd_paths;
-	t_variables *var;
-	int i;
+	char		*tmp;
+	char		**cd_paths;
+	t_variables	*var;
+	int			i;
 
 	i = 0;
 	var = get_var("CDPATH");
@@ -59,7 +59,7 @@ char *concat_path_with_cdpath(char *path)
 			{
 				free(path);
 				path = tmp;
-				break;
+				break ;
 			}
 			free(tmp);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 11:42:20 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 18:06:42 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,11 @@ t_node			*start_parsing_command(const char *line)
 
 	node = NULL;
 	init_stream(line);
+	if (ERRNO)
+	{
+		ft_strdel(&g_token.spec.word);
+		return (NULL);
+	}
 	node = parse_commands();
 	if (g_token.kind != TOKEN_EOF && !ERRNO)
 		unexpected_error();
