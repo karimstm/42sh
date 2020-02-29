@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fc_edit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 06:03:16 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/11 06:03:18 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/02/29 13:22:59 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static t_cmd_history	*get_last(char *last)
 	return (history == NULL ? history_begining : history);
 }
 
-static void	write_cmds(int fd, char *first, char *last, int flags)
+static void				write_cmds(int fd, char *first, char *last, int flags)
 {
 	t_cmd_history	*first_h;
 	t_cmd_history	*last_h;
@@ -96,7 +96,7 @@ static void	write_cmds(int fd, char *first, char *last, int flags)
 	}
 }
 
-static void	exec_cmds_in_file(char *path)
+static void				exec_cmds_in_file(char *path)
 {
 	int		fd;
 	char	*buf;
@@ -113,7 +113,8 @@ static void	exec_cmds_in_file(char *path)
 	close(fd);
 }
 
-int	fc_edit(int flags, char *editor, char *first, char *last)
+int						fc_edit(int flags, char *editor,
+							char *first, char *last)
 {
 	int		fd;
 	int		status;
