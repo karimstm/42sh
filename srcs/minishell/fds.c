@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fds.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:51:21 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 13:51:23 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 12:11:46 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,4 +24,17 @@ int		dup3(int oldfd)
 	if (fcntl(oldfd, F_GETFD) < 0)
 		return (-1);
 	return (fcntl(oldfd, F_DUPFD, 100));
+}
+
+void	restore_fds(int std[2])
+{
+	dup2(std[0], 0);
+	dup2(std[1], 1);
+}
+
+int		dup4(int fd1, int fd2)
+{
+	dup2(fd1, fd2);
+	close(fd2);
+	return (0);
 }

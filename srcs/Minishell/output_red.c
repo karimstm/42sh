@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   output_red.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:04:55 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 12:42:25 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 12:11:19 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,6 @@ int			dashed_aggregate(t_redirection *redir, int is_append)
 	else
 		return (1);
 	return (-1);
-}
-
-int			dup4(int fd1, int fd2)
-{
-	dup2(fd1, fd2);
-	close(fd2);
-	return (0);
 }
 
 int			output_with_aggregate(t_redirection *redir, int is_append)

@@ -3,22 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:52:49 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 12:30:34 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 12:07:36 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-void			restore_fds(int std[2])
-{
-	dup2(std[0], 0);
-	dup2(std[1], 1);
-}
-
-char			**node_to_char(t_list_simple_command *command)
+char	**node_to_char(t_list_simple_command *command)
 {
 	char				**cmds;
 	int					i;
@@ -40,7 +34,7 @@ char			**node_to_char(t_list_simple_command *command)
 	return (cmds);
 }
 
-char			*working_path(char *cmd)
+char	*working_path(char *cmd)
 {
 	char		**all_paths;
 	char		**tmp;
@@ -67,7 +61,7 @@ char			*working_path(char *cmd)
 	return (full_path);
 }
 
-int				exec_builin(t_list *env, t_list *blt, t_node *node)
+int		exec_builin(t_list *env, t_list *blt, t_node *node)
 {
 	char		**cmds;
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   alias.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/03 16:18:40 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/05 16:42:35 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 13:16:27 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,17 @@ int						ft_alias(char **args);
 void					init_alias(t_alias_list *list);
 int						ft_unalias(char **args);
 char					*get_alias_value(t_alias_list *list,
-									char *alias, char *start_alias);
+									char *alias);
 t_alias_list			*get_alias_list(t_alias_list *aliases);
 char					*get_alias(char *key);
 t_alias					*alias_find(t_alias_list *list, char *alias);
+char					**split_eq(char *str);
+void					alias_push(t_alias_list *list, char *alias, char *value);
+int						print_invalid_option(char c);
+void					alias_insert(t_alias_list *list, char *args);
+void					delete_alias(t_alias_list *list, char *to_find);
+void					aliase_prune(t_alias_list *list);
+void					print_aliases(t_alias_list *list);
+int						is_alias_pattern(char *str);
 
 #endif

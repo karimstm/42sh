@@ -6,7 +6,7 @@
 #    By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/17 16:41:20 by amoutik           #+#    #+#              #
-#    Updated: 2020/02/29 01:14:00 by cjamal           ###   ########.fr        #
+#    Updated: 2020/02/29 13:12:56 by cjamal           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,12 +26,12 @@ SRC_JOBS = $(patsubst %.c, $(SRC)/Minishell/Jobs/%.c, ft_getopt.c ft_strsignal.c
 														terminal.c jobs_list.c job.c execute.c job_helpers.c ft_jobs.c ft_fg.c ft_bg.c \
 														sep_command.c init_exec.c assignment.c command_utils.c exec2.c)
 
-SRC_EVENT = $(patsubst %.c, $(SRC)/Minishell/events/%.c, event.c pre_parse.c)
+SRC_EVENT = $(patsubst %.c, $(SRC)/Minishell/events/%.c, event.c pre_parse.c event_utils.c)
 SRC_QUO = $(patsubst %.c, $(SRC)/Strings/%.c, free_string.c is_number.c string.c)
 SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, expans.utils.c parse_error.c parse_utils.c parse_alias_redir.c parse_helper.c lex_helpers.c ft_xmalloc.c herdoc.c input_redir.c ast_rest.c ast_redir.c ast_utils.c stack_helper.c stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c quote_stripping.c common.c meta.c subs_parse.c)
 SRC_BLT = $(patsubst %.c, $(SRC)/Builtins/%.c, ft_exit.c test_utils.c ft_test.c test_expr.c test_file.c cd.c cd_helper.c)
-SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c)
-SRC_HSH= $(patsubst %.c, $(SRC)/HashTable/%.c, hash_handle.c hash.c prime.c)
+SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c alias_utils.c handle_alias.c builtins_alias.c)
+SRC_HSH= $(patsubst %.c, $(SRC)/HashTable/%.c, hash_handle.c hash.c prime.c hash_resize.c hash2.c)
 SRC_HISTORY= $(patsubst %.c, $(SRC)/history/%.c, history.c history_helper.c ft_fc.c fc_l.c fc_s.c fc_edit.c)
 SRC_EXPNASION = $(shell find $(SRC)/expansion -name '*.c')
 SRC_SUB_PROCESS = $(patsubst %.c, $(SRC)/Process_Sub/%.c, sub_core.c fifo.c process_sub.c tpname.c)

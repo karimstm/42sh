@@ -36,4 +36,11 @@ void                ht_delete(t_hash_table *h, const char *key);
 int                 is_prime(const int x);
 int                 next_prime(int x);
 t_hash_table        *get_hash_table(t_hash_table *htab);
+t_hash_item         *ht_new_item(const char *k, const char *v);
+int				    hash(const char *s, const int a, const int m);
+void			    ht_del_item(t_hash_item *item);
+t_hash_table	    *ht_new_sized(const int base_size);
+void				ht_resize_down(t_hash_table *ht);
+void				ht_resize_up(t_hash_table *ht);
+
 # endif

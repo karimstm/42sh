@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 20:15:41 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/28 21:04:36 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 12:14:25 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char					*ft_glob_dup(char *string)
 			push(&s, '\\');
 		push(&s, *string++);
 	}
-	return s.string;
+	return (s.string);
 }
 
 t_list_simple_command	*do_globing(char *node, t_token_kind kind)
@@ -44,7 +44,7 @@ t_list_simple_command	*do_globing(char *node, t_token_kind kind)
 		token_push(glob_lst, ft_strdup(node), kind);
 	i = -1;
 	if (glob_holder.gl_pathv)
-	{	
+	{
 		while (glob_holder.gl_pathv[++i])
 			ft_strdel(&glob_holder.gl_pathv[i]);
 		free(glob_holder.gl_pathv);
@@ -52,13 +52,13 @@ t_list_simple_command	*do_globing(char *node, t_token_kind kind)
 	return (glob_lst);
 }
 
-void	init_globing(t_list_simple_command *list)
+void					init_globing(t_list_simple_command *list)
 {
 	t_simple_command		*current;
 	t_simple_command		*next;
 	t_simple_command		*prev;
 	t_list_simple_command	*res;
-	
+
 	current = list && list->head ? list->head : NULL;
 	prev = NULL;
 	while (current)
@@ -78,11 +78,10 @@ void	init_globing(t_list_simple_command *list)
 		free(current);
 		current = next;
 	}
-	if (prev)
-		list->tail = prev;
+	prev ? (list->tail = prev) : 0;
 }
 
-int		setup_expan(t_list_simple_command *list)
+int						setup_expan(t_list_simple_command *list)
 {
 	setup_sub_proce(list);
 	expand_args(list);

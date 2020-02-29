@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/29 01:16:42 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 12:21:47 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,6 +238,8 @@ int						fd_is_valid(int fd);
 int						bad_fd(int fd);
 int						check_file_permission(char *filename, int perm);
 int						check_file_status(char *filename);
+int						dup4(int fd1, int fd2);
+
 /*
 **	JobTesting execute.c
 */
@@ -354,6 +356,10 @@ char					*consume_word(const char **line, char c);
 */
 void					command_line_n(const char **str, char c);
 int						get_event(const char **new, t_string *str, char c);
+int						spacial_cases(const char *line);
+int						quotes_s(const char **real_line, t_string *str);
+void					consume_double_quote(const char **line, t_string *str);
+void					consume_single_quote(const char **line, t_string *tstring);
 
 /*
 ** Test command

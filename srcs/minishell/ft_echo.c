@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:48:01 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/27 13:24:13 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 12:09:21 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 int		ft_echo(char **args)
 {
 	int flag;
-	
+
 	if (!fd_is_valid(1))
 	{
-		ft_printf_fd(2, "%s","42sh: echo: write error: Bad file descriptor\n");
+		ft_printf_fd(2, "%s", "42sh: echo: write error: Bad file descriptor\n");
 		return (1);
 	}
 	flag = 0;

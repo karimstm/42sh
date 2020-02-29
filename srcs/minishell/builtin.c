@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/18 15:37:08 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 12:05:19 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "shell.h"
 
-t_list		*get_set_blt(t_list	*blt)
+t_list		*get_set_blt(t_list *blt)
 {
 	static t_list *list = NULL;
 
@@ -31,7 +31,7 @@ static void	add_builtin(t_list **lst, char *cmd, int (*f)())
 {
 	t_builtin	elem;
 
-	elem.cmd = ft_strdup(cmd);;
+	elem.cmd = ft_strdup(cmd);
 	elem.f = f;
 	ft_lstadd(lst, ft_lstnew(&elem, sizeof(t_builtin)));
 	get_set_blt(*lst);
