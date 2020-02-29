@@ -6,20 +6,11 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:55:19 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/12 18:52:30 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 01:07:41 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 # include "shell.h"
-
-/*
-export name=value => add name to ENV && set
-export name => add name to ENV if name is in set
-name=value => add name to set || modify name if name is already in set or ENV
-unset name => retrieve name from set and ENV
-HOME=/tmp cd => exec cd with a dup ENV (setenv)
-*/
 
 int		ft_var_isvalid(char *str)
 {
@@ -83,50 +74,4 @@ int     ft_set_var(char **args)
         if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
             edit_add_var(args[i], index , 0, ENV_DEFAULT);
     return (0); 
-}
-
-int     ft_unset(char **args)
-{
-    int i;
-
-    i = -1;
-    if (!args)
-        return (1);
-    while (args[++i])
-    {
-        if (!ft_var_isvalid(args[i]))
-            ft_printf_fd(2, "42sh: export: `%s': not a valid identifier\n", args[i]);
-        else
-            delete_var(args[i]);
-    }
-    return (0);
-}
-
-int     ft_set(char **args)
-{
-    t_variables *cur;
-
-    (void)args;
-    cur = env2->head;
-    while (cur)
-    {            
-        ft_printf("%s=%s\n", cur->key, cur->value);
-        cur = cur->next;
-    }
-    return (0);
-}
-
-int     ft_env(char **args)
-{
-    t_variables *cur;
-
-    (void)args;
-    cur = env2->head;
-    while (cur)
-    {
-        if (cur->is_exported)
-            ft_printf("%s=%s\n", cur->key, cur->value);
-        cur = cur->next;
-    }
-    return (0);
 }

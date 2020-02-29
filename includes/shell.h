@@ -1,12 +1,12 @@
-			   /* ************************************************************************** */
+/* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   shell.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/05 10:47:34 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 01:16:42 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,6 +295,7 @@ t_variables_list        *dup_env(void);
 void					reset_env(t_variables_list *tmp, char **assign);
 void					ft_del_env();
 int						edit_add_var(char *key, char *value, int is_exported, int mod);
+int						ft_var_isvalid(char *str);
 /*
 **	pre_parse.c
 */
