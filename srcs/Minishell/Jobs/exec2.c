@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:31:02 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 14:09:04 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 15:22:22 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int				run_built_in(t_blt_line *blt_line, t_process *process)
 		if ((bltin = ft_lstsearch(blt_line->blt, cmds[0], &check_builtin)))
 			process->status = ((t_builtin*)bltin->content)->f(cmds + 1);
 		ft_free_strtab(cmds);
+		JOB_LIST->status = process->status;
 		process->completed = 1;
 		close_fifos(FIFO_LIST);
 		return (process->status);
