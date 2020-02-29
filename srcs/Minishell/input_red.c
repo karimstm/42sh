@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:06:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 12:50:32 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 11:46:05 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,26 @@ int		input_here_doc(t_redirection *redir)
 	return (1);
 }
 
+int		input_with_dash(t_redirection *redir)
+{
+	if (redir->word && redir->word[0] == '-')
+	{
+		if (fd_is_valid(redir->fd2))
+		{
+			dup2(redir->fd1, redir->fd2);
+			close(redir->fd2);
+			return (0);
+		}
+		else
+			return (bad_fd(redir->fd2));
+	}
+	return (-2);
+}
+
 int		input_with_aggregate(t_redirection *redir)
 {
+	int		error;
+
 	if (redir->fd2 < 0)
 	{
 		if (redir->word && redir->word[0] == '-')
@@ -63,17 +81,8 @@ int		input_with_aggregate(t_redirection *redir)
 	}
 	else
 	{
-		if (redir->word && redir->word[0] == '-')
-		{
-			if (fd_is_valid(redir->fd2))
-			{
-				dup2(redir->fd1, redir->fd2);
-				close(redir->fd2);
-				return (0);
-			}
-			else
-				return (bad_fd(redir->fd2));
-		}
+		if ((error = input_with_dash(redir)) != -2)
+			return (error);
 	}
 	if (fd_is_valid(redir->fd2))
 	{

@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:09:46 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/27 11:12:03 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 11:54:47 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,17 @@ void					job_forwarding(t_job_list *job_list, t_job *job)
 		background_job(job, 0);
 }
 
-void					check_pipe_and_dup(t_job *job, t_process *process,
+void					check_pipe_and_dup(t_process *process,
 						int *infile, int tmp[3], int pip[2])
 {
+	t_job	*job;
+
+	job = JOB_LIST->tail;
 	dup2(*infile, STDIN_FILENO);
 	close(*infile);
 	if (job->proc_list->node_count > 1 && process->node && process->node->kind == NODE_SIMPLE_COMMAND)
-	{
 		if (process->node->spec.simple_command)
 			setup_expan(process->node->spec.simple_command);
-	}
 	if (process->next)
 	{
 		if (pipe(pip) < 0)
@@ -115,7 +116,7 @@ void					execute_simple_command(t_job_list *job_list,
 	infile = dup3(STDIN_FILENO);
 	while (process)
 	{
-		check_pipe_and_dup(job, process, &infile, tmp, pip);
+		check_pipe_and_dup(process, &infile, tmp, pip);
 		if (cmd_type(process) == IS_BUILTIN
 			&& job->proc_list->node_count == 1 && job->kind == J_FOREGROUND)
 		{

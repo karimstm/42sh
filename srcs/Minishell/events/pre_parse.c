@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 10:49:43 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/18 17:36:37 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/02/29 11:52:09 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,28 @@ int			spacial_cases(const char *line)
 		return (1);
 	return (0);
 }
+
+int			quotes_s(const char **real_line, t_string *str)
+{
+	const char	*line;
+
+	line = *real_line;
+
+	if (*line == '\'')
+	{
+		consume_single_quote(&line, str);
+		*real_line = line;
+		return (1);
+	}
+	else if (*line == '"')
+	{
+		consume_double_quote(&line, str);
+		*real_line = line;
+		return (1);
+	}
+	return (0);
+}
+
 /*
 **	This function consume history keyword
 **	! => !n => !-n => !! => !string
@@ -113,21 +135,11 @@ int			spacial_cases(const char *line)
 
 int			consume_history(const char **pure_line, t_string *str)
 {
-	const char	*line;
-
-	line = *pure_line;
+	DECLARE(const char, _(*line, *pure_line));
 	while (*line)
 	{
-		if (*line == '\'')
-		{
-			consume_single_quote(&line, str);
+		if (quotes_s(&line, str))
 			continue ;
-		}
-		else if (*line == '"')
-		{
-			consume_double_quote(&line, str);
-			continue ;
-		}
 		else if (*line == '\\' || *line == '[')
 		{
 			push(str, *line++);

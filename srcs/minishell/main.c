@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/20 10:57:10 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/28 21:18:40 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 11:42:20 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ int				main(int ac, char **av, char **ev)
 	t_list		*blt;
 	t_list		*history;
 	t_fifo_list	*list;
-	
+
 	(void)ac;
 	(void)av;
 	list = (t_fifo_list *)xmalloc(sizeof(t_fifo_list));
