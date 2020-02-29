@@ -6,15 +6,15 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:12:17 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 01:15:33 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 01:36:08 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "shell.h"
+#include "shell.h"
 
-t_variables         *dup_node(t_variables *node_to_dup)
+t_variables			*dup_node(t_variables *node_to_dup)
 {
-	t_variables     *dup_node;
+	t_variables			*dup_node;
 
 	if (node_to_dup)
 	{
@@ -29,13 +29,13 @@ t_variables         *dup_node(t_variables *node_to_dup)
 	return (NULL);
 }
 
-t_variables_list    *dup_env(void)
+t_variables_list	*dup_env(void)
 {
-	t_variables_list *dup;
-	t_variables     *cur;
-	t_variables     *cur_dup;
+	t_variables_list	*dup;
+	t_variables			*cur;
+	t_variables			*cur_dup;
 
-	dup = (t_variables_list *)xmalloc(sizeof(t_variables_list));;
+	dup = (t_variables_list *)xmalloc(sizeof(t_variables_list));
 	dup->tail = NULL;
 	dup->node_count = env2 ? env2->node_count : 0;
 	cur = env2 ? env2->head : 0;
@@ -52,11 +52,11 @@ t_variables_list    *dup_env(void)
 	return (dup);
 }
 
-char			**get_tab_env()
+char				**get_tab_env(void)
 {
-	t_variables		*cur;
-	int				i;
-	char			**tab_env;
+	t_variables			*cur;
+	int					i;
+	char				**tab_env;
 
 	i = 0;
 	tab_env = NULL;
@@ -74,19 +74,19 @@ char			**get_tab_env()
 	return (tab_env);
 }
 
-void	init_env_list()
+void				init_env_list(void)
 {
 	env2->head = NULL;
 	env2->tail = NULL;
 	env2->node_count = 0;
 }
 
-void		ft_init_env(char **ev)
+void				ft_init_env(char **ev)
 {
-	char **cpy_env;
-	char *index;
-	char *key;
-	char *value;
+	char				**cpy_env;
+	char				*index;
+	char				*key;
+	char				*value;
 
 	env2 = (t_variables_list*)xmalloc(sizeof(t_variables_list));
 	init_env_list();

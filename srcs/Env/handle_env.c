@@ -6,15 +6,15 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 12:02:02 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 01:15:25 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 01:33:36 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "shell.h"
+#include "shell.h"
 
-t_variables		*get_var(char *target)
+t_variables	*get_var(char *target)
 {
-	t_variables *current;
+	t_variables	*current;
 
 	current = env2->head;
 	while (current)
@@ -28,7 +28,7 @@ t_variables		*get_var(char *target)
 
 void		variable_push(char *key, char *value, int export, int is_modified)
 {
-	t_variables *var;
+	t_variables	*var;
 
 	var = (t_variables*)xmalloc(sizeof(t_variables));
 	var->is_exported = export ? 1 : 0;
@@ -46,7 +46,7 @@ void		variable_push(char *key, char *value, int export, int is_modified)
 
 t_variables	**find_var(char *target, t_variables **prev)
 {
-	t_variables **current;
+	t_variables	**current;
 
 	current = &env2->head;
 	*prev = NULL;
@@ -76,8 +76,8 @@ void		ft_lstonedel(t_variables **to_del)
 
 void		delete_var(char *target)
 {
-	t_variables **to_del;
-	t_variables *prev;
+	t_variables	**to_del;
+	t_variables	*prev;
 
 	if (env2->node_count == 0)
 		return ;
