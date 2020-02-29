@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:05:04 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 01:32:22 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 11:43:45 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ void	reset_env(t_variables_list *tmp, char **assign)
 {
 	t_variables_list *dup;
 
+	if (!tmp)
+		return ;
 	DECLARE(t_variables, *cur_dup, *edit_var);
 	dup = env2;
 	env2 = tmp;
