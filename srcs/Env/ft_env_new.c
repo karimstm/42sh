@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:55:19 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 01:26:33 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/02/29 15:56:22 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,6 @@ int	ft_set_var(char **args)
 	i = -1;
 	while (args[++i])
 		if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
-			edit_add_var(args[i], index, 0, ENV_DEFAULT);
+			edit_add_var(args[i], index, 1, ENV_DEFAULT);
 	return (0);
 }
