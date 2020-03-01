@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/01 12:57:33 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 13:30:36 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,7 @@ t_list_simple_command	*split_word(char *word, t_token_kind kind)
 		if (*word)
 			new_string(&string);
 	}
-	if (!list->node_count)
-		ft_strdel(&string.string);
+	!list->node_count ? ft_strdel(&string.string) : 0;
 	return (list);
 }
 
