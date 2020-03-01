@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/25 23:20:37 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/29 16:56:21 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 23:36:49 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	ft_update_pwd(char *path)
 
 	pwd = get_var("PWD");
 	if (pwd)
-		edit_add_var("OLDPWD", pwd->value, 0, 0);
-	edit_add_var("PWD", path, 0, 0);
+		edit_add_var("OLDPWD", pwd->value, 0, ENV_MODIFIED);
+	edit_add_var("PWD", path, 0, ENV_MODIFIED);
 	ft_printf("%s\n", path);
 }
 
