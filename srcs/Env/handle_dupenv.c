@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:05:04 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 11:43:45 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 12:50:30 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,24 +73,24 @@ void	reset_env(t_variables_list *tmp, char **assign)
 
 	if (!tmp)
 		return ;
-	DECLARE(t_variables, *cur_dup, *edit_var);
+	DECLARE(t_variables, *cr, *edit_var, *next);
 	dup = env2;
 	env2 = tmp;
-	cur_dup = dup ? dup->head : NULL;
-	while (cur_dup)
+	cr = dup ? dup->head : NULL;
+	while (cr)
 	{
-		edit_var = get_var(cur_dup->key);
-		if (edit_var && cur_dup->is_modified == ENV_MODIFIED)
+		next = cr->next;
+		edit_var = get_var(cr->key);
+		if (edit_var && cr->is_modified == ENV_MODIFIED)
 		{
 			ft_strdel(&edit_var->value);
-			edit_var->value = ft_strdup(cur_dup->value);
+			edit_var->value = ft_strdup(cr->value);
 		}
-		else if (cur_dup->is_modified == ENV_ADDED)
-			variable_push(ft_strdup(cur_dup->key),
-					ft_strdup(cur_dup->value), 1, ENV_NOTDELETED);
-		edit_var ? edit_var->is_modified = ENV_NOTDELETED : 0;
-		free_node_env(cur_dup);
-		cur_dup = cur_dup->next;
+		else if (cr->is_modified == ENV_ADDED)
+			variable_push(ft_strdup(cr->key), ft_strdup(cr->value), 1, ENV_NT);
+		edit_var ? edit_var->is_modified = ENV_NT : 0;
+		free_node_env(cr);
+		cr = next;
 	}
 	dup ? free(dup) : 0;
 	complete_reset(assign);

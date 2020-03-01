@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:10:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 16:02:22 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 12:36:28 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,20 +26,18 @@ void			simple_command(t_job_list *job_list,
 	name = cmd && cmd->name ? ft_strdup(cmd->name) : NULL;
 	assign = get_assignements(node->spec.simple_command);
 	dummy_process(job_list, node, kind);
-	if (assign)
+	if (assign && cmd)
 	{
-		if (cmd)
-		{
-			tmp = env2;
-			env2 = dup_env();
-		}
-		ft_set_var(assign, cmd);
+		tmp = env2;
+		env2 = dup_env();
 	}
+	ft_set_var(assign, cmd);
 	execute_simple_command(job_list, blt_line);
 	if (name && cmd && cmd->type == IS_FOUND)
 		ht_insert(get_hash_table(NULL), name, cmd->name);
 	reset_env(tmp, assign);
 	ft_strdel(&name);
+	ft_free_strtab(assign);
 }
 
 void			consume_pipe(t_list_process *pro_list, t_node *node)
