@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:25:04 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/01 12:28:30 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 12:57:33 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,7 +163,11 @@ char					*quote_stripping(char *str)
 	while (tmp && *tmp)
 	{
 		if (*tmp == '\\')
+		{
 			tmp++;
+			if (*tmp == '\n')
+				tmp++;
+		}
 		else if (*tmp == '"' || *tmp == '\'')
 			skip_dqoute_w(&tmp, *tmp, &string, 0);
 		if (*tmp)

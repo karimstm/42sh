@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:09:46 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 18:58:24 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 12:56:07 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void					check_pipe_and_dup(t_process *process,
 		&& process->node->kind == NODE_SIMPLE_COMMAND)
 		if (process->node->spec.simple_command)
 			setup_expan(process->node->spec.simple_command);
-	
 	if (process->next)
 	{
 		if (pipe(pip) < 0)
