@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:10:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 11:26:31 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 13:46:34 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ int			bg_usage(char c)
 
 int			bg_error(char *job)
 {
-	ft_printf_fd(2, "42sh: bg: %s: no such job\n", job);
+	if (job == NULL)
+		job = "Current";
+	if (!ERRNO)
+		ft_printf_fd(2, "42sh: bg: %s: no such job\n", job);
+	ERRNO = NOJOB;
 	return (-1);
 }
 
@@ -63,6 +67,7 @@ int			ft_bg(char **args)
 	int			error;
 
 	error = 0;
+	ERRNO = 0;
 	list = get_job_list(NULL);
 	if ((job_number = bg_get_job_number(args)) == -1)
 		error = bg_error("current");

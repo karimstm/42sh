@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:09:51 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/15 14:26:03 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 13:46:37 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@ int			fg_usage(char c)
 
 int			fg_error(char *job)
 {
-	ft_printf_fd(2, "42sh: fg: %s: no such job\n", job);
+	if (job == NULL)
+		job = "current";
+	if (!ERRNO)
+		ft_printf_fd(2, "42sh: fg: %s: no such job\n", job);
+	ERRNO = NOJOB;
 	return (-1);
 }
 
@@ -84,6 +88,7 @@ int			ft_fg(char **args)
 	int			error;
 
 	error = 0;
+	ERRNO = 0;
 	list = get_job_list(NULL);
 	if ((job_number = get_job_number(args)) == -1)
 		error = fg_error("current");
