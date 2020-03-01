@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/29 16:03:40 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 16:05:49 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,6 +268,7 @@ int						run_built_in(t_blt_line *blt_line,
 							t_process *process);
 t_simple_command		*get_assignement_name(t_list_simple_command *list);
 char					**get_assignements(t_list_simple_command *list);
+void					handle_assigns(t_list_simple_command *node_cmd);
 
 /*
 **	quote_stripping.c
