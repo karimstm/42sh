@@ -17,7 +17,12 @@ CFLAGS = -g -Wall -Werror -Wextra
 CC = gcc
 
 SRCS = readline.c cursor_move.c cursor_helper.c helper.c helper2.c signal.c\
-		line_operation.c cmd_history.c select_mode.c ctrl_r.c
+		line_operation.c cmd_history.c select_mode.c ctrl_r.c\
+		auto_compilation/compilation_aff.c\
+		auto_compilation/context_bin.c\
+		auto_compilation/context_path.c\
+		auto_compilation/context_var.c\
+		auto_compilation/trait_line.c
 
 LIBFT = ../libft/libft.a
 

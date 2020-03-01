@@ -22,6 +22,7 @@
 # include "../libft/includes/libft.h"
 # include <sys/ioctl.h>
 
+# define BUTTON_TAB 9
 # define BUTTON_ESC 27
 # define BUTTON_SELECT 40899
 # define BUTTON_COPY 42947
@@ -150,6 +151,12 @@ char			*ft_readline(const char *g_prompt);
 
 void			handle_ctrl_r(t_readline *line);
 void			update_o_v_cursor(t_readline *env);
+
+/*
+**		------------- Auto Compiltion --------------
+*/
+
+void        	auto_compilation(t_readline *env);
 
 t_readline		*g_readline;
 t_cmd_history	*g_history_begining;

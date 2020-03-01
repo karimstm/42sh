@@ -22,6 +22,8 @@ static int	key_handel(t_readline *env, int b, int r)
 
 	if (ft_find_int(keys, b, 6, NULL) && !(r = 0))
 		func[b % 10](env);
+	else if (b == BUTTON_TAB && !(r = 0))
+		auto_compilation(env);
 	else if (b == BUTTON_UP && !(r = 0))
 		set_cur_history(env, env->cmd->next);
 	else if (b == BUTTON_DOWN && !(r = 0))
