@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/24 15:53:09 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 12:12:21 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 12:18:59 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_list_simple_command	*merge_list(t_list_simple_command *left,
 	{
 		left->tail->next = right->head;
 		left->tail = right->tail;
+		free(right);
 	}
 	else if (right)
 		return (right);

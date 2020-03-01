@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 15:58:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/16 15:58:51 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 11:41:55 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ t_redirection			*new_redir(int fd1, int fd2, t_token_kind kind)
 	list->fd2 = fd2;
 	list->kind = kind;
 	list->word = NULL;
+	list->herdoc = NULL;
 	list->next = NULL;
 	return (list);
 }

@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:13:55 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/25 14:48:07 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 11:36:58 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void			free_redir(t_redirection **redir)
 	{
 		tmp = current->next;
 		ft_strdel(&current->word);
+		if (current->herdoc)
+			ft_strdel(&current->herdoc);
 		free(current);
 		current = tmp;
 	}

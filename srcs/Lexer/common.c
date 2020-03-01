@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   common.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 15:56:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 18:01:45 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 11:29:55 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int				get_new_line(void)
 	tmp2 = new_line;
 	if (new_line == NULL || ft_strequ(new_line, "\4") || ERRNO == EOTE)
 	{
+		ft_strdel(&tmp);
 		ft_strdel(&new_line);
 		return ((ERRNO = EOTE));
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_exec.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:10:18 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 16:02:22 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 11:54:06 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void			execute_entry(t_job_list *job_list, t_node *node,
 		&& node->kind != NODE_SIMPLE_COMMAND)
 	{
 		set_fds(tmp);
-		execute_redirection(reverse_redirection(node->redir));
+		node->redir = reverse_redirection(node->redir);
+		execute_redirection(node->redir);
 	}
 	if (node)
 	{
