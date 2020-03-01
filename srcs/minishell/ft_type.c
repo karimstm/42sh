@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:37:52 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 01:40:45 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 19:07:06 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ char	*working_path_type(char *cmd)
 	char			**tmp;
 	char			*full_path;
 	t_variables		*var;
-
+	
 	var = get_var("PATH");
 	all_paths = var ? ft_strsplit(var->value, ':') : NULL;
 	tmp = all_paths;
 	full_path = NULL;
+	if (!tmp || !cmd || cmd[0] == '/')
+		return (NULL);
 	while (*tmp)
 	{
 		full_path = ft_strjoin_pre(*tmp, "/", cmd);
@@ -41,7 +43,7 @@ char	*is_aliased(char *arg)
 	t_alias			*cur;
 
 	aliases = get_alias_list(NULL);
-	cur = aliases->head;
+	cur = aliases ? aliases->head : 0;
 	while (cur)
 	{
 		if (ft_strequ(arg, cur->alias))
