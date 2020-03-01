@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   const.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/06 16:32:23 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/29 13:57:04 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 12:48:32 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@
 # define ENV_DEFAULT 0
 # define ENV_MODIFIED 1
 # define ENV_ADDED 2
-# define ENV_NOTDELETED 3
+# define ENV_NT 3
 
 /*
 **	Global variable mimicking

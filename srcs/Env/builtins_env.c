@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:07:32 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 01:23:21 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 12:37:43 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_set(char **args)
 	t_variables *cur;
 
 	(void)args;
-	cur = env2->head;
+	cur = env2 ? env2->head : 0;
 	while (cur)
 	{
 		ft_printf("%s=%s\n", cur->key, cur->value);
@@ -49,7 +49,7 @@ int	ft_env(char **args)
 	t_variables *cur;
 
 	(void)args;
-	cur = env2->head;
+	cur = env2 ? env2->head : 0;
 	while (cur)
 	{
 		if (cur->is_exported)
