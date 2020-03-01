@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:31:02 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/01 11:51:52 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 16:21:40 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void			execute_process(t_job *job, t_process *process,
 	char		**p_env;
 
 	cmd = NULL;
+	if (process->node && process->node->spec.simple_command)
+		handle_assigns(process->node->spec.simple_command);
 	initial_process(job->pgid, job->kind);
 	(pip[0] != -1) ? close(pip[0]) : 0;
 	(pip[1] != -1) ? close(pip[1]) : 0;

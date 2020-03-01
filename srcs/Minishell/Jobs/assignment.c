@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assignment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:39:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/01 16:05:23 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 16:26:11 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ void					handle_assigns(t_list_simple_command *node_cmd)
 	t_variables_list	*tmp;
 
 	tmp = NULL;
-	setup_expan(node_cmd);
 	cmd = get_command_name(node_cmd);
 	assign = get_assignements(node_cmd);
 	if (assign && cmd)
