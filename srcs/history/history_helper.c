@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history_helper.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zoulhafi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 06:03:16 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/11 06:03:18 by zoulhafi         ###   ########.fr       */
+/*   Updated: 2020/03/01 03:07:34 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_cmd_history	*get_specific_history(int index, char is_l)
 	else
 		from_begin = 0;
 	if (from_begin)
-		history = history_begining;
+		history = g_history_begining;
 	else
 		history = get_cmd_history_head();
 	while (history)

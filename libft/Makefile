@@ -6,7 +6,7 @@
 #    By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/01/22 17:24:15 by zoulhafi          #+#    #+#              #
-#    Updated: 2020/02/21 14:30:19 by aait-ihi         ###   ########.fr        #
+#    Updated: 2020/03/01 02:41:46 by aait-ihi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ _SRC = ft_pow.c ft_strlen.c ft_nbrlen.c get_next_line.c ft_atoi.c ft_bzero.c ft_
 
 _SRC += ft_isinstr.c ft_lstenqueue.c ft_lstdequeue.c ft_skip_chars.c ft_strreplace.c ft_swap.c 
 _SRC += ft_atoi_base.c ft_strindexof.c  ft_skip_until_char.c ft_isnalnum.c ft_max.c ft_die.c 
-_SRC += get_matched_bracket.c reg_match.c ft_str_occurence.c ft_strnjoin.c free_content_list.c
+_SRC += get_matched_bracket.c reg_match.c ft_str_occurence.c ft_strnjoin.c free_content_list.c ft_find_int.c 
 
 OBJ = $(_SRC:.c=.o)
 CFLAGS = -g -Wall -Wextra -Werror -I $(__INCLUDES)

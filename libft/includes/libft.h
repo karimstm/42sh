@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/21 12:05:23 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 02:39:19 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,7 +236,8 @@ void				init_fdlist(t_fdlist **elem, int fd);
 
 long	ft_max(long a, long b);
 long	ft_min(long a, long b);
-_Bool ft_swap(int *a, int *b);
+_Bool	ft_swap(int *a, int *b);
+_Bool	ft_find_int(int *t, int n, size_t size, size_t *index);
 
 void ft_die(const char *message, int error_nb);
 

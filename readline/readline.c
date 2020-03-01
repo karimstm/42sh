@@ -6,36 +6,26 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 00:57:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/29 18:22:18 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 03:04:48 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 #include <readline/readline.h>
 
-static int	key_handel2(t_readline *env, int b, int r)
+static int	key_handel(t_readline *env, int b, int r)
 {
-	if (b == BUTTON_UP && !(r = 0))
+	static int	keys[7] = {BUTTON_RIGHT, BUTTON_LEFT, BUTTON_PUP, BUTTON_PDOWN,
+												BUTTON_SELECT, BUTTON_CTL_R};
+	static void	(*func[10])() = {0, cur_left, 0, cur_down, 0, cur_right, 0,
+											cur_up, handle_ctrl_r, selection};
+
+	if (ft_find_int(keys, b, 6, NULL) && !(r = 0))
+		func[b % 10](env);
+	else if (b == BUTTON_UP && !(r = 0))
 		set_cur_history(env, env->cmd->next);
 	else if (b == BUTTON_DOWN && !(r = 0))
 		set_cur_history(env, env->cmd->prev);
-	else if (b == BUTTON_CTL_R && !(r = 0))
-		handle_ctrl_r(env);
-	return (r);
-}
-
-static int	key_handel(t_readline *env, int b, int r)
-{
-	if (!(r = key_handel2(env, b, r)))
-		return (r);
-	else if (b == BUTTON_RIGHT && !(r = 0))
-		cur_right(env);
-	else if (b == BUTTON_LEFT && !(r = 0))
-		cur_left(env);
-	else if (b == BUTTON_PUP && !(r = 0))
-		cur_up(env);
-	else if (b == BUTTON_PDOWN && !(r = 0))
-		cur_down(env);
 	else if ((b == BUTTON_HOME || b == BUTTON_END) && !(r = 0))
 		to_start_or_end(env, b);
 	else if ((b == BUTTON_ALT_RIGHT || b == BUTTON_ALT_LEFT) && !(r = 0))
@@ -44,8 +34,6 @@ static int	key_handel(t_readline *env, int b, int r)
 		remove_from_line(env, env->line_index - 1, env->line_index - 1);
 	else if (b == BUTTON_ENTER && !(r = 0))
 		ft_memdel((void **)&env->line_props.details);
-	else if (b == BUTTON_SELECT && !(r = 0))
-		selection(env);
 	else if (b == BUTTON_PAST && !(r = 0))
 		insert_in_line(env, remove_unprintable_chars(env->to_past));
 	return (r);
@@ -110,15 +98,14 @@ char		*ft_readline(const char *g_prompt)
 	t_readline	readline;
 	char		buff[2049];
 	int			button;
-	int r;
+	int			r;
 
-	g_prompt = g_prompt ? g_prompt : "";
-	tputs(g_prompt, 0, put_char);
+	tputs((g_prompt = g_prompt ? g_prompt : ""), 0, put_char);
 	readline_init(&readline, g_prompt);
 	while (everything_is_ok(&readline) && ft_memset(buff, 0, 2049))
 		if ((r = read(0, buff, 2048)) > 0)
 		{
-			if(r == 1 && *buff == 0)
+			if (r == 1 && *buff == 0)
 				return (manage_ctlr_c(&readline));
 			button = *((int *)buff);
 			update_o_v_cursor(&readline);

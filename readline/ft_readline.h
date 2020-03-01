@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 12:55:33 by yabakhar          #+#    #+#             */
-/*   Updated: 2020/02/28 16:20:16 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 03:08:08 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <sys/types.h>
 # include <fcntl.h>
 # include <sys/stat.h>
-#undef tab
+# undef tab
 # include "../libft/includes/libft.h"
 # include <sys/ioctl.h>
 
@@ -152,7 +152,7 @@ void			handle_ctrl_r(t_readline *line);
 void			update_o_v_cursor(t_readline *env);
 
 t_readline		*g_readline;
-t_cmd_history	*history_begining;
-t_cmd_history	*new_history_begining;
+t_cmd_history	*g_history_begining;
+t_cmd_history	*g_new_history_begining;
 
 #endif

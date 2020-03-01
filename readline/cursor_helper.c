@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   cursor_helper.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/06 14:44:38 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/28 03:47:35 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 03:01:09 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 
-void set_virtual_origin(t_readline *readline)
+void	set_virtual_origin(t_readline *readline)
 {
-	int i;
-	t_point o;
-	const int o_x = readline->o_cursor.x - 1;
+	int			i;
+	t_point		o;
+	const int	o_x = readline->o_cursor.x - 1;
 
 	o = readline->o_cursor;
 	i = readline->line_props.index;
@@ -38,10 +38,10 @@ void set_virtual_origin(t_readline *readline)
 	readline->ov_cursor = o;
 }
 
-void set_idnex_from_cursor(t_readline *readline)
+void	set_idnex_from_cursor(t_readline *readline)
 {
-	int index;
-	int i;
+	int	index;
+	int	i;
 
 	i = readline->line_props.index;
 	index = readline->cursor;
@@ -55,11 +55,11 @@ void set_idnex_from_cursor(t_readline *readline)
 	readline->line_index = index;
 }
 
-void set_cursor_from_index(t_readline *readline)
+void	set_cursor_from_index(t_readline *readline)
 {
-	int index;
-	int i;
-	const int *details = readline->line_props.details;
+	int			index;
+	int			i;
+	const int	*details = readline->line_props.details;
 
 	i = 0;
 	index = 0;
@@ -68,14 +68,14 @@ void set_cursor_from_index(t_readline *readline)
 		readline->line_props.index = readline->line_props.linecount - 1;
 		readline->cursor = details[readline->line_props.index];
 		set_virtual_origin(readline);
-		return;
+		return ;
 	}
 	while (1)
 	{
 		if (i >= readline->line_props.linecount)
-			break;
+			break ;
 		if (BETWEEN(readline->line_index, index, index + details[i] - 1))
-			break;
+			break ;
 		index += readline->line_props.details[i];
 		i++;
 	}
@@ -84,11 +84,11 @@ void set_cursor_from_index(t_readline *readline)
 	set_virtual_origin(readline);
 }
 
-void to_start_or_end(t_readline *readline, int button)
+void	to_start_or_end(t_readline *readline, int button)
 {
-	const int l = readline->line_props.details[readline->line_props.index];
-	const int count = readline->line_props.linecount;
-	int cursor;
+	const int	l = readline->line_props.details[readline->line_props.index];
+	const int	count = readline->line_props.linecount;
+	int			cursor;
 
 	cursor = 0;
 	if (button == BUTTON_HOME)
@@ -112,9 +112,9 @@ void to_start_or_end(t_readline *readline, int button)
 	cur_goto(readline, cursor);
 }
 
-void cur_goto(t_readline *readline, int cursor)
+void	cur_goto(t_readline *readline, int cursor)
 {
-	t_point origin;
+	t_point	origin;
 
 	origin = readline->ov_cursor;
 	origin.y += (origin.x + cursor) / readline->col;

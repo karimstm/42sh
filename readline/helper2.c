@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 09:53:31 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/28 03:54:25 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 03:02:32 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int		manage_ctlr_d(t_readline *readline)
 char	*manage_ctlr_c(t_readline *readline)
 {
 	const t_point	cursor = readline->o_cursor;
-	
+
 	tputs(tgoto(tgetstr("cm", 0), cursor.x, cursor.y), 0, put_char);
 	if (readline->cmd && readline->cmd->tmp_line)
 		ft_putendl(readline->cmd->tmp_line);
@@ -55,13 +55,8 @@ void	clear_buffer(t_readline *readline)
 void	configure_terminal(t_readline *readline)
 {
 	if (tcgetattr(0, &readline->config) < 0)
-	{
-		read(1, NULL, 1);
 		ft_die("Can't get terminal config", -10);
-	}
 	readline->config.c_lflag &= ~(ECHO | ICANON);
-	// readline->config.c_cc[VMIN] = 0;
-	// readline->config.c_cc[VTIME] = 1;
 	if (tcsetattr(0, 0, &readline->config) < 0)
 		ft_die("Can't set terminal config", -11);
 	if (tgetent(NULL, getenv("TERM")) < 1)
@@ -71,8 +66,6 @@ void	configure_terminal(t_readline *readline)
 void	unconfigure_terminal(t_readline *readline)
 {
 	readline->config.c_lflag |= (ECHO | ICANON);
-	// readline->config.c_cc[VMIN] = 1;
-	// readline->config.c_cc[VTIME] = 0;
 	if (tcsetattr(0, 0, &readline->config) < 0)
 		ft_die("Can't set terminal config", -11);
 }

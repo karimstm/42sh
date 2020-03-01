@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_history.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 08:55:45 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/13 12:08:41 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 03:08:07 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,12 @@ void			add_to_history(const char *str, int len, char from_readline)
 		tmp->tmp_line = ft_strdup(str);
 		tmp->len = len;
 		tmp->tmp_len = len;
-		if (from_readline != 1) {
-			if (!history_begining)
-				history_begining = tmp;
-			if (!new_history_begining)
-				new_history_begining = tmp;
+		if (from_readline != 1)
+		{
+			if (!g_history_begining)
+				g_history_begining = tmp;
+			if (!g_new_history_begining)
+				g_new_history_begining = tmp;
 		}
 		g_history_list = tmp;
 	}

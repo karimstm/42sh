@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   history.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 06:03:16 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/13 12:31:53 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/01 03:08:07 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ void	restore_history(void)
 		if (first)
 		{
 			first = 0;
-			history_begining = get_cmd_history_head();
+			g_history_begining = get_cmd_history_head();
 		}
 		ft_strdel(&buf);
 	}
 	free_gnl(fd);
-	new_history_begining = get_cmd_history_head();
+	g_new_history_begining = get_cmd_history_head();
 	close(fd);
 }
 
@@ -50,10 +50,10 @@ void	save_history(void)
 	free(log_file);
 	if (fd == -1)
 		return ;
-	while (new_history_begining)
+	while (g_new_history_begining)
 	{
-		ft_printf_fd(fd, "%s\n", new_history_begining->line);
-		new_history_begining = new_history_begining->prev;
+		ft_printf_fd(fd, "%s\n", g_new_history_begining->line);
+		g_new_history_begining = g_new_history_begining->prev;
 	}
 	close(fd);
 }
@@ -63,7 +63,7 @@ int		ft_history(char **args)
 	t_cmd_history	*history;
 
 	(void)args;
-	history = history_begining;
+	history = g_history_begining;
 	while (history)
 	{
 		ft_printf("%d\t%s\n", history->index, history->line);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fc_edit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/11 06:03:16 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/29 13:22:59 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/01 03:07:34 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_cmd_history	*get_first(char *first)
 		history = history->next;
 		count++;
 	}
-	return (history == NULL ? history_begining : history);
+	return (history == NULL ? g_history_begining : history);
 }
 
 static t_cmd_history	*get_last(char *last)
@@ -66,7 +66,7 @@ static t_cmd_history	*get_last(char *last)
 			count++;
 		}
 	}
-	return (history == NULL ? history_begining : history);
+	return (history == NULL ? g_history_begining : history);
 }
 
 static void				write_cmds(int fd, char *first, char *last, int flags)

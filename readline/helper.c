@@ -6,47 +6,43 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 23:23:56 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/29 18:25:03 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 03:02:02 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_readline.h"
 
-int		get_virtua_line_count(t_readline *readline)
-{
-	int			count;
-	int			i;
-	const int	*details = readline->line_props.details;
-	const int	lc = readline->line_props.linecount - 1;
-
-	i = 0;
-	count = !!((details[i] + readline->o_cursor.x + (i == lc)) % readline->col);
-	count += ((details[i] + readline->o_cursor.x + (i == lc)) / readline->col);
-	i++;
-	while (i < readline->line_props.linecount)
-	{
-		count += !!((details[i] + (i == lc)) % readline->col);
-		count += ((details[i] + (i == lc)) / readline->col);
-		i++;
-	}
-	return (count);
-}
-
 void	update_o_v_cursor(t_readline *env)
 {
-	const t_point o_c = env->o_cursor;
-	const t_point o_v = env->ov_cursor;
+	const t_point	o_c = env->o_cursor;
+	const t_point	o_v = env->ov_cursor;
+	int				y;
 
 	get_cursor_position(env);
-	env->o_cursor = (t_point){o_c.x, o_c.y + (env->o_cursor.y - o_v.y)};
+	y = (o_v.x + env->cursor) / env->col;
+	env->o_cursor = (t_point){o_c.x, o_c.y + (env->o_cursor.y - (o_v.y + y))};
 	set_virtual_origin(env);
 }
 
 void	update_o_cursor(t_readline *env)
 {
-	int	diff;
+	int			diff;
+	int			count;
+	int			i;
+	const int	*details = env->line_props.details;
+	const int	lc = env->line_props.linecount - 1;
 
-	diff = (get_virtua_line_count(env) + env->o_cursor.y) - env->row;
+	i = 0;
+	count = !!((details[i] + env->o_cursor.x + (i == lc)) % env->col);
+	count += ((details[i] + env->o_cursor.x + (i == lc)) / env->col);
+	i++;
+	while (i < env->line_props.linecount)
+	{
+		count += !!((details[i] + (i == lc)) % env->col);
+		count += ((details[i] + (i == lc)) / env->col);
+		i++;
+	}
+	diff = (count + env->o_cursor.y) - env->row;
 	if (diff > 0)
 	{
 		env->o_cursor.y -= diff;
@@ -56,28 +52,19 @@ void	update_o_cursor(t_readline *env)
 
 void	get_cursor_position(t_readline *readline)
 {
-	char	buf;
 	int		column;
 	int		row;
-	char	begin;
+	char	buf;
 
-	begin = 0;
 	column = 0;
 	row = 0;
 	tputs("\e[6n", 1, ft_putchar);
-	while (read(0, &buf, 1) > 0)
-	{
-		if (begin == 3 && buf == 'R')
-			break ;
-		else if (begin == 2 && buf == ';')
-			begin = 3;
-		else if (begin == 0 && buf == 91)
-			begin = 2;
-		else if (begin == 2)
-			row = (row * 10) + (buf - '0');
-		else if (begin == 3)
-			column = (column * 10) + (buf - '0');
-	}
+	while (read(0, &buf, 1) > 0 && buf != '[')
+		;
+	while (read(0, &buf, 1) > 0 && buf != ';')
+		row = (row * 10) + (buf - '0');
+	while (read(0, &buf, 1) > 0 && buf != 'R')
+		column = (column * 10) + (buf - '0');
 	readline->o_cursor = (t_point){column - 1, row - 1};
 	readline->ov_cursor = readline->o_cursor;
 }
