@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/03/02 06:44:11 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 16:16:46 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,32 +35,32 @@ enum
 
 typedef struct		s_fdlist
 {
-	int				fd;
-	char			*tmp;
-	struct s_fdlist	*next;
+	int					fd;
+	char				*tmp;
+	struct s_fdlist		*next;
 }					t_fdlist;
 
 typedef struct		s_list
 {
-	void			*content;
-	size_t			content_size;
-	struct s_list	*previous;
-	struct s_list	*next;
-	struct s_list	*tail;
+	void				*content;
+	size_t				content_size;
+	struct s_list		*previous;
+	struct s_list		*next;
+	struct s_list		*tail;
 }					t_list;
 
-typedef struct	s_matched_strings
+typedef struct		s_matched_strings
 {
-	char *start;
-	t_list *ends;
-}				t_matched_strings;
+	char	*start;
+	t_list	*ends;
+}					t_matched_strings;
 
-typedef struct s_pattern
+typedef struct		s_pattern
 {
-	int type;
-	char *str;
-	struct s_pattern *next;
-} t_pattern;
+	int					type;
+	char				*str;
+	struct s_pattern	*next;
+}					t_pattern;
 
 /*
 ** First Part
@@ -234,44 +234,35 @@ void				init_fdlist(t_fdlist **elem, int fd);
 ** add by aait-ihi /(@_@)\
 */
 
-long	ft_max(long a, long b);
-long	ft_min(long a, long b);
-_Bool	ft_swap(int *a, int *b);
-_Bool	ft_find_int(int *t, int n, size_t size, size_t *index);
-
-void ft_die(const char *message, int error_nb);
-
-int ft_isnalnum(int c);
-int ft_str_occurence(char *str, char c);
-char *ft_strreplace(char *str, char find, char replace);
-char *ft_strnjoin(char **strings, int str_count);
-int ft_isinstr(char c, const char *s);
-
-char *get_matched_bracket(char *str, const char *bracket, char *to_skip, int escaping);
-t_list *reg_match(char *str, char *str_pattern);
-t_list *is_matched(char *str, t_pattern *pattern);
-
-char *ft_skip_chars(const char *str, const char *compare,
-					int (*f)(int));
-char *ft_rskip_chars(const char *str, const char *cmp,
-					 int (*f)(int), int i);
-char *ft_rskip_unitl_char(const char *str, const char *compare,
-						  int (*f)(int), int i);
-char *ft_skip_unitl_char(const char *str, const char *compare,
-						 int (*f)(int));
-
-void free_content_list(t_list **list, size_t size);
-void ft_lstdel2(t_list **alst, void (*del)(void *));
-t_list *ft_lstenqueue(t_list **list, t_list *new);
-void ft_lstdequeue(t_list **list, void (*del)(void **));
-long long ft_atoi_base(const char *s, const char *s_base, int base);
-int ft_strsequ(char *str, char **cmps);
-int ft_strindexof(const char *s, char c);
-//-----------------------------------------------------------------------------
-
-/*
-** Added by amoutik (*__*)
-*/
+long				ft_max(long a, long b);
+long				ft_min(long a, long b);
+_Bool				ft_swap(int *a, int *b);
+_Bool				ft_find_int(int *t, int n, size_t size, size_t *index);
+void				ft_die(const char *message, int error_nb);
+int					ft_isnalnum(int c);
+int					ft_str_occurence(char *str, char c);
+char				*ft_strreplace(char *str, char find, char replace);
+char				*ft_strnjoin(char **strings, int str_count);
+int					ft_isinstr(char c, const char *s);
+char				*get_matched_bracket(char *str, const char *bracket,
+						char *to_skip, int escaping);
+t_list				*reg_match(char *str, char *str_pattern);
+t_list				*is_matched(char *str, t_pattern *pattern);
+char				*ft_skip_chars(const char *str, const char *compare,
+						int (*f)(int));
+char				*ft_rskip_chars(const char *str, const char *cmp,
+						int (*f)(int), int i);
+char				*ft_rskip_unitl_char(const char *str, const char *compare,
+						int (*f)(int), int i);
+char				*ft_skip_unitl_char(const char *str, const char *compare,
+						int (*f)(int));
+void				free_content_list(t_list **list, size_t size);
+void				ft_lstdel2(t_list **alst, void (*del)(void *));
+t_list				*ft_lstenqueue(t_list **list, t_list *new);
+void				ft_lstdequeue(t_list **list, void (*del)(void **));
+long long			ft_atoi_base(const char *s, const char *s_base, int base);
+int					ft_strsequ(char *str, char **cmps);
+int					ft_strindexof(const char *s, char c);
 
 /*
 **	ft_pow does not garante overflow
