@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/02 11:26:41 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/29 12:05:19 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 16:48:58 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void		init_builtin(t_list **lst)
 {
 	add_builtin(lst, "echo", &ft_echo);
 	add_builtin(lst, "cd", &ft_cd);
-	add_builtin(lst, "env", &ft_env);
 	add_builtin(lst, "pwd", &ft_pwd);
 	add_builtin(lst, "set", &ft_set);
 	add_builtin(lst, "unset", &ft_unset);

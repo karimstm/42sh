@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:05:04 by cjamal            #+#    #+#             */
-/*   Updated: 2020/03/01 12:50:30 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 16:33:23 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,14 @@ void	ft_del_env(void)
 	t_variables *cur;
 	t_variables *next;
 
-	cur = env2 ? env2->head : 0;
+	cur = g_env ? g_env->head : 0;
 	while (cur)
 	{
 		next = cur->next;
 		free_node_env(cur);
 		cur = next;
 	}
-	env2 ? free(env2) : 0;
+	g_env ? free(g_env) : 0;
 }
 
 int		is_assigned(char **assign, char *key)
@@ -58,7 +58,7 @@ void	complete_reset(char **assign)
 {
 	t_variables *cur;
 
-	cur = env2 ? env2->head : 0;
+	cur = g_env ? g_env->head : 0;
 	while (cur)
 	{
 		if (cur->is_modified == 0 && !is_assigned(assign, cur->key))
@@ -74,8 +74,8 @@ void	reset_env(t_variables_list *tmp, char **assign)
 	if (!tmp)
 		return ;
 	DECLARE(t_variables, *cr, *edit_var, *next);
-	dup = env2;
-	env2 = tmp;
+	dup = g_env;
+	g_env = tmp;
 	cr = dup ? dup->head : NULL;
 	while (cr)
 	{

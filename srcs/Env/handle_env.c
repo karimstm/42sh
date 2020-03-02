@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 12:02:02 by cjamal            #+#    #+#             */
-/*   Updated: 2020/03/02 15:43:37 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 16:33:23 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_variables	*get_var(char *target)
 {
 	t_variables	*current;
 
-	current = env2 ? env2->head : 0;
+	current = g_env ? g_env->head : 0;
 	while (current)
 	{
 		if (ft_strequ(current->key, target))
@@ -36,19 +36,19 @@ void		variable_push(char *key, char *value, int export, int is_modified)
 	var->value = value;
 	var->is_modified = is_modified;
 	var->next = NULL;
-	if (env2->node_count == 0)
-		env2->head = var;
+	if (g_env->node_count == 0)
+		g_env->head = var;
 	else
-		env2->tail->next = var;
-	env2->tail = var;
-	env2->node_count++;
+		g_env->tail->next = var;
+	g_env->tail = var;
+	g_env->node_count++;
 }
 
 t_variables	**find_var(char *target, t_variables **prev)
 {
 	t_variables	**current;
 
-	current = env2 ? &env2->head : 0;
+	current = g_env ? &g_env->head : 0;
 	*prev = NULL;
 	while (current && *current)
 	{
@@ -79,20 +79,20 @@ void		delete_var(char *target)
 	t_variables	**to_del;
 	t_variables	*prev;
 
-	if (!env2 || env2->node_count == 0)
+	if (!g_env || g_env->node_count == 0)
 		return ;
 	if ((to_del = find_var(target, &prev)))
 	{
-		if (env2->node_count == 1)
+		if (g_env->node_count == 1)
 		{
-			env2->head = NULL;
-			env2->tail = NULL;
+			g_env->head = NULL;
+			g_env->tail = NULL;
 		}
-		if (*to_del == env2->head && env2->node_count > 1)
-			env2->head = (*to_del)->next;
-		else if (*to_del == env2->tail && env2->node_count > 1)
-			env2->tail = prev;
+		if (*to_del == g_env->head && g_env->node_count > 1)
+			g_env->head = (*to_del)->next;
+		else if (*to_del == g_env->tail && g_env->node_count > 1)
+			g_env->tail = prev;
 		ft_lstonedel(to_del);
-		env2->node_count--;
+		g_env->node_count--;
 	}
 }

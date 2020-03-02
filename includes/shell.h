@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/03/01 16:05:49 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 16:49:38 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ typedef struct			s_variables_list
 	int					node_count;
 }						t_variables_list;
 
-t_variables_list		*env2;
+t_variables_list		*g_env;
 
 /*
 ** Structure for the test built-in
@@ -169,7 +169,6 @@ void					free_elem_env(t_list *elem);
 */
 int						ft_cd(char **args);
 int						ft_echo(char **args);
-int						ft_env(char **args);
 int						ft_set_var(char **args, t_simple_command *cmd);
 int						ft_set(char **args);
 int						ft_unset(char **args);

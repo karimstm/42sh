@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:37:52 by cjamal            #+#    #+#             */
-/*   Updated: 2020/03/02 15:44:55 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 16:43:14 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,13 +57,12 @@ int		ft_type(char **args)
 {
 	t_list			*blt;
 	char			*value;
-	int				i;
 	int				ret;
 
 	blt = get_set_blt(NULL);
-	i = 0;
 	ret = 1;
-	while (args[i])
+	DECLARE(int, _(i, -1));
+	while (args && args[++i])
 	{
 		ret = 0;
 		if (ft_lstsearch(blt, args[i], &check_builtin))
@@ -73,10 +72,12 @@ int		ft_type(char **args)
 		else if ((value = ht_search(get_hash_table(0), args[i])))
 			ft_printf("%s is hashed (%s)\n", args[i], value);
 		else if ((value = working_path_type(args[i])))
+		{
 			ft_printf("%s is %s\n", args[i], value);
+			ft_strdel(&value);
+		}
 		else
 			ret = ft_printf("42sh: type: %s: not found\n", args[i]);
-		i++;
 	}
 	return (ret);
 }

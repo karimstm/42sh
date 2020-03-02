@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:12:17 by cjamal            #+#    #+#             */
-/*   Updated: 2020/03/01 19:15:21 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 16:33:23 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ t_variables_list	*dup_env(void)
 
 	dup = (t_variables_list *)xmalloc(sizeof(t_variables_list));
 	dup->tail = NULL;
-	dup->node_count = env2 ? env2->node_count : 0;
-	cur = env2 ? env2->head : 0;
+	dup->node_count = g_env ? g_env->node_count : 0;
+	cur = g_env ? g_env->head : 0;
 	dup->head = dup_node(cur);
 	cur_dup = dup ? dup->head : 0;
 	while (cur)
@@ -60,10 +60,10 @@ char				**get_tab_env(void)
 
 	i = 0;
 	tab_env = NULL;
-	if (env2 && env2->node_count)
+	if (g_env && g_env->node_count)
 	{
-		tab_env = (char **)xmalloc(sizeof(char*) * (env2->node_count + 1));
-		cur = env2->head;
+		tab_env = (char **)xmalloc(sizeof(char*) * (g_env->node_count + 1));
+		cur = g_env->head;
 		while (cur)
 		{
 			tab_env[i++] = ft_strjoin_pre(cur->key, "=", cur->value);
@@ -76,9 +76,9 @@ char				**get_tab_env(void)
 
 void				init_env_list(void)
 {
-	env2->head = NULL;
-	env2->tail = NULL;
-	env2->node_count = 0;
+	g_env->head = NULL;
+	g_env->tail = NULL;
+	g_env->node_count = 0;
 }
 
 void				ft_init_env(char **ev)
@@ -88,7 +88,7 @@ void				ft_init_env(char **ev)
 	char				*key;
 	char				*value;
 
-	env2 = (t_variables_list*)xmalloc(sizeof(t_variables_list));
+	g_env = (t_variables_list*)xmalloc(sizeof(t_variables_list));
 	init_env_list();
 	cpy_env = ev;
 	while (*cpy_env)

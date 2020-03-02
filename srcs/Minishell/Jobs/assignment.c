@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   assignment.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 12:39:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/01 16:26:11 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 16:33:23 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,8 @@ void					handle_assigns(t_list_simple_command *node_cmd)
 	assign = get_assignements(node_cmd);
 	if (assign && cmd)
 	{
-		tmp = env2;
-		env2 = dup_env();
+		tmp = g_env;
+		g_env = dup_env();
 	}
 	ft_set_var(assign, cmd);
 }
