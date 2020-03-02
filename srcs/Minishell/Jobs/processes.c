@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   processes.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:10:33 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 19:11:15 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 22:08:04 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int			process_status(t_process *p, int status, pid_t pid)
 		if (p->pid == pid)
 		{
 			p->status = status;
-			JOB_LIST->status = status % 256;
+			JOB_LIST->status = status % 255;
 			if (WIFSTOPPED(status))
 				p->stopped = 1;
 			else

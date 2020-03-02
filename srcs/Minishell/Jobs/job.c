@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   job.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:09:57 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 19:11:11 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 22:12:08 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	print_and_delete_job(t_job_list *jobs, t_job **job)
 	if (current->kind == J_FOREGROUND || current->kind == J_NON_INTERACTIVE)
 	{
 		if (current->proc_list && current->proc_list->tail)
-			jobs->status = current->proc_list->tail->status % 256;
+			jobs->status = current->proc_list->tail->status % 255;
 	}
 	format_job_info(current);
 	delete_job(jobs, current);
