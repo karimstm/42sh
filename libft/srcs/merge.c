@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   merge.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/08 18:38:12 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 10:34:42 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 14:25:12 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,41 @@ t_path		*merge_sort(t_path *head)
 	shalf = mid->next;
 	mid->next = NULL;
 	return (merge(merge_sort(head), merge_sort(shalf)));
+}
+
+void		*free_dir(char *dirname, t_list_path *list_names)
+{
+	ft_strdel(&dirname);
+	free(list_names);
+	return (NULL);
+}
+
+t_list_path	*g_readdir(DIR *dirp,
+									int flags, char *pattern, char *dirname)
+{
+	t_list_path			*ln;
+	struct dirent		*dp;
+
+	ln = alloc_path_list(1);
+	if (dirp == NULL)
+		return ((t_list_path *)free_dir(dirname, ln));
+	while ((dp = readdir(dirp)))
+	{
+		if (!ft_strequ(dp->d_name, ".") && !ft_strequ(dp->d_name, ".."))
+		{
+			if (!(dp->d_name[0] == '.' && pattern[0] != '.'))
+			{
+				if (flags & ISDIR)
+				{
+					if (dp->d_type == DT_DIR)
+						psh(ln, ft_strdup(dp->d_name), ft_strlen(dp->d_name));
+				}
+				else
+					psh(ln, ft_strdup(dp->d_name), ft_strlen(dp->d_name));
+			}
+		}
+	}
+	closedir(dirp);
+	ft_strdel(&dirname);
+	return (ln);
 }

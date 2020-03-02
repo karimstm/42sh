@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:55:19 by cjamal            #+#    #+#             */
-/*   Updated: 2020/03/01 19:11:17 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 15:42:21 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 int	ft_var_isvalid(char *str)
 {
+	if (!str)
+		return (0);
 	if (str && (!ft_isalpha(*str) && *str != '_'))
 		return (0);
-	if (!str)
-		return (0); 
 	while (*str)
 	{
 		if (!ft_isalnum(*str) && *str != '_')
@@ -81,7 +81,8 @@ int	ft_set_var(char **args, t_simple_command *cmd)
 	if (args)
 	{
 		while (args[++i])
-			if (ft_strchr(args[i], '=') && (index = ft_strreplace(args[i], '=', 0)))
+			if (ft_strchr(args[i], '=') &&
+				(index = ft_strreplace(args[i], '=', 0)))
 				edit_add_var(args[i], index, set, ENV_DEFAULT);
 	}
 	return (0);

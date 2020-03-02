@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:37:52 by cjamal            #+#    #+#             */
-/*   Updated: 2020/03/01 19:07:06 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 15:44:55 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*working_path_type(char *cmd)
 	char			**tmp;
 	char			*full_path;
 	t_variables		*var;
-	
+
 	var = get_var("PATH");
 	all_paths = var ? ft_strsplit(var->value, ':') : NULL;
 	tmp = all_paths;

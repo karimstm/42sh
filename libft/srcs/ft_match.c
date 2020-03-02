@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_match.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/04/04 13:53:19 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 10:59:06 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 14:26:25 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globing.h"
 
-static const char		*rangematch(const char *pattern, int test)
+static const char	*rangematch(const char *pattern, int test)
 {
 	int		negate;
 	int		ok;
@@ -41,7 +41,7 @@ static const char		*rangematch(const char *pattern, int test)
 	return (ok == negate ? (const char *)NULL : pattern);
 }
 
-static int					question_match(const char **string)
+static int			question_match(const char **string)
 {
 	if (*(*string) == EOS)
 		return (FNM_NOMATCH);
@@ -49,7 +49,7 @@ static int					question_match(const char **string)
 	return (0);
 }
 
-static int					star_match(const char **pattern,
+static int			star_match(const char **pattern,
 											const char **string, char *token)
 {
 	*token = *(*pattern);
@@ -66,7 +66,7 @@ static int					star_match(const char **pattern,
 	return (FNM_NOMATCH);
 }
 
-static int					bracket_match(const char **pattern,
+static int			bracket_match(const char **pattern,
 												const char **string)
 {
 	if (*(*string) == EOS)
@@ -76,7 +76,7 @@ static int					bracket_match(const char **pattern,
 	return (0);
 }
 
-int							is_match(const char *pattern,
+int					is_match(const char *pattern,
 								const char *string)
 {
 	char token;

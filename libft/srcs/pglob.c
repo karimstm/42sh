@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pglob.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 10:56:13 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 11:02:03 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 14:24:25 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globing.h"
 
-void			del_list(t_list_path *todel)
+void	del_list(t_list_path *todel)
 {
 	t_path	*cur;
 	t_path	*next;
@@ -29,7 +29,7 @@ void			del_list(t_list_path *todel)
 		free(todel);
 }
 
-char			**init_glob(size_t size)
+char	**init_glob(size_t size)
 {
 	char **names;
 
@@ -39,7 +39,7 @@ char			**init_glob(size_t size)
 	return (names);
 }
 
-void			fill_glob(t_list_path *list, t_glob *pglob)
+void	fill_glob(t_list_path *list, t_glob *pglob)
 {
 	t_path		*current;
 	int			i;
@@ -65,4 +65,29 @@ void			fill_glob(t_list_path *list, t_glob *pglob)
 	pglob->gl_pathv = names;
 	pglob->gl_pathv[i] = NULL;
 	del_list(list);
+}
+
+void	ft_match_reg(char *to_find, t_list_path *list)
+{
+	t_path		*current;
+	t_path		*next;
+
+	current = list && list->head ? list->head : NULL;
+	while (current)
+	{
+		next = current->next;
+		if (is_match(to_find,
+			&current->path[ft_strlen(current->path) - current->path_len]))
+			delete_target(list, &current);
+		current = next;
+	}
+}
+
+char	*ft_join_with_path(char **s1, char *s2)
+{
+	char		*string;
+
+	string = ft_strjoin(*s1, s2);
+	free(*s1);
+	return (string);
 }

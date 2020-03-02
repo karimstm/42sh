@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 12:35:21 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 10:36:56 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 14:22:43 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globing.h"
-
-void		init_s_path(t_list_path *list)
-{
-	list->head = NULL;
-	list->tail = NULL;
-	list->node_count = 0;
-}
 
 t_list_path	*alloc_path_list(size_t size)
 {
@@ -25,11 +18,13 @@ t_list_path	*alloc_path_list(size_t size)
 
 	if ((list = (t_list_path *)malloc(sizeof(t_list_path) * size)) == NULL)
 		return (NULL);
-	init_s_path(list);
+	list->head = NULL;
+	list->tail = NULL;
+	list->node_count = 0;
 	return (list);
 }
 
-void		push_path(t_list_path *list, char *path, size_t len)
+void		psh(t_list_path *list, char *path, size_t len)
 {
 	t_path	*node;
 
@@ -66,19 +61,9 @@ void		free_list_path(t_list_path *list)
 		free(current);
 		current = tmp;
 	}
-	init_s_path(list);
-}
-
-void		print_list(t_list_path *list)
-{
-	t_path	*current;
-
-	current = list->head;
-	while (current)
-	{
-		fprintf(stderr, "%s\n", current->path);
-		current = current->next;
-	}
+	list->head = NULL;
+	list->tail = NULL;
+	list->node_count = 0;
 }
 
 void		delete_target(t_list_path *list, t_path **cu)

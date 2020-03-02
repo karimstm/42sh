@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   globing.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/26 15:03:57 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 11:03:22 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 14:36:05 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 #include <sys/stat.h>
 #include <fnmatch.h>
 #include "libft.h"
-#include "globing.h"
 
 #define DOLLAR			'$'
 #define DOT					'.'
@@ -79,13 +78,12 @@ typedef struct		s_list_path
 */
 
 t_list_path		*alloc_path_list(size_t size);
-void					push_path(t_list_path *ptr, char *name, size_t len);
+void					psh(t_list_path *ptr, char *name, size_t len);
 void					print_list(t_list_path *list);
 void					free_list_path(t_list_path *list);
 void					delete_target(t_list_path *list, t_path **current);
 void					list_func(t_list_path *list,
 							char *s1, char *(f)(char **, char *));
-void					init_s_path(t_list_path *list);
 
 /*
 ** glob.c
@@ -124,5 +122,11 @@ t_path			*merge_sort(t_path *head);
 */
 
 void				fill_glob(t_list_path *list, t_glob *pglob);
-
+char				*ft_join_with_path(char **s1, char *s2);
+t_list_path			*g_readdir(DIR *dirp,
+								int flags, char *pattern, char *dirname);
+char				*ft_basename(char *path);
+char				*ft_get_starting_path(char *path);
+void				ft_match_reg(char *to_find, t_list_path *list);
+void				exec_glob(char *dirname, char *pattern, t_glob *pglob);
 #endif

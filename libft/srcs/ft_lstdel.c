@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdel.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/08 02:47:00 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/22 00:38:41 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 14:28:17 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void ft_lstdel(t_list **alst, void (*del)(void *, size_t))
+void	ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 {
 	t_list *cpy;
 	t_list *next;
 
 	if (alst == NULL || *alst == NULL || del == NULL)
-		return;
+		return ;
 	cpy = *alst;
 	while (cpy->next != NULL)
 	{
@@ -32,7 +32,7 @@ void ft_lstdel(t_list **alst, void (*del)(void *, size_t))
 	*alst = NULL;
 }
 
-void ft_lstdel2(t_list **alst, void (*del)(void *))
+void	ft_lstdel2(t_list **alst, void (*del)(void *))
 {
 	t_list *to_free;
 
@@ -40,7 +40,6 @@ void ft_lstdel2(t_list **alst, void (*del)(void *))
 	{
 		while (*alst)
 		{
-
 			to_free = *alst;
 			*alst = to_free->next;
 			(*del)(to_free->content);

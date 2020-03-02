@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 12:02:02 by cjamal            #+#    #+#             */
-/*   Updated: 2020/03/01 19:14:23 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 15:43:37 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_variables	*get_var(char *target)
 {
 	t_variables	*current;
-	
+
 	current = env2 ? env2->head : 0;
 	while (current)
 	{
@@ -48,7 +48,6 @@ t_variables	**find_var(char *target, t_variables **prev)
 {
 	t_variables	**current;
 
-	
 	current = env2 ? &env2->head : 0;
 	*prev = NULL;
 	while (current && *current)
