@@ -70,6 +70,7 @@ char		**context_type_bin(char *line)
 	char				*valeur;
 
 	head = g_env->head;
+	valeur = NULL;
 	while (head)
 	{
 		if (!ft_strncmp(head->key, "PATH", 4) && head->value)
