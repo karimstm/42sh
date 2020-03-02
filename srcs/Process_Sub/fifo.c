@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/20 11:10:03 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/26 12:07:42 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 18:32:51 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void			close_fifos(t_fifo_list *list)
 			close(current->fd);
 		unlink(current->pathname);
 		ft_strdel(&current->pathname);
-		kill(current->child, SIGPIPE);
+		kill(current->child, SIGCONT);
 		waitpid(current->child, NULL, 0);
 		free(current);
 		current = next;

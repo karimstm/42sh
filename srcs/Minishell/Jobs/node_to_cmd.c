@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 11:17:53 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/27 11:38:43 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 17:30:04 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void				ft_print_node(t_node *node)
 			print_list_tokens(node->spec.simple_command);
 		}
 		ft_printf(" ");
+		node->redir = reverse_redirection(node->redir);
 		print_redir(node->redir);
 	}
 }
