@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/12/21 01:26:35 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/03/02 16:49:38 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 19:44:54 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -302,6 +302,7 @@ void					ft_del_env();
 int						edit_add_var(char *key, char *value,
 							int is_exported, int mod);
 int						ft_var_isvalid(char *str);
+int						ft_env(char **args);
 /*
 **	pre_parse.c
 */
