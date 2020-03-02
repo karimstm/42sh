@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 12:25:50 by cjamal            #+#    #+#             */
-/*   Updated: 2020/02/29 12:34:29 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 21:30:23 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char			*working_path_hash(char *cmd, t_cmd_type *type)
 	var = get_var("PATH");
 	all_paths = var ? ft_strsplit(var->value, ':') : NULL;
 	tmp = all_paths;
-	while (*tmp)
+	while (tmp && *tmp)
 	{
 		full_path = ft_strjoin_pre(*tmp, "/", cmd);
 		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
@@ -73,7 +73,10 @@ void			lookup_and_insert(t_hash_table *ht, char **args)
 	while (args[i])
 	{
 		if ((str = working_path_hash(args[i], &type)))
+		{	
 			ht_insert(ht, args[i], str);
+			ft_strdel(&str);
+		}
 		else if (type == IS_NOTFOUND)
 			ft_printf("42sh: hash: %s: not found\n", args[i]);
 		i++;
