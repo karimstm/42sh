@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   auto_compilation.h                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szakaria <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 04:22:35 by szakaria          #+#    #+#             */
-/*   Updated: 2020/03/01 04:33:15 by szakaria         ###   ########.fr       */
+/*   Updated: 2020/03/02 06:00:56 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,6 @@ typedef struct			s_variables_list
 	int					node_count;
 }						t_variables_list;
 
-t_variables_list		*env2;
+t_variables_list		*g_env2;
 
 #endif

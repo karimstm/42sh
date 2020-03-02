@@ -6,13 +6,13 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/10 02:53:57 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/21 14:38:27 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 06:10:54 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "arithmetic.h"
 
-long long do_op(long long *op1, int oparator, long op2, int ret)
+long long	do_op(long long *op1, int oparator, long op2, int ret)
 {
 	if (oparator == 13)
 		*op1 *= op2;
@@ -39,13 +39,13 @@ long long do_op(long long *op1, int oparator, long op2, int ret)
 	return (ret);
 }
 
-int do_logical_op(t_list **token, long long *result, int operator)
+int			do_logical_op(t_list **token, long long *result, int operator)
 {
-	int bracket;
+	int	bracket;
 
 	bracket = 1;
 	*result = !!*result;
-	if ((operator== 1 && !*result) || (operator== 2 && *result))
+	if ((operator == 1 && !*result) || (operator == 2 && *result))
 	{
 		if (eval_expr(token, result))
 			return (1);
@@ -58,7 +58,7 @@ int do_logical_op(t_list **token, long long *result, int operator)
 		{
 			bracket--;
 			if (bracket == 0)
-				break;
+				break ;
 		}
 		else if (ft_strequ((*token)->content, "("))
 			bracket++;
@@ -67,7 +67,7 @@ int do_logical_op(t_list **token, long long *result, int operator)
 	return (0);
 }
 
-int get_precedence(int operator)
+int			get_precedence(int operator)
 {
 	if (BETWEEN(operator, 11, 13))
 		return (5);
@@ -82,11 +82,11 @@ int get_precedence(int operator)
 	return (0);
 }
 
-int operator_have_precedence(t_list **token, int operator1)
+int			operator_have_precedence(t_list **token, int operator1)
 {
-	int operator2;
-	t_list *tmp;
-	int bracket;
+	int		operator2;
+	t_list	*tmp;
+	int		bracket;
 
 	bracket = 0;
 	tmp = *token ? (*token)->next : NULL;
@@ -100,21 +100,19 @@ int operator_have_precedence(t_list **token, int operator1)
 			bracket--;
 		tmp = tmp->next;
 	}
-	// ft_printf("\n<%s>\n", tmp ? tmp->content : 0);
-	if (tmp)
-		if (!convert_operator(&tmp, &operator2, 0))
-			return (get_precedence(operator1) >= get_precedence(operator2));
+	if (tmp && !convert_operator(&tmp, &operator2, 0))
+		return (get_precedence(operator1) >= get_precedence(operator2));
 	return (1);
 }
 
-void ar_edit_var(char *key, long long val, int prefix)
+void		ar_edit_var(char *key, long long val, int prefix)
 {
-	char *tmp;
+	char	*tmp;
 
 	if (prefix)
 	{
 		if (!(tmp = ft_itoa(val)))
-			return;
+			return ;
 		edit_add_var(key, tmp, 0, 1);
 		free(tmp);
 	}

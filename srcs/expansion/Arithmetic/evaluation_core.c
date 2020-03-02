@@ -3,24 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   evaluation_core.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/30 05:17:28 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/22 00:46:29 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 06:09:23 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "arithmetic.h"
 
-// static char *operetors[14] = {"||", "&&", "!=", "==", ">", "<", ">=", "<=",
-// 							  "-", "+", "%", "/", "*", 0};
-
-static int convert_variable(t_list **token, long long *result)
+static int	convert_variable(t_list **token, long long *result)
 {
-	int prefix;
-	int postfix;
-	char *tmp[2];
-	t_variables *var;
+	int			prefix;
+	int			postfix;
+	char		*tmp[2];
+	t_variables	*var;
 
 	prefix = 0;
 	postfix = 0;
@@ -44,10 +41,10 @@ static int convert_variable(t_list **token, long long *result)
 	return (0);
 }
 
-long long convert_operand(t_list **token, long long *result)
+long long	convert_operand(t_list **token, long long *result)
 {
-	int sign;
-	int error;
+	int	sign;
+	int	error;
 
 	if (!*token)
 		return (1);
@@ -73,11 +70,11 @@ long long convert_operand(t_list **token, long long *result)
 	return (error);
 }
 
-int convert_operator(t_list **token, int *result, int skip_token)
+int			convert_operator(t_list **token, int *result, int skip_token)
 {
-	static char *opertrs[14] = {"||", "&&", "!=", "==", ">", "<", ">=", "<=",
+	static char	*opertrs[14] = {"||", "&&", "!=", "==", ">", "<", ">=", "<=",
 								"-", "+", "%", "/", "*", 0};
-	int i;
+	int			i;
 
 	i = 0;
 	if (!*token)
@@ -85,7 +82,7 @@ int convert_operator(t_list **token, int *result, int skip_token)
 	while (opertrs[i])
 	{
 		if (ft_strnequ((*token)->content, opertrs[i], ft_strlen(opertrs[i])))
-			break;
+			break ;
 		i++;
 	}
 	if (BETWEEN(i, 0, 12))
@@ -98,37 +95,37 @@ int convert_operator(t_list **token, int *result, int skip_token)
 	return (1);
 }
 
-int eval_expr(t_list **tokens, long long *result)
+int			eval_expr(t_list **tokens, long long *result)
 {
-	int has_error;
-	int operator;
-	long long operand2;
+	int			has_error;
+	int			operator;
+	long long	operand2;
 
 	has_error = convert_operand(tokens, result);
 	while (*tokens && !has_error && !ft_strequ((*tokens)->content, ")"))
 	{
 		has_error = convert_operator(tokens, &operator, 1);
-		if (!has_error && (operator== 1 || operator== 2))
+		if (!has_error && (operator == 1 || operator == 2))
 		{
 			has_error = do_logical_op(tokens, result, operator);
 			continue;
 		}
-		if (operator_have_precedence(tokens, operator))
+		if (!has_error && operator_have_precedence(tokens, operator))
 			has_error = convert_operand(tokens, &operand2);
-		else
+		else if (!has_error)
 			has_error = eval_expr(tokens, &operand2);
-		// ft_printf("%d %s %d\n",*result, operetors[operator - 1], operand2);
-		has_error = do_op(result, operator, operand2, 0);
+		if (!has_error)
+			has_error = do_op(result, operator, operand2, 0);
 	}
 	return (has_error);
 }
 
-char *expand_ar_expr(char *expr)
+char		*expand_ar_expr(char *expr)
 {
-	t_list *tokens;
-	t_list *tokens_tmp;
-	long long result;
-	int status;
+	t_list		*tokens;
+	t_list		*tokens_tmp;
+	long long	result;
+	int			status;
 
 	result = 0;
 	tokens = parse_ar_expression(&expr, NULL);

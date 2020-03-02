@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   context_bin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: szakaria <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 04:18:07 by szakaria          #+#    #+#             */
-/*   Updated: 2020/03/01 04:19:49 by szakaria         ###   ########.fr       */
+/*   Updated: 2020/03/02 06:00:56 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ char		**context_type_bin(char *line)
 	t_variables			*head;
 	char				*valeur;
 
-	head = env2->head;
+	head = g_env2->head;
 	while (head)
 	{
 		if (!ft_strncmp(head->key, "PATH", 4))

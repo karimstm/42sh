@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/02 12:55:33 by yabakhar          #+#    #+#             */
-/*   Updated: 2020/03/01 03:08:08 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 05:59:48 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void			update_o_v_cursor(t_readline *env);
 **		------------- Auto Compiltion --------------
 */
 
-void        	auto_compilation(t_readline *env);
+void			auto_compilation(t_readline *env);
 
 t_readline		*g_readline;
 t_cmd_history	*g_history_begining;

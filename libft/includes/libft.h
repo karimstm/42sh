@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/03/01 02:39:19 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 06:44:11 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -249,6 +249,7 @@ int ft_isinstr(char c, const char *s);
 
 char *get_matched_bracket(char *str, const char *bracket, char *to_skip, int escaping);
 t_list *reg_match(char *str, char *str_pattern);
+t_list *is_matched(char *str, t_pattern *pattern);
 
 char *ft_skip_chars(const char *str, const char *compare,
 					int (*f)(int));

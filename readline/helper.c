@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/13 23:23:56 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/03/01 03:02:02 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/01 19:33:56 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,11 @@ void	get_cursor_position(t_readline *readline)
 	while (read(0, &buf, 1) > 0 && buf != '[')
 		;
 	while (read(0, &buf, 1) > 0 && buf != ';')
-		row = (row * 10) + (buf - '0');
+		if (ft_isdigit(buf))
+			row = (row * 10) + (buf - '0');
 	while (read(0, &buf, 1) > 0 && buf != 'R')
-		column = (column * 10) + (buf - '0');
+		if (ft_isdigit(buf))
+			column = (column * 10) + (buf - '0');
 	readline->o_cursor = (t_point){column - 1, row - 1};
 	readline->ov_cursor = readline->o_cursor;
 }

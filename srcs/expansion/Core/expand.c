@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/13 20:27:30 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/02/25 12:06:29 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 06:20:43 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expansion.h"
 
-static char *expand_tilde(char *str)
+static char	*expand_tilde(char *str)
 {
-	t_variables *var;
-	char *tmp;
+	t_variables	*var;
+	char		*tmp;
 
 	if (str && *str == '~')
 	{
@@ -36,13 +36,12 @@ static char *expand_tilde(char *str)
 	return (str);
 }
 
-static char *join_expan_result(t_parser_expansion result, char **str)
+static char	*join_expan_result(t_parser_expansion result, char **str)
 {
-	char *tmp;
-	char *ret;
+	char	*tmp;
+	char	*ret;
 
 	tmp = *str;
-	// ft_printf("|%|", tmp);
 	if ((*str = ft_strnjoin((char *[]){tmp, result.str, result.index}, 3)))
 	{
 		ret = *str + ft_strlen(result.str) + ft_strlen(tmp);
@@ -50,16 +49,16 @@ static char *join_expan_result(t_parser_expansion result, char **str)
 		free(result.str);
 		return (ret);
 	}
-	ft_strdel(str);
+	free(tmp);
 	free(result.str);
 	return (NULL);
 }
 
-char *expand(char *str, t_parser_expansion (*expand_fun)(char *))
+char		*expand(char *str, t_parser_expansion (*expand_fun)(char *))
 {
-	char *tmp;
-	int qoute;
-	t_parser_expansion result;
+	char				*tmp;
+	int					qoute;
+	t_parser_expansion	result;
 
 	str = expand_tilde(str);
 	tmp = str;
@@ -84,9 +83,9 @@ char *expand(char *str, t_parser_expansion (*expand_fun)(char *))
 	return (str);
 }
 
-int expand_args(t_list_simple_command *args)
+int			expand_args(t_list_simple_command *args)
 {
-	t_simple_command *ptr;
+	t_simple_command	*ptr;
 
 	ptr = args && args->head ? args->head : NULL;
 	while (ptr)

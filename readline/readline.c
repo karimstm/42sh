@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 00:57:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/03/01 03:04:48 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 06:01:17 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@
 static int	key_handel(t_readline *env, int b, int r)
 {
 	static int	keys[7] = {BUTTON_RIGHT, BUTTON_LEFT, BUTTON_PUP, BUTTON_PDOWN,
-												BUTTON_SELECT, BUTTON_CTL_R};
-	static void	(*func[10])() = {0, cur_left, 0, cur_down, 0, cur_right, 0,
-											cur_up, handle_ctrl_r, selection};
+									BUTTON_SELECT, BUTTON_CTL_R, BUTTON_TAB};
+	static void	(*func[10])() = {auto_compilation, cur_left, 0, cur_down, 0,
+								cur_right, 0, cur_up, handle_ctrl_r, selection};
 
-	if (ft_find_int(keys, b, 6, NULL) && !(r = 0))
-		func[b % 10](env);
-	else if (b == BUTTON_TAB && !(r = 0))
-		auto_compilation(env);
+	if (ft_find_int(keys, b, 7, NULL) && !(r = 0))
+		func[(b + (b == BUTTON_TAB)) % 10](env);
 	else if (b == BUTTON_UP && !(r = 0))
 		set_cur_history(env, env->cmd->next);
 	else if (b == BUTTON_DOWN && !(r = 0))
