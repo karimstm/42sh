@@ -72,7 +72,7 @@ char		**context_type_bin(char *line)
 	head = g_env->head;
 	while (head)
 	{
-		if (!ft_strncmp(head->key, "PATH", 4))
+		if (!ft_strncmp(head->key, "PATH", 4) && head->value)
 			valeur = head->value;
 		head = head->next;
 	}
