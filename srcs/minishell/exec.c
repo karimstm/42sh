@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:52:49 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 18:34:23 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 19:51:53 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int		assert_tok(t_token_kind base, t_token_kind k2, t_token_kind k3)
 int		execute_redirection(t_redirection *list)
 {
 	t_redirection	*current;
-	
+
 	DECLARE(int, _(error, 0));
 	current = list;
 	while (current && !error)
