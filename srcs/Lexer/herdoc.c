@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:22:19 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/01 13:00:57 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 19:12:55 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void					write_to_herdoc_fd(int fd2)
 	while (1)
 	{
 		buf = ft_readline("> ");
-		if (ft_strequ(buf, name) || ft_strequ("\4", buf))
+		if (ft_strequ(buf, name) || ft_strequ("\4", buf) || ERRNO == EOTE)
 		{
 			ft_strdel(&name);
 			ft_strdel(&buf);

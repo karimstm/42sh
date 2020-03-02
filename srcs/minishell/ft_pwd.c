@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/10 15:52:28 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/02/04 15:37:43 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 18:43:19 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int		ft_pwd(char **args)
 	(void)args;
 	pwd = get_var("PWD");
 	current_pwd = NULL;
-	ft_printf("%s\n", pwd ? pwd->value : getcwd(current_pwd, 0));
-	ft_strdel(&current_pwd);
+	ft_printf("%s\n", pwd ? pwd->value : (current_pwd = getcwd(NULL, 0)));
+	current_pwd ? free(current_pwd) : 0;
 	return (0);
 }

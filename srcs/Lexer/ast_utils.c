@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:13:55 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/01 11:36:58 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 17:27:34 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ void			print_redir(t_redirection *list)
 			ft_printf("%s", current->word);
 		else
 			ft_printf("%d", current->fd2);
+		ft_printf(" ");
 		current = current->next;
 	}
 }
