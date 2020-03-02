@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   readline.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/07 00:57:15 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/03/02 06:01:17 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 21:07:48 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ static char	*end_readline(t_readline *readline)
 		readline->cmd->tmp_line = NULL;
 	}
 	free(readline->line_props.details);
+	ft_strdel(&readline->to_past);
 	clean_hsitory();
 	unconfigure_terminal(readline);
 	return (tmp);

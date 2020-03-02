@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helper2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/20 09:53:31 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/03/01 03:02:32 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 21:07:19 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int		manage_ctlr_d(t_readline *readline)
 	{
 		ft_memdel((void **)&readline->cmd->tmp_line);
 		free(readline->line_props.details);
+		ft_strdel(&readline->to_past);
 		clean_hsitory();
 		unconfigure_terminal(readline);
 		ft_putstr("\n");
@@ -35,6 +36,7 @@ char	*manage_ctlr_c(t_readline *readline)
 		ft_putendl(readline->cmd->tmp_line);
 	ft_memdel((void **)&readline->cmd->tmp_line);
 	free(readline->line_props.details);
+	ft_strdel(&readline->to_past);
 	clean_hsitory();
 	unconfigure_terminal(readline);
 	return (ft_strdup(""));
