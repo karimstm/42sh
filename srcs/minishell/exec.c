@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 13:52:49 by amoutik           #+#    #+#             */
-/*   Updated: 2020/03/02 19:51:53 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 22:43:43 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*working_path(char *cmd)
 	all_paths = var ? ft_strsplit(var->value, ':') : NULL;
 	tmp = all_paths;
 	full_path = NULL;
-	while (*tmp)
+	while (tmp && *tmp)
 	{
 		full_path = ft_strjoin_pre(*tmp, "/", cmd);
 		if (access(full_path, F_OK) == 0 && access(full_path, X_OK) == 0)
