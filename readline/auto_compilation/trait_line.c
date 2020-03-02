@@ -12,10 +12,20 @@
 
 #include "auto_compilation.h"
 
-int			ft_words(char c)
+int			ft_words(char c, int mode)
 {
-	if (c == '|' || c == '&' || c == ' ')
+	static int bin;
+
+	if (mode == 1 && (c == '|' || c == '&' || c == ' '))
 		return (1);
+	else if (mode == 2)
+	{
+		bin++;
+	}
+	else if (mode == 3)
+		bin = 0;
+	if (!mode)
+		return (bin);
 	return (0);
 }
 
@@ -23,13 +33,22 @@ char		*first_words(char *line)
 {
 	char		*tmp;
 	int			i;
+	int			j;
 
 	tmp = NULL;
+	j = 0;
 	i = ft_strlen(line) - 1;
 	while (i >= 0)
 	{
-		if (ft_words(line[i]))
+		if (ft_words(line[i], 1))
 		{
+			if (line[i] == ' ')
+			{
+				j = i;
+				while (++j >= 0 && (line[j] == ' '))
+					if (line[j] == '|' || line[j] == '&')
+						ft_words(line[j], 2);
+			}
 			tmp = ft_strsub(line, (i + 1), ft_strlen(line));
 			return (tmp);
 		}
@@ -80,9 +99,9 @@ void		auto_compilation(t_readline *env)
 		return ;
 	tmp2 = ft_strsub(env->cmd->tmp_line, 0, env->line_index);
 	new_line = first_words(tmp2);
-	if (ft_strlen(new_line))
+	if (ft_strlen(new_line) && !ft_words('0', 0))
 		stock = context_type_var(new_line);
-	if (!stock && ft_strlen(new_line))
+	if (!stock && ft_strlen(new_line) && !ft_words('0', 0))
 		stock = context_type_bin(new_line);
 	if (!stock)
 		stock = context_type_path(new_line);
@@ -91,6 +110,7 @@ void		auto_compilation(t_readline *env)
 		send_readline(stock, env, new_line);
 		free_tab(stock);
 	}
+	ft_words('0', 3);
 	free(tmp2);
 	free(new_line);
 }

@@ -74,6 +74,7 @@ char		*print_window_element(char **stock, int i)
 	if (i == -2)
 	{
 		i = 0;
+		past = 0;
 		first = 0;
 	}
 	ft_putstr_fd(tgetstr("ti", NULL), 0);
