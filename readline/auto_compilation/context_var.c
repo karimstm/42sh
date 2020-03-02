@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   context_var.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 04:21:03 by szakaria          #+#    #+#             */
-/*   Updated: 2020/03/02 06:00:56 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 17:10:40 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char			**context_var(char *line, int i)
 	tab[i] = NULL;
 	tmp = NULL;
 	i = 0;
-	head = g_env2->head;
+	head = g_env->head;
 	while (head)
 	{
 		if (!ft_strncmp(head->key, &line[2], ft_strlen(&line[2])))
@@ -42,7 +42,7 @@ char			**context_type_var(char *new_line)
 	int					cont;
 
 	cont = 0;
-	head = g_env2->head;
+	head = g_env->head;
 	if (new_line && new_line[0] == '$' && new_line[1] == '{')
 	{
 		while (head)
