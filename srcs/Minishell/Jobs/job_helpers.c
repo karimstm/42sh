@@ -6,7 +6,7 @@
 /*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 14:10:29 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 14:08:59 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 21:48:29 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void		foreground_job(t_job_list *job_list, t_job *job, int cont)
 	ft_tcsetpgrp(g_shell_terminal, job->pgid);
 	if (cont)
 	{
-		tcsetattr(g_shell_terminal, TCSADRAIN, &job->tmodes);
+		tcsetattr(g_shell_terminal, TCSADRAIN, get_termios());
 		if (kill(-job->pgid, SIGCONT) < 0)
 			ft_printf_fd(2, "kill (SIGCONT) failed");
 	}
