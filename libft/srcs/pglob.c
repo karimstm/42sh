@@ -3,49 +3,48 @@
 /*                                                        :::      ::::::::   */
 /*   pglob.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/12 10:56:13 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/28 19:00:15 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 11:02:03 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globing.h"
 
-void    del_list(t_list_path *todel)
+void			del_list(t_list_path *todel)
 {
-  t_path *cur;
-  t_path *next;
-  
-  cur = todel ? todel->head : 0;
-  while (cur)
-  {
-    next = cur->next;
-    ft_strdel(&cur->path);
-    free(cur);
-    cur = next;
-  }
-  if (todel)
-    free(todel);
+	t_path	*cur;
+	t_path	*next;
+
+	cur = todel ? todel->head : 0;
+	while (cur)
+	{
+		next = cur->next;
+		ft_strdel(&cur->path);
+		free(cur);
+		cur = next;
+	}
+	if (todel)
+		free(todel);
 }
 
-char	**init_glob(size_t size)
+char			**init_glob(size_t size)
 {
 	char **names;
 
 	names = (char **)malloc(sizeof(char *) * (size + 1));
 	if (names == NULL)
 		return (NULL);
-	return (names);	
+	return (names);
 }
 
-
-void	fill_glob(t_list_path *list, t_glob *pglob)
+void			fill_glob(t_list_path *list, t_glob *pglob)
 {
-	t_path *current;
-	int i;
-	char **names;
-	
+	t_path		*current;
+	int			i;
+	char		**names;
+
 	i = 0;
 	names = init_glob((size_t)list->node_count + pglob->gl_pathc);
 	while ((size_t)i < pglob->gl_pathc)

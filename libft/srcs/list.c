@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   list.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amoutik <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/03/28 12:35:21 by amoutik           #+#    #+#             */
-/*   Updated: 2019/10/12 10:25:02 by amoutik          ###   ########.fr       */
+/*   Updated: 2020/03/02 10:36:56 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globing.h"
 
-void		init_s_path(t_list_path	*list)
+void		init_s_path(t_list_path *list)
 {
 	list->head = NULL;
 	list->tail = NULL;
@@ -33,10 +33,10 @@ void		push_path(t_list_path *list, char *path, size_t len)
 {
 	t_path	*node;
 
-	if((node = (t_path *)malloc(sizeof(t_path))) == NULL)
+	if ((node = (t_path *)malloc(sizeof(t_path))) == NULL)
 		return ;
 	node->path = path;
-  	node->path_len = len;
+	node->path_len = len;
 	node->next = NULL;
 	if (list->node_count == 0)
 	{
@@ -53,7 +53,7 @@ void		push_path(t_list_path *list, char *path, size_t len)
 	list->node_count++;
 }
 
-void	free_list_path(t_list_path *list)
+void		free_list_path(t_list_path *list)
 {
 	t_path	*current;
 	t_path	*tmp;
@@ -69,7 +69,7 @@ void	free_list_path(t_list_path *list)
 	init_s_path(list);
 }
 
-void	print_list(t_list_path *list)
+void		print_list(t_list_path *list)
 {
 	t_path	*current;
 
@@ -81,7 +81,7 @@ void	print_list(t_list_path *list)
 	}
 }
 
-void	delete_target(t_list_path *list, t_path **cu)
+void		delete_target(t_list_path *list, t_path **cu)
 {
 	t_path	*current;
 
@@ -109,14 +109,14 @@ void	delete_target(t_list_path *list, t_path **cu)
 	list->node_count--;
 }
 
-void    list_func(t_list_path *list, char *s1, char * (f)(char **, char *))
+void		list_func(t_list_path *list, char *s1, char *(f)(char **, char *))
 {
-    t_path  *current;
+	t_path		*current;
 
-    current = list->head;
-    while (current)
-    {
-      current->path = f(&current->path, s1);
-      current = current->next;
-    }
+	current = list->head;
+	while (current)
+	{
+		current->path = f(&current->path, s1);
+		current = current->next;
+	}
 }

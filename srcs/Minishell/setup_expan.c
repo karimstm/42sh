@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_expan.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/21 20:15:41 by amoutik           #+#    #+#             */
-/*   Updated: 2020/02/29 12:14:25 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 10:13:40 by amoutik          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_list_simple_command	*do_globing(char *node, t_token_kind kind)
 
 	i = -1;
 	glob_lst = malloc_list_simple_command();
-	_glob(node, 0, 0, &glob_holder);
+	ft_glob(node, 0, 0, &glob_holder);
 	if (glob_holder.gl_pathv && *glob_holder.gl_pathv != 0)
 		while (glob_holder.gl_pathv[++i])
 			token_push(glob_lst, ft_glob_dup(glob_holder.gl_pathv[i]), kind);
