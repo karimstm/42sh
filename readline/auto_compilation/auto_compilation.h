@@ -12,11 +12,14 @@
 
 #ifndef AUTO_COMPILATION_H
 # define AUTO_COMPILATION_H
+# define _(a, b) a = b
+# define DECLARE(type, ...) type __VA_ARGS__
 # include "../ft_readline.h"
 # include <stdio.h>
 # include <dirent.h>
 # include <stdlib.h>
 # include <termios.h>
+# define EXIT 27
 
 /*
 **				affichage element selcted

@@ -63,6 +63,11 @@ int			was_aff(char *new_line, char *line_select)
 
 	if (!new_line || !line_select)
 		return (0);
+	if (ft_strchr(new_line, '/'))
+	{
+		new_line = ft_strrchr(new_line, '/');
+		new_line = &new_line[1];
+	}
 	i = 0;
 	while (new_line[i] && line_select[i] && line_select[i] == new_line[i])
 		i++;
@@ -81,6 +86,8 @@ void		send_readline(char **stock, t_readline *env, char *new_line)
 	if (i > 1)
 	{
 		line_select = print_window_element(stock, -2);
+		if (!line_select)
+			return ;
 		insert_in_line(env, &line_select[was_aff(new_line, line_select)]);
 	}
 	else if (i == 1)

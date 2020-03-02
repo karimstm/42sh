@@ -38,9 +38,11 @@ int			read_keybord(char **stock, int first)
 	read(0, &buff, sizeof(int));
 	if (buff == BUTTON_UP && move)
 		move--;
-	if (buff == BUTTON_DOWN && move < i - 1)
+	else if (buff == BUTTON_DOWN && move < i - 1)
 		move++;
-	if (buff == BUTTON_SPACE || buff == BUTTON_ENTER)
+	else if (buff == EXIT)
+		return (-2);
+	else if (buff == BUTTON_SPACE || buff == BUTTON_ENTER)
 		return (-1);
 	ft_putstr_fd(tgetstr("cl", NULL), 0);
 	return (move);
@@ -65,10 +67,24 @@ void		affichage(char **stock, int i, int len)
 	}
 }
 
+void		termcap_config(int mode)
+{
+	if (mode == 0)
+	{
+		ft_putstr_fd(tgetstr("ti", NULL), 0);
+		ft_putstr_fd(tgetstr("vi", NULL), 0);
+		ft_putstr_fd(tgetstr("cl", NULL), 0);
+	}
+	else if (mode == 1)
+	{
+		ft_putstr_fd(tgetstr("ve", NULL), 0);
+		ft_putstr_fd(tgetstr("te", NULL), 0);
+	}
+}
+
 char		*print_window_element(char **stock, int i)
 {
 	static int		first;
-	int				len;
 	static int		past;
 
 	if (i == -2)
@@ -77,10 +93,8 @@ char		*print_window_element(char **stock, int i)
 		past = 0;
 		first = 0;
 	}
-	ft_putstr_fd(tgetstr("ti", NULL), 0);
-	ft_putstr_fd(tgetstr("vi", NULL), 0);
-	ft_putstr_fd(tgetstr("cl", NULL), 0);
-	len = 0;
+	termcap_config(0);
+	DECLARE(int, _(len, 0));
 	affichage(stock, i, len);
 	if ((i = read_keybord(stock, first)) >= 0)
 	{
@@ -88,7 +102,11 @@ char		*print_window_element(char **stock, int i)
 		past = i;
 		print_window_element(stock, i);
 	}
-	ft_putstr_fd(tgetstr("ve", NULL), 0);
-	ft_putstr_fd(tgetstr("te", NULL), 0);
+	termcap_config(1);
+	if (i == -2 || past == -2)
+	{
+		past = -2;
+		return (NULL);
+	}
 	return (stock[past]);
 }
