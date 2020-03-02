@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
+/*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/01/22 17:24:38 by zoulhafi          #+#    #+#             */
-/*   Updated: 2020/03/02 16:16:46 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 16:57:19 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,6 +234,7 @@ void				init_fdlist(t_fdlist **elem, int fd);
 ** add by aait-ihi /(@_@)\
 */
 
+void				free_pattern(t_pattern *pattern);
 long				ft_max(long a, long b);
 long				ft_min(long a, long b);
 _Bool				ft_swap(int *a, int *b);

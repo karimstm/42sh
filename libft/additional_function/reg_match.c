@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/16 16:26:35 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/03/02 06:49:08 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 16:56:38 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,28 +118,23 @@ t_list				*reg_match(char *str, char *str_pattern)
 	t_matched_strings	ptr;
 	t_list				*starts;
 	t_list				*ends;
-	t_pattern			*pattern[2];
+	t_pattern			*pattern;
 
 	starts = NULL;
-	if ((pattern[0] = split_pattern(pattern_sanitize(str_pattern))))
+	if ((pattern = split_pattern(pattern_sanitize(str_pattern))))
 		while (*str)
 		{
-			if ((ends = is_matched(str, pattern[0])))
+			if ((ends = is_matched(str, pattern)))
 			{
 				ptr.start = str;
 				ptr.ends = ends;
-				ft_lstenqueue(&starts, ft_lstnew(&ptr, sizeof(t_matched_strings)));
+				ft_lstenqueue(&starts, ft_lstnew(&ptr,
+													sizeof(t_matched_strings)));
 			}
 			str++;
-			if (pattern[0]->type == PT_START)
+			if (pattern->type == PT_START)
 				break ;
 		}
-	while (pattern[0])
-	{
-		pattern[1] = pattern[0];
-		pattern[0] = pattern[0]->next;
-		free(pattern[1]->str);
-		free(pattern[1]);
-	}
+	free_pattern(pattern);
 	return (starts);
 }
