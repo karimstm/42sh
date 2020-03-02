@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 08:55:45 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/03/01 03:08:07 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 19:29:54 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void			free_history(void)
 		if (*g_history_list->line)
 		{
 			ft_bzero(g_history_list->line, g_history_list->len);
-			free(g_history_list->line);
+			ft_strdel(&g_history_list->line);
 			ft_strdel(&g_history_list->tmp_line);
 		}
 		free(g_history_list);

@@ -6,28 +6,28 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/05 04:17:51 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/03/02 06:06:43 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 20:16:48 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "arithmetic.h"
 
-int		get_sign(char **expression)
+int get_sign(char **expression)
 {
-	int		sign;
-	char	*tmp;
+	int sign;
+	char *tmp;
 
 	sign = 1;
 	while (1)
 	{
 		*expression = ft_skip_chars(*expression, " ", NULL);
 		if (!ft_isinstr(**expression, "+-"))
-			break ;
+			break;
 		else if (expression[0][1] == **expression)
 		{
 			tmp = ft_skip_chars(*expression + 2, " ", NULL);
 			if (*tmp == '_' || ft_isalpha(*tmp))
-				break ;
+				break;
 		}
 		sign *= (44 - *(*expression)++);
 	}
@@ -35,9 +35,9 @@ int		get_sign(char **expression)
 	return (sign);
 }
 
-t_list	*get_operand(char **expression, t_list *token)
+t_list *get_operand(char **expression, t_list *token)
 {
-	t_list	*ptr;
+	t_list *ptr;
 
 	ptr = NULL;
 	if (get_sign(expression) == -1)
@@ -45,7 +45,7 @@ t_list	*get_operand(char **expression, t_list *token)
 	if (**expression == '(')
 	{
 		*expression = ft_skip_chars(*expression + 1, " ", NULL);
-		ft_lstenqueue(&ptr, parse_ar_expression(expression, ft_lstnew("(", 2)));
+		ptr = parse_ar_expression(expression, ft_lstnew("(", 2));
 	}
 	else if (ft_isdigit(**expression))
 		ft_lstenqueue(&ptr, parse_number(expression));
@@ -58,12 +58,12 @@ t_list	*get_operand(char **expression, t_list *token)
 	return (token);
 }
 
-t_list	*get_operator(char **expr, t_list *token)
+t_list *get_operator(char **expr, t_list *token)
 {
-	static char	*operators[14] = {"||", "&&", "!=", "==", ">=", "<=", ">",
-											"<", "-", "+", "%", "/", "*", 0};
-	int			i;
-	t_list		*ptr;
+	static char *operators[14] = {"||", "&&", "!=", "==", ">=", "<=", ">",
+								  "<", "-", "+", "%", "/", "*", 0};
+	int i;
+	t_list *ptr;
 
 	ptr = NULL;
 	i = 0;
@@ -74,7 +74,7 @@ t_list	*get_operator(char **expr, t_list *token)
 		{
 			*expr = ft_skip_chars(*expr + ft_strlen(operators[i]), " ", NULL);
 			ptr = (ft_lstnew(operators[i], ft_strlen(operators[i]) + 1));
-			break ;
+			break;
 		}
 		i++;
 	}
@@ -84,14 +84,8 @@ t_list	*get_operator(char **expr, t_list *token)
 	return (token);
 }
 
-int		get_parentese(char **expression, t_list **token)
+int get_parentese(char **expression, t_list **token)
 {
-	if (**expression == '(')
-	{
-		if (**expression == '(' && expression[0]++[1] != ')')
-			*token = ft_lstnew((char[]){'(', 0}, 2);
-		return (')');
-	}
 	if (**expression == ')')
 	{
 		ft_lstenqueue(token, ft_lstnew((char[]){')', 0}, 2));
@@ -102,14 +96,14 @@ int		get_parentese(char **expression, t_list **token)
 	return (0);
 }
 
-t_list	*parse_ar_expression(char **expression, t_list *token)
+t_list *parse_ar_expression(char **expression, t_list *token)
 {
-	int			i;
-	const int	need_bracket_close = token && ft_strequ(token->content, "(");
+	int i;
+	const int need_bracket_close = token && ft_strequ(token->content, "(");
 
 	i = 0;
 	*expression = ft_skip_chars(*expression, " ", NULL);
-	while (**expression != ')' && **expression)
+	while (**expression && **expression != ')')
 	{
 		if (!(i % 2) && !(token = get_operand(expression, token)))
 			return (NULL);
