@@ -6,7 +6,7 @@
 /*   By: cjamal <cjamal@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/29 01:37:52 by cjamal            #+#    #+#             */
-/*   Updated: 2020/03/02 16:43:14 by cjamal           ###   ########.fr       */
+/*   Updated: 2020/03/02 18:08:30 by cjamal           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,15 @@ char	*working_path_type(char *cmd)
 	char			*full_path;
 	t_variables		*var;
 
+	if (access(cmd, F_OK) == 0 && !is_directory(cmd))
+		return (ft_strdup(cmd));
+	if (!cmd || cmd[0] == '/')
+		return (NULL);
 	var = get_var("PATH");
 	all_paths = var ? ft_strsplit(var->value, ':') : NULL;
 	tmp = all_paths;
 	full_path = NULL;
-	if (!tmp || !cmd || cmd[0] == '/')
-		return (NULL);
-	while (*tmp)
+	while (tmp && *tmp)
 	{
 		full_path = ft_strjoin_pre(*tmp, "/", cmd);
 		if (access(full_path, F_OK) == 0 && !is_directory(full_path))
@@ -57,27 +59,27 @@ int		ft_type(char **args)
 {
 	t_list			*blt;
 	char			*value;
-	int				ret;
 
 	blt = get_set_blt(NULL);
-	ret = 1;
-	DECLARE(int, _(i, -1));
+	DECLARE(int, _(i, -1), _(ret, 1));
 	while (args && args[++i])
 	{
-		ret = 0;
 		if (ft_lstsearch(blt, args[i], &check_builtin))
-			ft_printf("%s is a shell builtin\n", args[i]);
+			ret = !ft_printf("%s is a shell builtin\n", args[i]);
 		else if ((value = is_aliased(args[i])))
-			ft_printf("%s is aliased to `%s'\n", args[i], value);
+			ret = !ft_printf("%s is aliased to `%s'\n", args[i], value);
 		else if ((value = ht_search(get_hash_table(0), args[i])))
-			ft_printf("%s is hashed (%s)\n", args[i], value);
+			ret = !ft_printf("%s is hashed (%s)\n", args[i], value);
 		else if ((value = working_path_type(args[i])))
 		{
-			ft_printf("%s is %s\n", args[i], value);
+			ret = !ft_printf("%s is %s\n", args[i], value);
 			ft_strdel(&value);
 		}
 		else
+		{
+			ft_strdel(&value);
 			ret = ft_printf("42sh: type: %s: not found\n", args[i]);
+		}
 	}
 	return (ret);
 }
