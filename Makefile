@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: amoutik <amoutik@student.42.fr>            +#+  +:+       +#+         #
+#    By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/02/17 16:41:20 by amoutik           #+#    #+#              #
-#    Updated: 2020/02/29 13:53:43 by amoutik          ###   ########.fr        #
+#    Updated: 2020/03/03 01:30:18 by aait-ihi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,49 +18,86 @@ INC = includes
 LIB = libft
 BUILT = builtin
 LEXINC = srcs/Lexer/
-REALINE = realine
 
-SRC_MIN = $(patsubst %.c, $(SRC)/Minishell/%.c, expand_redirection.c setup_expan.c system.c input_red.c output_red.c handlers.c ft_type.c  fds.c builtin.c free.c  ft_echo.c \
-												ft_pwd.c main.c shell.c exec.c redir.c)
-SRC_JOBS = $(patsubst %.c, $(SRC)/Minishell/Jobs/%.c, ft_getopt.c ft_strsignal.c job_misc.c node_to_cmd.c job_status.c activejob.c delete_job.c processes.c\
-														terminal.c jobs_list.c job.c execute.c job_helpers.c ft_jobs.c ft_fg.c ft_bg.c \
-														sep_command.c init_exec.c assignment.c command_utils.c exec2.c)
+PATH_MINISHELL = $(SRC)/Minishell/
+PATH_JOBS = $(SRC)/Minishell/Jobs/
+PATH_EVENT = $(SRC)/Minishell/events/
+PATH_QUO = $(SRC)/Strings/
+PATH_LEXER = $(SRC)/Lexer/
+PATH_BLT = $(SRC)/Builtins/
+PATH_AL = $(SRC)/alias/
+PATH_HSH = $(SRC)/HashTable/
+PATH_HISTORY = $(SRC)/history/
+PATH_EXPNASION_CORE = $(SRC)/expansion/Core/
+PATH_EXPNASION_PARAM = $(SRC)/expansion/Parametre/
+PATH_EXPNASION_ARITHM = $(SRC)/expansion/Arithmetic/
+PATH_EXPNASION_SUBS = $(SRC)/expansion/Substitution/
+PATH_SUB_PROCESS = $(SRC)/Process_Sub/
+PATH_ENV = $(SRC)/Env/
 
-SRC_EVENT = $(patsubst %.c, $(SRC)/Minishell/events/%.c, event.c pre_parse.c event_utils.c)
-SRC_QUO = $(patsubst %.c, $(SRC)/Strings/%.c, free_string.c is_number.c string.c)
-SRC_LEXER = $(patsubst %.c, $(SRC)/Lexer/%.c, expans.utils.c parse_error.c parse_utils.c parse_alias_redir.c parse_helper.c lex_helpers.c ft_xmalloc.c herdoc.c input_redir.c ast_rest.c ast_redir.c ast_utils.c stack_helper.c stack.c ast.c lex.c parse.c redirection.c start.c tmpfile.c quote_stripping.c common.c meta.c subs_parse.c subs_parce2.c back_slash.c)
-SRC_BLT = $(patsubst %.c, $(SRC)/Builtins/%.c, ft_exit.c test_utils.c ft_test.c test_expr.c test_file.c cd.c cd_helper.c)
-SRC_AL= $(patsubst %.c, $(SRC)/Alias/%.c, alias.c alias_utils.c handle_alias.c builtins_alias.c)
-SRC_HSH= $(patsubst %.c, $(SRC)/HashTable/%.c, hash_handle.c hash.c prime.c hash_resize.c hash2.c)
-SRC_HISTORY= $(patsubst %.c, $(SRC)/history/%.c, history.c history_helper.c ft_fc.c fc_l.c fc_s.c fc_edit.c)
-SRC_EXPNASION = $(shell find $(SRC)/expansion -name '*.c')
-SRC_SUB_PROCESS = $(patsubst %.c, $(SRC)/Process_Sub/%.c, sub_core.c fifo.c process_sub.c tpname.c)
-SRC_ENV = $(patsubst %.c, $(SRC)/Env/%.c, handle_env2.c handle_env.c handle_dupenv.c ft_env_new.c builtins_env.c)
-# SRC_EXPNASION_CORE = $(addprefix $(SRC)/expansion/Core/, expand_parametre.c expand_sub_art.c expand.c)
-# SRC_EXPNASION_PARAMETRE = $(addprefix $(SRC)/expansion/Parametre/, expand_operator.c expand_simple.c expand_remove.c)
+SRC_MINISHELL = expand_redirection.o setup_expan.o system.o input_red.o output_red.o\
+				 handlers.o ft_type.o  fds.o builtin.o free.o  ft_echo.o ft_pwd.o main.o shell.o exec.o redir.o
 
-OBJ_MIN = $(patsubst %.c, %.o, $(SRC_MIN))
-OBJ_JOB = $(patsubst %.c, %.o, $(SRC_JOBS))
-OBJ_EVENT = $(patsubst %.c, %.o, $(SRC_EVENT))
-OBJ_QUO = $(patsubst %.c, %.o, $(SRC_QUO))
-OBJ_REA = $(patsubst %.c, %.o, $(SRC_REA))
-OBJ_LEXER = $(patsubst %.c, %.o, $(SRC_LEXER))
-OBJ_BLT = $(patsubst %.c, %.o, $(SRC_BLT))
-OBJ_AL = $(patsubst %.c, %.o, $(SRC_AL))
-OBJ_HSH = $(patsubst %.c, %.o, $(SRC_HSH))
-OBJ_HISTORY = $(patsubst %.c, %.o, $(SRC_HISTORY))
-OBJ_EXPNASION = $(patsubst %.c, %.o, $(SRC_EXPNASION))
-OBJ_SUB_PROCESS = $(patsubst %.c, %.o, $(SRC_SUB_PROCESS))
-OBJ_ENV = $(patsubst %.c, %.o, $(SRC_ENV))
+SRC_JOBS =  ft_getopt.o ft_strsignal.o job_misc.o node_to_cmd.o job_status.o activejob.o\
+			delete_job.o processes.o terminal.o jobs_list.o job.o execute.o job_helpers.o\
+			ft_jobs.o ft_fg.o ft_bg.o sep_command.o init_exec.o assignment.o command_utils.o exec2.o
 
-OBJECT = $(OBJ_MIN) $(OBJ_QUO) $(OBJ_LEXER) $(OBJ_EVENT) $(OBJ_BLT) $(OBJ_AL) $(OBJ_HSH) $(OBJ_JOB) $(OBJ_HISTORY) $(OBJ_EXPNASION) $(OBJ_SUB_PROCESS) $(OBJ_ENV)
-REAL_OBJECT = $(patsubst %, $(BIN)/%, /$(notdir $(OBJECT)))
-REAL_SRC = $(SRC_MIN) $(SRC_JOBS) $(SRC_EVENT) $(SRC_QUO) $(SRC_LEXER) $(SRC_BLT) $(SRC_AL) $(SRC_HSH) $(SRC_HISTORY) $(SRC_EXPNASION) $(SRC_SUB_PROCESS) $(SRC_ENV)
+SRC_EVENT =  event.o pre_parse.o event_utils.o
+
+SRC_QUO = free_string.o is_number.o string.o
+
+SRC_LEXER = expans.utils.o parse_error.o parse_utils.o parse_alias_redir.o parse_helper.o\
+			lex_helpers.o ft_xmalloc.o herdoc.o input_redir.o ast_rest.o ast_redir.o ast_utils.o\
+			stack_helper.o stack.o ast.o lex.o parse.o redirection.o start.o tmpfile.o\
+			quote_stripping.o common.o meta.o subs_parse.o subs_parce2.o back_slash.o
+
+SRC_BLT = ft_exit.o test_utils.o ft_test.o test_expr.o test_file.o cd.o cd_helper.o
+
+SRC_AL = alias.o alias_utils.o handle_alias.o builtins_alias.o
+
+SRC_HSH = hash_handle.o hash.o prime.o hash_resize.o hash2.o
+
+SRC_HISTORY = history.o history_helper.o ft_fc.o fc_l.o fc_s.o fc_edit.o
+
+SRC_EXPNASION_CORE = expand.o expand_parametre.o expand_sub_art.o
+
+SRC_EXPNASION_PARAM = expand_operator.o expand_remove.o expand_simple.o
+
+SRC_EXPNASION_ARITHM = ar_parse_helper.o arithmetic_expansion_parse.o evaluation_core.o evaluation_helper.o
+
+SRC_EXPNASION_SUBS = substitution.o
+
+SRC_SUB_PROCESS = sub_core.o fifo.o process_sub.o tpname.o
+
+SRC_ENV = handle_env2.o handle_env.o handle_dupenv.o ft_env_new.o builtins_env.o
+
+# OBJ_MIN = $(patsubst %.c, %.o, $(SRC_MIN))
+# OBJ_JOB = $(patsubst %.c, %.o, $(SRC_JOBS))
+# OBJ_EVENT = $(patsubst %.c, %.o, $(SRC_EVENT))
+# OBJ_QUO = $(patsubst %.c, %.o, $(SRC_QUO))
+# OBJ_REA = $(patsubst %.c, %.o, $(SRC_REA))
+# OBJ_LEXER = $(patsubst %.c, %.o, $(SRC_LEXER))
+# OBJ_BLT = $(patsubst %.c, %.o, $(SRC_BLT))
+# OBJ_AL = $(patsubst %.c, %.o, $(SRC_AL))
+# OBJ_HSH = $(patsubst %.c, %.o, $(SRC_HSH))
+# OBJ_HISTORY = $(patsubst %.c, %.o, $(SRC_HISTORY))
+# OBJ_EXPNASION = $(patsubst %.c, %.o, $(SRC_EXPNASION))
+# OBJ_SUB_PROCESS = $(patsubst %.c, %.o, $(SRC_SUB_PROCESS))
+# OBJ_ENV = $(patsubst %.c, %.o, $(SRC_ENV))
+
+OBJECT =	$(SRC_MINISHELL) $(SRC_JOBS) $(SRC_EVENT) $(SRC_QUO) $(SRC_LEXER) $(SRC_BLT) $(SRC_AL)
+OBJECT +=	$(SRC_HSH) $(SRC_HISTORY) $(SRC_EXPNASION_CORE) $(SRC_EXPNASION_PARAM) 
+OBJECT +=	$(SRC_EXPNASION_ARITHM) $(SRC_EXPNASION_SUBS) $(SRC_SUB_PROCESS) $(SRC_ENV)
+
+
+REAL_OBJECT = $(patsubst %, $(BIN)/%, $(OBJECT))
 
 CC = gcc
 FLAGS = -g -Wall -Wextra -Werror
 CPP_FLAGS = -I$(INC) -I$(LIB)/includes -I$(LEXINC)
+
 LIBFT = $(LIB)/libft.a
+READLINE = readline/readline.a
 
 RED = \033[1;31m
 GREEN = \033[1;32m
@@ -68,28 +105,26 @@ BLUE = \033[1;34m
 YELLOW = \033[1;33m
 NC = \033[1;0m
 
-all: $(LIBFT) $(REALINE) $(NAME)
+all: $(LIBFT) $(READLINE) $(NAME)
 
-$(REALINE):
-	@make -C readline
-
-$(NAME): $(OBJECT)
+$(NAME): $(addprefix bin/,$(OBJECT))
 	@echo "$(RED)Linking...$(NC)"
-	@$(CC) $(FLAGS) $(REAL_OBJECT) -ltermcap readline/readline.a -lreadline $(LIBFT) -o $(NAME)
+	@$(CC) $(FLAGS) $(REAL_OBJECT) -ltermcap $(READLINE) $(LIBFT) -o $(NAME)
 	@echo "$(GREEN)Finished...$(NC)"
 
 $(LIBFT):
-	@echo "$(BLUE)Getting Libraries...$(NC)"
+	@echo "$(BLUE)Getting Libft Library...$(NC)"
 	@make -C $(LIB)
 
-%.o : %.c
-	@mkdir -p $(BIN)
-	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $(BIN)/$(notdir $@)
+$(READLINE):
+	@echo "$(BLUE)Getting readline Library...$(NC)"
+	@make -C readline
 
 clean:
 	@echo "$(RED)Cleaning up...$(NC)"
-	@rm -rf $(REAL_OBJECT)
+	@rm -rf bin
 	@make -C $(LIB) clean
+	@make -C readline clean
 
 fclean: clean
 	@rm -rf $(NAME)
@@ -98,18 +133,67 @@ fclean: clean
 
 re : fclean all
 
-.PHONY: all clean fclean re help
+.PHONY: all clean fclean re
 
-help :
-	@echo "$(GREEN)src_minishell: $(RED)$(notdir $(SRC_MIN))$(NC)"
-	@echo "$(GREEN)src_quotes: $(RED)$(notdir $(SRC_QUO))$(NC)"
-	@echo "$(GREEN)src_readline: $(RED)$(notdir $(SRC_REA))$(NC)"
-	@echo "$(GREEN)src_history: $(RED)$(notdir $(SRC_HISTORY))$(NC)"
-	@echo "$(BLUE)obj: $(RED)$(notdir $(REAL_OBJECT)$(NC))"
+#Object rules
 
-valgrind :
-	@valgrind --tool=memcheck --leak-check=full --track-origins=yes ./$(NAME)
+bin/%.o : $(PATH_MINISHELL)%.c 
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
 
-val : $(NAME) valgrind
+bin/%.o : $(PATH_JOBS)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
 
-valre : re valgrind
+bin/%.o : $(PATH_EVENT)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_QUO)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_LEXER)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_BLT)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_AL)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_HSH)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_HISTORY)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_EXPNASION_CORE)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_EXPNASION_PARAM)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_EXPNASION_ARITHM)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_EXPNASION_SUBS)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_SUB_PROCESS)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+
+bin/%.o : $(PATH_ENV)%.c
+	@mkdir -p $(BIN)
+	@$(CC) $(FLAGS) $(CFLAGS) $(CPP_FLAGS) -c $< -o $@
+

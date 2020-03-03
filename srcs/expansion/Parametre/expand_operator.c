@@ -6,7 +6,7 @@
 /*   By: aait-ihi <aait-ihi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/15 04:40:19 by aait-ihi          #+#    #+#             */
-/*   Updated: 2020/03/02 06:30:18 by aait-ihi         ###   ########.fr       */
+/*   Updated: 2020/03/02 23:27:26 by aait-ihi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ char	*indicate_error(char *var_name, char *expression)
 		return (ft_strdup(var->value));
 	else
 		val = expand(ft_strdup(expression + 2), NULL);
-	ft_printf_fd(2, "%s : %s\n", var_name, val ? val : "");
+	PRINT_ERROR2(var_name, val ? val : "");
+	free(val);
 	return (NULL);
 }
